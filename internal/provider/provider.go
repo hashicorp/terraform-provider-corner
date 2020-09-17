@@ -10,10 +10,10 @@ import (
 func New() *schema.Provider {
 	p := &schema.Provider{
 		DataSourcesMap: map[string]*schema.Resource{
-			"basic_data_source": dataSourceBasic(),
+			"corner_data_source": dataSourceBasic(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"basic_resource": resourceBasic(),
+			"corner_person": resourcePerson(),
 		},
 	}
 
@@ -22,11 +22,15 @@ func New() *schema.Provider {
 	return p
 }
 
-type apiClient struct {
-}
-
 func configure(p *schema.Provider) func(context.Context, *schema.ResourceData) (interface{}, diag.Diagnostics) {
 	return func(context.Context, *schema.ResourceData) (interface{}, diag.Diagnostics) {
-		return &apiClient{}, nil
+		client, err := NewClient()
+		if err != nil {
+			return nil, diag.FromErr(err)
+		}
+		return client, nil
 	}
 }
+
+// each test has its own db
+// db address set on configure

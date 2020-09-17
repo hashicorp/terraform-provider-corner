@@ -1,37 +1,112 @@
 package provider
 
 import (
+	"context"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func resourceBasic() *schema.Resource {
+func resourcePerson() *schema.Resource {
 	return &schema.Resource{
-		Create: resourceBasicCreate,
-		Read:   resourceBasicRead,
-		Update: resourceBasicUpdate,
-		Delete: resourceBasicDelete,
+		CreateContext: resourcePersonCreate,
+		ReadContext:   resourcePersonRead,
+		UpdateContext: resourcePersonUpdate,
+		DeleteContext: resourcePersonDelete,
 
 		Schema: map[string]*schema.Schema{
-			"sample_attribute": {
+			"email": {
 				Type:     schema.TypeString,
-				Optional: true,
+				Required: true,
+				ForceNew: true,
+			},
+			"name": {
+				Type:     schema.TypeString,
+				Required: true,
+			},
+			"age": {
+				Type:     schema.TypeInt,
+				Required: true,
 			},
 		},
 	}
 }
 
-func resourceBasicCreate(d *schema.ResourceData, meta interface{}) error {
+func resourcePersonCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Client)
+	newPerson := &Person{
+		Email: d.Get("email").(string),
+		Name:  d.Get("name").(string),
+		Age:   d.Get("age").(int),
+	}
+
+	err := client.CreatePerson(newPerson)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return resourcePersonRead(ctx, d, meta)
+}
+
+func resourcePersonRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Client)
+
+	email := d.Get("email").(string)
+
+	p, err := client.ReadPerson(email)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	if p == nil {
+		return nil
+	}
+
+	d.SetId(email)
+
+	err = d.Set("name", p.Name)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = d.Set("age", p.Age)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
 	return nil
 }
 
-func resourceBasicRead(d *schema.ResourceData, meta interface{}) error {
+func resourcePersonUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
+	client := meta.(*Client)
+
+	person := &Person{
+		Email: d.Get("email").(string),
+		Name:  d.Get("name").(string),
+		Age:   d.Get("age").(int),
+	}
+
+	err := client.UpdatePerson(person)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
 	return nil
 }
 
-func resourceBasicUpdate(d *schema.ResourceData, meta interface{}) error {
-	return nil
-}
+func resourcePersonDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 
-func resourceBasicDelete(d *schema.ResourceData, meta interface{}) error {
+	client := meta.(*Client)
+
+	person := &Person{
+		Email: d.Get("email").(string),
+		Name:  d.Get("name").(string),
+		Age:   d.Get("age").(int),
+	}
+
+	err := client.DeletePerson(person)
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
 	return nil
 }

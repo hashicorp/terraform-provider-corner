@@ -16,7 +16,7 @@ func testAccResourceBasic(t *testing.T) resource.TestCase {
 				Config: configResourceBasic,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestMatchResourceAttr(
-						"basic_resource.foo", "sample_attribute", regexp.MustCompile("^ba")),
+						"corner_person.foo", "name", regexp.MustCompile("^For")),
 				),
 			},
 		},
@@ -24,7 +24,9 @@ func testAccResourceBasic(t *testing.T) resource.TestCase {
 }
 
 const configResourceBasic = `
-resource "basic_resource" "foo" {
-  sample_attribute = "bar"
+resource "corner_person" "foo" {
+  email = "ford@prefect.co"
+  name = "Ford Prefect"
+  age = 200
 }
 `
