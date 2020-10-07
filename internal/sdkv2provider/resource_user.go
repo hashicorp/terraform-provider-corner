@@ -1,10 +1,11 @@
-package provider
+package sdkv2
 
 import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
 func resourceUser() *schema.Resource {
@@ -33,8 +34,8 @@ func resourceUser() *schema.Resource {
 }
 
 func resourceUserCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*Client)
-	newUser := &User{
+	client := meta.(*backend.Client)
+	newUser := &backend.User{
 		Email: d.Get("email").(string),
 		Name:  d.Get("name").(string),
 		Age:   d.Get("age").(int),
@@ -49,7 +50,7 @@ func resourceUserCreate(ctx context.Context, d *schema.ResourceData, meta interf
 }
 
 func resourceUserRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*Client)
+	client := meta.(*backend.Client)
 
 	email := d.Get("email").(string)
 
@@ -77,9 +78,9 @@ func resourceUserRead(ctx context.Context, d *schema.ResourceData, meta interfac
 }
 
 func resourceUserUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*Client)
+	client := meta.(*backend.Client)
 
-	user := &User{
+	user := &backend.User{
 		Email: d.Get("email").(string),
 		Name:  d.Get("name").(string),
 		Age:   d.Get("age").(int),
@@ -94,9 +95,9 @@ func resourceUserUpdate(ctx context.Context, d *schema.ResourceData, meta interf
 }
 
 func resourceUserDelete(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*Client)
+	client := meta.(*backend.Client)
 
-	user := &User{
+	user := &backend.User{
 		Email: d.Get("email").(string),
 		Name:  d.Get("name").(string),
 		Age:   d.Get("age").(int),
