@@ -3,6 +3,9 @@ version: 2.1
 commands:
   get_dependencies:
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "c6:96:98:82:dc:04:6c:39:dd:ac:83:05:e3:15:1c:98"
       - checkout
       - restore_cache:
           keys:
