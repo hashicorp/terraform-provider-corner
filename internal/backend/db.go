@@ -1,4 +1,4 @@
-package provider
+package backend
 
 import (
 	"fmt"
@@ -29,25 +29,25 @@ var db *memdb.MemDB
 func init() {
 	schema := &memdb.DBSchema{
 		Tables: map[string]*memdb.TableSchema{
-			"users": &memdb.TableSchema{
+			"users": {
 				Name: "users",
 				Indexes: map[string]*memdb.IndexSchema{
-					"id": &memdb.IndexSchema{
+					"id": {
 						Name:    "id",
 						Unique:  true,
 						Indexer: &memdb.StringFieldIndex{Field: "Email"},
 					},
-					"age": &memdb.IndexSchema{
+					"age": {
 						Name:    "age",
 						Unique:  false,
 						Indexer: &memdb.IntFieldIndex{Field: "Age"},
 					},
 				},
 			},
-			"regions": &memdb.TableSchema{
+			"regions": {
 				Name: "regions",
 				Indexes: map[string]*memdb.IndexSchema{
-					"id": &memdb.IndexSchema{
+					"id": {
 						Name:    "id",
 						Unique:  true,
 						Indexer: &memdb.StringFieldIndex{Field: "Name"},
@@ -67,7 +67,7 @@ func init() {
 	txn := db.Txn(true)
 	defer txn.Abort()
 
-	regions := []*Region{&Region{Name: "UK"}, &Region{Name: "EU"}, &Region{Name: "USA"}}
+	regions := []*Region{{Name: "UK"}, {Name: "EU"}, {Name: "USA"}}
 	for _, r := range regions {
 		err := txn.Insert("regions", r)
 		if err != nil {

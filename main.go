@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/plugin"
-	"github.com/hashicorp/terraform-provider-corner/internal/provider"
+	sdkv2 "github.com/hashicorp/terraform-provider-corner/internal/sdkv2provider"
 )
 
 func main() {
-	plugin.Serve(&plugin.ServeOpts{ProviderFunc: provider.New})
+	plugin.Serve(&plugin.ServeOpts{ProviderFunc: sdkv2.New})
 }

@@ -1,10 +1,11 @@
-package provider
+package sdkv2
 
 import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
 func dataSourceRegions() *schema.Resource {
@@ -22,7 +23,7 @@ func dataSourceRegions() *schema.Resource {
 }
 
 func dataSourceRegionsRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	client := meta.(*Client)
+	client := meta.(*backend.Client)
 
 	regions, err := client.ReadRegions()
 	if err != nil {
