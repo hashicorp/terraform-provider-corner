@@ -15,12 +15,15 @@ func (d dataSourceTime) ReadDataSource(ctx context.Context, req *tfprotov5.ReadD
 	state, err := tftypes.NewValue(tftypes.Object{
 		AttributeTypes: map[string]tftypes.Type{
 			"current": tftypes.String,
+			"id":      tftypes.String,
 		},
 	}, map[string]tftypes.Value{
 		"current": tftypes.NewValue(tftypes.String, time.Now().Format(time.RFC3339)),
+		"id":      tftypes.NewValue(tftypes.String, "static_id"),
 	}).MarshalMsgPack(tftypes.Object{
 		AttributeTypes: map[string]tftypes.Type{
 			"current": tftypes.String,
+			"id":      tftypes.String,
 		},
 	})
 	if err != nil {
