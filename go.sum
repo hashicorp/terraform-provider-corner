@@ -129,6 +129,8 @@ github.com/google/go-cmp v0.4.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-cmp v0.4.1/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.5.0 h1:/QaMHBdZ26BB3SSst0Iwl10Epc+xhTquomWX0oZEB6w=
 github.com/google/go-cmp v0.5.0/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
+github.com/google/go-cmp v0.5.2 h1:X2ev0eStA3AbceY54o37/0PQ/UWqKEiiO2dKL5OPaFM=
+github.com/google/go-cmp v0.5.2/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/martian v2.1.0+incompatible h1:/CP5g8u/VJHijgedC/Legn3BAbAaWPgecwXBIDzw5no=
 github.com/google/martian v2.1.0+incompatible/go.mod h1:9I4somxYTbIHy5NJKHRl3wXiIaQGbYVAs8BPL6v8lEs=
 github.com/google/martian/v3 v3.0.0 h1:pMen7vLs8nvgEYhywH3KDWJIJTeEr2ULsVWHWYHQyBs=
@@ -188,10 +190,8 @@ github.com/hashicorp/terraform-exec v0.10.0/go.mod h1:tOT8j1J8rP05bZBGWXfMyU3HkL
 github.com/hashicorp/terraform-json v0.5.0 h1:7TV3/F3y7QVSuN4r9BEXqnWqrAyeOtON8f0wvREtyzs=
 github.com/hashicorp/terraform-json v0.5.0/go.mod h1:eAbqb4w0pSlRmdvl8fOyHAi/+8jnkVYN28gJkSJrLhU=
 github.com/hashicorp/terraform-plugin-go v0.0.0-20201007135710-95da7fbd4bb8/go.mod h1:iVxhkJdmLuDh+8BKTj9bdL+/lbusHKxAEuptE8VCjdM=
-github.com/hashicorp/terraform-plugin-go v0.0.0-20201020231029-49daeca5241c/go.mod h1:iVxhkJdmLuDh+8BKTj9bdL+/lbusHKxAEuptE8VCjdM=
-github.com/hashicorp/terraform-plugin-go v0.0.0-20201027121849-e227023a4d99 h1:HVNya2Bv6JXQlESotf/A/Lkv1W8U936v1uJ2ZxcuYXQ=
-github.com/hashicorp/terraform-plugin-go v0.0.0-20201027121849-e227023a4d99/go.mod h1:xbqx6szM1IDO6Y3SqIKkC4F667L9c1sP6fxU1I+o6NU=
-github.com/hashicorp/terraform-plugin-mux v0.0.0-20201008164311-144f92b1e360/go.mod h1:lKZXaUUhcUIwtLA2O1f29nc2cLateoTHQxvxTaKh0qU=
+github.com/hashicorp/terraform-plugin-go v0.0.0-20201030151404-c6ea4ddb3743 h1:S00yX8AJ+nHuioEnXLqZ7cFjHXhNWUz4m8cBeuSYA78=
+github.com/hashicorp/terraform-plugin-go v0.0.0-20201030151404-c6ea4ddb3743/go.mod h1:10V6F3taeDWVAoLlkmArKttR3IULlRWFAGtQIQTIDr4=
 github.com/hashicorp/terraform-plugin-mux v0.0.0-20201027121817-adc4ce9f714b h1:rSuKzWsF7k9fixKUfoJ8b6WB0+jAQX2uwMjWdSA9tj4=
 github.com/hashicorp/terraform-plugin-mux v0.0.0-20201027121817-adc4ce9f714b/go.mod h1:lKZXaUUhcUIwtLA2O1f29nc2cLateoTHQxvxTaKh0qU=
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.4 h1:GYkUL3zjrZgig9Gm+/61+YglzESJxXRDMp7qhJsh4j0=
@@ -250,6 +250,8 @@ github.com/mitchellh/reflectwalk v1.0.1 h1:FVzMWA5RllMAKIdUSC8mdWo3XtwoecrH79BY7
 github.com/mitchellh/reflectwalk v1.0.1/go.mod h1:mSTlrgnPZtwu0c4WaC2kGObEpuNDbx0jmZXqmk4esnw=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e h1:fD57ERR4JtEqsWbfPhv4DMiApHyliiK5xCTNVSPiaAs=
 github.com/niemeyer/pretty v0.0.0-20200227124842-a10e7caefd8e/go.mod h1:zD1mROLANZcx1PVRCS0qkT7pwLkGfwJo4zjcN/Tysno=
+github.com/nsf/jsondiff v0.0.0-20200515183724-f29ed568f4ce h1:RPclfga2SEJmgMmz2k+Mg7cowZ8yv4Trqw9UsJby758=
+github.com/nsf/jsondiff v0.0.0-20200515183724-f29ed568f4ce/go.mod h1:uFMI8w+ref4v2r9jz+c9i1IfIttS/OkmLfrk1jne5hs=
 github.com/oklog/run v1.0.0 h1:Ru7dDtJNOyC66gQ5dQmaCa0qIsAUFY3sFpK1Xk8igrw=
 github.com/oklog/run v1.0.0/go.mod h1:dlhp/R75TPv97u0XWUtDeV/lRKWPKSdTuV0TZvrmrQA=
 github.com/pierrec/lz4 v2.0.5+incompatible/go.mod h1:pdkljMzZIN41W+lC3N2tnIh5sFi+IEE17M5jbnwPHcY=
