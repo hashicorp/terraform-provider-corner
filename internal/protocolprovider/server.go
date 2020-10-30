@@ -58,6 +58,12 @@ func (s server) StopProvider(ctx context.Context, req *tfprotov5.StopProviderReq
 
 func Server() tfprotov5.ProviderServer {
 	return server{
+		providerSchema: &tfprotov5.Schema{
+			Version: 1,
+			Block: &tfprotov5.SchemaBlock{
+				Version: 1,
+			},
+		},
 		dataSourceSchemas: map[string]*tfprotov5.Schema{
 			"corner_time": {
 				Version: 1,
@@ -70,6 +76,12 @@ func Server() tfprotov5.ProviderServer {
 							Description:     "The current time in RFC3339 format.",
 							DescriptionKind: tfprotov5.StringKindPlain,
 							Computed:        true,
+						},
+						{
+							Name:     "id",
+							Type:     tftypes.String,
+							Optional: true,
+							Computed: true,
 						},
 					},
 				},
