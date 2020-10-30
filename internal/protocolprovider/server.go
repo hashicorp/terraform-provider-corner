@@ -15,8 +15,8 @@ type server struct {
 	resourceSchemas    map[string]*tfprotov5.Schema
 	dataSourceSchemas  map[string]*tfprotov5.Schema
 
-	tfprotov5.ResourceRouter
-	tfprotov5.DataSourceRouter
+	resourceRouter
+	dataSourceRouter
 
 	client *backend.Client
 }
@@ -87,7 +87,7 @@ func Server() tfprotov5.ProviderServer {
 				},
 			},
 		},
-		DataSourceRouter: tfprotov5.DataSourceRouter{
+		dataSourceRouter: dataSourceRouter{
 			"corner_time": dataSourceTime{},
 		},
 	}
