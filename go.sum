@@ -189,11 +189,10 @@ github.com/hashicorp/terraform-exec v0.10.0 h1:3nh/1e3u9gYRUQGOKWp/8wPR7ABlL2F14
 github.com/hashicorp/terraform-exec v0.10.0/go.mod h1:tOT8j1J8rP05bZBGWXfMyU3HkLi1LWyqL3Bzsc3CJjo=
 github.com/hashicorp/terraform-json v0.5.0 h1:7TV3/F3y7QVSuN4r9BEXqnWqrAyeOtON8f0wvREtyzs=
 github.com/hashicorp/terraform-json v0.5.0/go.mod h1:eAbqb4w0pSlRmdvl8fOyHAi/+8jnkVYN28gJkSJrLhU=
-github.com/hashicorp/terraform-plugin-go v0.0.0-20201007135710-95da7fbd4bb8/go.mod h1:iVxhkJdmLuDh+8BKTj9bdL+/lbusHKxAEuptE8VCjdM=
-github.com/hashicorp/terraform-plugin-go v0.0.0-20201030151404-c6ea4ddb3743 h1:S00yX8AJ+nHuioEnXLqZ7cFjHXhNWUz4m8cBeuSYA78=
-github.com/hashicorp/terraform-plugin-go v0.0.0-20201030151404-c6ea4ddb3743/go.mod h1:10V6F3taeDWVAoLlkmArKttR3IULlRWFAGtQIQTIDr4=
-github.com/hashicorp/terraform-plugin-mux v0.0.0-20201027121817-adc4ce9f714b h1:rSuKzWsF7k9fixKUfoJ8b6WB0+jAQX2uwMjWdSA9tj4=
-github.com/hashicorp/terraform-plugin-mux v0.0.0-20201027121817-adc4ce9f714b/go.mod h1:lKZXaUUhcUIwtLA2O1f29nc2cLateoTHQxvxTaKh0qU=
+github.com/hashicorp/terraform-plugin-go v0.0.0-20201030231218-5e8aeb3ae852 h1:37ZXOy2iPFxpPhfyCE9qxZbtb+1UGfc1Vug4Rrn7ymg=
+github.com/hashicorp/terraform-plugin-go v0.0.0-20201030231218-5e8aeb3ae852/go.mod h1:10V6F3taeDWVAoLlkmArKttR3IULlRWFAGtQIQTIDr4=
+github.com/hashicorp/terraform-plugin-mux v0.0.0-20201031002009-e05ec1df99a2 h1:k4SN5EquGjSXq0gj/B5EBYVJexpXd9J4xm52IOPvBBE=
+github.com/hashicorp/terraform-plugin-mux v0.0.0-20201031002009-e05ec1df99a2/go.mod h1:WUvJYXT3DUcl1WrvhGt2hre34LCpXeoKewMXKv3i9AY=
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.4 h1:GYkUL3zjrZgig9Gm+/61+YglzESJxXRDMp7qhJsh4j0=
 github.com/hashicorp/terraform-plugin-sdk/v2 v2.0.4/go.mod h1:GP0lmw4Y+XV1OfTmi/hK75t5KWGGzoOzEgUBPGZ6Wq4=
 github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb/go.mod h1:+NfK9FKeTrX5uv1uIXGdwYDTeHna2qgaIlx54MXqjAM=
