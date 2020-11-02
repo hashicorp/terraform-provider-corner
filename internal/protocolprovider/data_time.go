@@ -12,7 +12,12 @@ import (
 type dataSourceTime struct{}
 
 func (d dataSourceTime) ReadDataSource(ctx context.Context, req *tfprotov5.ReadDataSourceRequest) (*tfprotov5.ReadDataSourceResponse, error) {
-	state, err := tftypes.NewValue(tftypes.Object{
+	state, err := tfprotov5.NewDynamicValue(tftypes.Object{
+		AttributeTypes: map[string]tftypes.Type{
+			"current": tftypes.String,
+			"id":      tftypes.String,
+		},
+	}, tftypes.NewValue(tftypes.Object{
 		AttributeTypes: map[string]tftypes.Type{
 			"current": tftypes.String,
 			"id":      tftypes.String,
@@ -20,12 +25,7 @@ func (d dataSourceTime) ReadDataSource(ctx context.Context, req *tfprotov5.ReadD
 	}, map[string]tftypes.Value{
 		"current": tftypes.NewValue(tftypes.String, time.Now().Format(time.RFC3339)),
 		"id":      tftypes.NewValue(tftypes.String, "static_id"),
-	}).MarshalMsgPack(tftypes.Object{
-		AttributeTypes: map[string]tftypes.Type{
-			"current": tftypes.String,
-			"id":      tftypes.String,
-		},
-	})
+	}))
 	if err != nil {
 		return &tfprotov5.ReadDataSourceResponse{
 			Diagnostics: []*tfprotov5.Diagnostic{
@@ -38,9 +38,7 @@ func (d dataSourceTime) ReadDataSource(ctx context.Context, req *tfprotov5.ReadD
 		}, nil
 	}
 	return &tfprotov5.ReadDataSourceResponse{
-		State: &tfprotov5.DynamicValue{
-			MsgPack: state,
-		},
+		State: &state,
 	}, nil
 }
 
