@@ -14,6 +14,7 @@ func resourceBigint() *schema.Resource {
 		ReadContext:   resourceBigintRead,
 		UpdateContext: resourceBigintUpdate,
 		DeleteContext: resourceBigintDelete,
+		UseJSONNumber: true,
 
 		Schema: map[string]*schema.Schema{
 			"number": {

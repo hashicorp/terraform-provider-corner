@@ -34,7 +34,6 @@ func TestAccTests(t *testing.T) {
 	for name, c := range TestCases {
 		t.Helper()
 		t.Run(name, func(t *testing.T) {
-			t.Parallel()
 			resource.Test(t, c(t))
 		})
 	}
