@@ -54,7 +54,9 @@ func resourceBigintRead(ctx context.Context, d *schema.ResourceData, meta interf
 func resourceBigintUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	number := d.Get("number").(int)
 	d.SetId(strconv.Itoa(number))
-	d.Set("int64", number)
+	if err := d.Set("int64", number); err != nil {
+		return diag.FromErr(err)
+	}
 	return nil
 }
 
