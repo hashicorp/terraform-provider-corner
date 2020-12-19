@@ -23,6 +23,8 @@ func dataSourceBigint() *schema.Resource {
 func dataSourceBigintRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	d.SetId("7227701560655103598")
 
-	d.Set("int64", 7227701560655103598)
+	if err := d.Set("int64", 7227701560655103598); err != nil {
+		return diag.FromErr(err)
+	}
 	return nil
 }

@@ -33,7 +33,9 @@ func resourceBigintCreate(ctx context.Context, d *schema.ResourceData, meta inte
 	number := d.Get("number").(int)
 	d.SetId(strconv.Itoa(number))
 
-	d.Set("int64", number)
+	if err := d.Set("int64", number); err != nil {
+		return diag.FromErr(err)
+	}
 	return resourceBigintRead(ctx, d, meta)
 }
 
@@ -43,7 +45,9 @@ func resourceBigintRead(ctx context.Context, d *schema.ResourceData, meta interf
 		return diag.FromErr(err)
 	}
 
-	d.Set("int64", number)
+	if err = d.Set("int64", number); err != nil {
+		return diag.FromErr(err)
+	}
 	return nil
 }
 
