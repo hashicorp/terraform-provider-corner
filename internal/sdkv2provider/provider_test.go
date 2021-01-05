@@ -31,14 +31,18 @@ func testAccPreCheck(t *testing.T) {
 }
 
 func TestAccTests(t *testing.T) {
-	for _, c := range TestCases {
+	for name, c := range TestCases {
 		t.Helper()
-		resource.Test(t, c(t))
+		t.Run(name, func(t *testing.T) {
+			resource.Test(t, c(t))
+		})
 	}
 }
 
 // public map of test cases that can be imported by Core/SDK etc
 var TestCases = map[string]func(*testing.T) resource.TestCase{
-	"corner_user":    testAccResourceUser,
-	"corner_regions": testAccDataSourceRegions,
+	"corner_user":        testAccResourceUser,
+	"corner_regions":     testAccDataSourceRegions,
+	"corner_bigint_data": testAccDataSourceBigint,
+	"corner_bigint":      testAccResourceBigint,
 }
