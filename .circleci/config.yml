@@ -36,7 +36,7 @@ jobs:
     docker:
       - image: docker.mirror.hashicorp.services/circleci/golang:1.14
         environment:
-          TF_ACC_TERRAFORM_VERSION: "0.12.26"
+          TF_ACC_TERRAFORM_VERSION: "0.15.5"
     steps:
       - get_dependencies
       - run: make testacc
