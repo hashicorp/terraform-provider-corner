@@ -11,12 +11,14 @@ import (
 func New() *schema.Provider {
 	p := &schema.Provider{
 		DataSourcesMap: map[string]*schema.Resource{
-			"corner_regions": dataSourceRegions(),
-			"corner_bigint":  dataSourceBigint(),
+			"corner_regions":     dataSourceRegions(),
+			"corner_bigint":      dataSourceBigint(),
+			"corner_regions_cty": dataSourceRegionsCty(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"corner_user":   resourceUser(),
-			"corner_bigint": resourceBigint(),
+			"corner_user":     resourceUser(),
+			"corner_bigint":   resourceBigint(),
+			"corner_user_cty": resourceUserCty(),
 		},
 	}
 
