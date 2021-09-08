@@ -45,4 +45,6 @@ var TestCases = map[string]func(*testing.T) resource.TestCase{
 	"corner_regions":     testAccDataSourceRegions,
 	"corner_bigint_data": testAccDataSourceBigint,
 	"corner_bigint":      testAccResourceBigint,
+	"corner_user_cty":    testAccResourceUserCty,
+	"corner_regions_cty": testAccDataSourceRegionsCty,
 }
