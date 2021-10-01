@@ -9,7 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccResourceUser(t *testing.T) {
+func TestAccFrameworkResourceUser(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": func() (tfprotov6.ProviderServer, error) {
