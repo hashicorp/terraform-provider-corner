@@ -33,6 +33,21 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 				Type:     types.StringType,
 				Optional: true,
 			},
+			"date_joined": {
+				Type:     types.StringType,
+				Computed: true,
+				PlanModifiers: []tfsdk.AttributePlanModifier{
+					tfsdk.PreserveState(),
+				},
+			},
+			"language": {
+				Type:     types.StringType,
+				Optional: true,
+				Computed: true,
+				PlanModifiers: []tfsdk.AttributePlanModifier{
+					tfsdk.PreserveState(),
+				},
+			},
 		},
 	}, nil
 }
@@ -48,10 +63,12 @@ type resourceUser struct {
 }
 
 type user struct {
-	Email string `tfsdk:"email"`
-	Name  string `tfsdk:"name"`
-	Age   int    `tfsdk:"age"`
-	Id    string `tfsdk:"id"`
+	Email      string       `tfsdk:"email"`
+	Name       string       `tfsdk:"name"`
+	Age        int          `tfsdk:"age"`
+	Id         string       `tfsdk:"id"`
+	DateJoined types.String `tfsdk:"date_joined"`
+	Language   types.String `tfsdk:"language"`
 }
 
 func (r resourceUser) Create(ctx context.Context, req tfsdk.CreateResourceRequest, resp *tfsdk.CreateResourceResponse) {
@@ -67,12 +84,28 @@ func (r resourceUser) Create(ctx context.Context, req tfsdk.CreateResourceReques
 		Name:  plan.Name,
 		Age:   plan.Age,
 	}
+	if !plan.Language.Unknown {
+		newUser.Language = plan.Language.Value
+	}
 
 	err := r.p.client.CreateUser(newUser)
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating user", err.Error())
 		return
 	}
+
+	p, err := r.p.client.ReadUser(newUser.Email)
+	if err != nil {
+		resp.Diagnostics.AddError("Error reading user", err.Error())
+		return
+	}
+
+	if p == nil {
+		resp.Diagnostics.AddError("Error reading user", "could not find user after it was created")
+		return
+	}
+	plan.DateJoined = types.String{Value: p.DateJoined}
+	plan.Language = types.String{Value: p.Language}
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
@@ -101,6 +134,8 @@ func (r resourceUser) Read(ctx context.Context, req tfsdk.ReadResourceRequest, r
 
 	state.Name = p.Name
 	state.Age = p.Age
+	state.DateJoined = types.String{Value: p.DateJoined}
+	state.Language = types.String{Value: p.Language}
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -121,6 +156,9 @@ func (r resourceUser) Update(ctx context.Context, req tfsdk.UpdateResourceReques
 		Email: plan.Email,
 		Name:  plan.Name,
 		Age:   plan.Age,
+	}
+	if !plan.Language.Unknown {
+		newUser.Language = plan.Language.Value
 	}
 
 	err := r.p.client.UpdateUser(newUser)

@@ -1,7 +1,6 @@
 package framework
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -18,21 +17,128 @@ func TestAccFrameworkResourceUser(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: configResourceBasic,
+				Config: configResourceUserBasic,
 				Check: resource.ComposeTestCheckFunc(
-					resource.TestMatchResourceAttr(
-						"framework_user.foo", "name", regexp.MustCompile("^For")),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "name", "Ford Prefect"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "email", "ford@prefect.co"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "age", "200"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "id", "h"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "language", "en"),
 				),
 			},
 		},
 	})
 }
 
-const configResourceBasic = `
+func TestAccFrameworkResourceUser_language(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": func() (tfprotov6.ProviderServer, error) {
+				return tfsdk.NewProtocol6Server(New()), nil
+			},
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: configResourceUserLanguage,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "name", "J Doe"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "email", "jdoe@example.com"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "age", "18"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "id", "jdoe"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "language", "es"),
+				),
+			},
+		},
+	})
+}
+
+func TestAccFrameworkResourceUser_interpolateLanguage(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": func() (tfprotov6.ProviderServer, error) {
+				return tfsdk.NewProtocol6Server(New()), nil
+			},
+		},
+		ExternalProviders: map[string]resource.ExternalProvider{
+			"random": {
+				Source: "hashicorp/random",
+			},
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: configResourceUserBasic,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "name", "Ford Prefect"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "email", "ford@prefect.co"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "age", "200"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "id", "h"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "language", "en"),
+				),
+			},
+			{
+				Config: configResourceUserLanguageInterpolated,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "name", "Ford Prefect"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "email", "ford@prefect.co"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "age", "200"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "id", "h"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "language", "es"),
+				),
+			},
+		},
+	})
+}
+
+const configResourceUserBasic = `
 resource "framework_user" "foo" {
   email = "ford@prefect.co"
   name = "Ford Prefect"
   age = 200
   id = "h"
+}
+`
+
+const configResourceUserLanguage = `
+resource "framework_user" "foo" {
+  email = "jdoe@example.com"
+  name = "J Doe"
+  age = 18
+  id = "jdoe"
+  language = "es"
+}
+`
+
+const configResourceUserLanguageInterpolated = `
+resource "random_shuffle" "foo" {
+  input = ["es", "es"]
+  result_count = 1
+}
+
+resource "framework_user" "foo" {
+  email = "ford@prefect.co"
+  name = "Ford Prefect"
+  age = 200
+  id = "h"
+  language = random_shuffle.foo.result[0]
 }
 `
