@@ -2,6 +2,7 @@ package backend
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/hashicorp/go-memdb"
 )
@@ -9,9 +10,11 @@ import (
 // User represents a user in the database.
 type User struct {
 	// Email must be unique, and is treated as the User's UUID.
-	Email string
-	Name  string
-	Age   int
+	Email      string
+	Name       string
+	Age        int
+	DateJoined string
+	Language   string
 }
 
 // Region represents an availability region in the database.
@@ -101,6 +104,11 @@ func (c *Client) CreateUser(user *User) error {
 		return fmt.Errorf("Cannot create user: user already exists with email %s", user.Email)
 	}
 
+	user.DateJoined = time.Now().Format(time.RFC3339)
+	if user.Language == "" {
+		user.Language = "en"
+	}
+
 	if err := txn.Insert("users", user); err != nil {
 		return err
 	}
@@ -142,6 +150,9 @@ func (c *Client) UpdateUser(user *User) error {
 
 	p.Name = user.Name
 	p.Age = user.Age
+	if user.Language != "" {
+		p.Language = user.Language
+	}
 
 	err = txn.Insert("users", p)
 	if err != nil {
