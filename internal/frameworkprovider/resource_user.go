@@ -37,7 +37,7 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 				Type:     types.StringType,
 				Computed: true,
 				PlanModifiers: []tfsdk.AttributePlanModifier{
-					tfsdk.PreserveState(),
+					tfsdk.UseStateForUnknown(),
 				},
 			},
 			"language": {
@@ -45,7 +45,7 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 				Optional: true,
 				Computed: true,
 				PlanModifiers: []tfsdk.AttributePlanModifier{
-					tfsdk.PreserveState(),
+					tfsdk.UseStateForUnknown(),
 				},
 			},
 		},
