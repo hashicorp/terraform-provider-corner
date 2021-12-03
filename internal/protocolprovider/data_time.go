@@ -3,15 +3,25 @@ package protocol
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
+	"github.com/hashicorp/terraform-plugin-log/tflog"
+	"github.com/hashicorp/terraform-plugin-log/tfsdklog"
 )
 
 type dataSourceTime struct{}
 
 func (d dataSourceTime) ReadDataSource(ctx context.Context, req *tfprotov5.ReadDataSourceRequest) (*tfprotov5.ReadDataSourceResponse, error) {
+	log.Println("[TRACE] it's logging via println time")
+	tflog.Trace(ctx, "paddyugh what time is it?", "time", "data source time!")
+	tflog.Warn(ctx, "paddyugh what time is it?", "time", "data source warning time!")
+	tfsdklog.Trace(ctx, "paddyugh This is an SDK-level trace log")
+	tfsdklog.Warn(ctx, "paddyugh this is an SDK-level warn log")
+	tfsdklog.SubsystemTrace(ctx, "proto", "paddyugh this is a protocol level trace log")
+	tfsdklog.SubsystemWarn(ctx, "proto", "paddyugh this is a protocol level warn log")
 	state, err := tfprotov5.NewDynamicValue(tftypes.Object{
 		AttributeTypes: map[string]tftypes.Type{
 			"current": tftypes.String,

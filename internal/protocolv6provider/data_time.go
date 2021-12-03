@@ -3,6 +3,7 @@ package protocolv6
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -12,6 +13,7 @@ import (
 type dataSourceTime struct{}
 
 func (d dataSourceTime) ReadDataSource(ctx context.Context, req *tfprotov6.ReadDataSourceRequest) (*tfprotov6.ReadDataSourceResponse, error) {
+	log.Println("[TRACE] paddyugh")
 	state, err := tfprotov6.NewDynamicValue(tftypes.Object{
 		AttributeTypes: map[string]tftypes.Type{
 			"current": tftypes.String,
