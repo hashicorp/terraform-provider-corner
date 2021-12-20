@@ -7,5 +7,5 @@ require (
 	github.com/hashicorp/terraform-plugin-framework v0.5.0
 	github.com/hashicorp/terraform-plugin-go v0.5.0
 	github.com/hashicorp/terraform-plugin-mux v0.4.0
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.10.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.10.1
 )
