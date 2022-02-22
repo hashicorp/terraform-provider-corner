@@ -2,25 +2,31 @@ package main
 
 import (
 	"context"
+	"log"
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5/tf5server"
-	tfmux "github.com/hashicorp/terraform-plugin-mux"
+	"github.com/hashicorp/terraform-plugin-mux/tf5muxserver"
 	protocol "github.com/hashicorp/terraform-provider-corner/internal/protocolprovider"
 	sdkv2 "github.com/hashicorp/terraform-provider-corner/internal/sdkv2provider"
 )
 
 func main() {
 	ctx := context.Background()
-	muxed, err := tfmux.NewSchemaServerFactory(ctx, sdkv2.New().GRPCProvider, protocol.Server)
-	if err != nil {
-		panic(err)
+	providers := []func() tfprotov5.ProviderServer{
+		protocol.Server,
+		sdkv2.New().GRPCProvider,
 	}
 
-	err = tf5server.Serve("registry.terraform.io/hashicorp/corner", func() tfprotov5.ProviderServer {
-		return muxed.Server()
-	})
+	muxServer, err := tf5muxserver.NewMuxServer(ctx, providers...)
+
 	if err != nil {
-		panic(err)
+		log.Fatalf("unable to create provider: %s", err)
+	}
+
+	err = tf5server.Serve("registry.terraform.io/hashicorp/corner", muxServer.ProviderServer)
+
+	if err != nil {
+		log.Fatalf("unable to serve provider: %s", err)
 	}
 }
