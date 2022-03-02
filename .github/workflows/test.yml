@@ -26,7 +26,7 @@ jobs:
       id: go
 
     - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Go fmt
       run: |
@@ -64,7 +64,7 @@ jobs:
         with:
           terraform_version: ${{ matrix.terraform }}
           terraform_wrapper: false
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: go mod download
       - run: go test -v -cover ./internal/protocolprovider/
       - run: go test -v -cover ./internal/sdkv2provider/
@@ -93,7 +93,7 @@ jobs:
         with:
           terraform_version: ${{ matrix.terraform }}
           terraform_wrapper: false
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - run: go mod download
       - run: go test -v -cover ./internal/frameworkprovider/
       - run: go test -v -cover ./internal/protocolv6provider/
