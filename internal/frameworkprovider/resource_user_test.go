@@ -109,6 +109,40 @@ func TestAccFrameworkResourceUser_interpolateLanguage(t *testing.T) {
 	})
 }
 
+// Reference: https://github.com/hashicorp/terraform-plugin-sdk/issues/935
+func TestAccFrameworkResourceUser_TF_VAR_Environment_Variable(t *testing.T) {
+	expectedUserName := "Ford Prefect"
+	t.Setenv("TF_VAR_framework_user_name", expectedUserName)
+
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": func() (tfprotov6.ProviderServer, error) {
+				return tfsdk.NewProtocol6Server(New()), nil
+			},
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `
+# Sourced via TF_VAR_framework_user_name environment variable
+variable "framework_user_name" {
+  type = string
+}
+
+resource "framework_user" "test" {
+  email = "ford@prefect.co"
+  name  = var.framework_user_name
+  age   = 200
+  id    = "h"
+}
+`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("framework_user.test", "name", expectedUserName),
+				),
+			},
+		},
+	})
+}
+
 const configResourceUserBasic = `
 resource "framework_user" "foo" {
   email = "ford@prefect.co"
