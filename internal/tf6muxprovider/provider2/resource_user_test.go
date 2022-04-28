@@ -3,7 +3,7 @@ package provider2
 import (
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
@@ -11,9 +11,7 @@ import (
 func TestAccResourceUser2(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"tf6muxprovider": func() (tfprotov6.ProviderServer, error) {
-				return tfsdk.NewProtocol6Server(New()), nil
-			},
+			"tf6muxprovider": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
