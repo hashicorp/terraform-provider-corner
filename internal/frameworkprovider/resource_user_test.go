@@ -3,7 +3,7 @@ package framework
 import (
 	"testing"
 
-	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
@@ -11,9 +11,7 @@ import (
 func TestAccFrameworkResourceUser(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": func() (tfprotov6.ProviderServer, error) {
-				return tfsdk.NewProtocol6Server(New()), nil
-			},
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -38,9 +36,7 @@ func TestAccFrameworkResourceUser(t *testing.T) {
 func TestAccFrameworkResourceUser_language(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": func() (tfprotov6.ProviderServer, error) {
-				return tfsdk.NewProtocol6Server(New()), nil
-			},
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -65,9 +61,7 @@ func TestAccFrameworkResourceUser_language(t *testing.T) {
 func TestAccFrameworkResourceUser_interpolateLanguage(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": func() (tfprotov6.ProviderServer, error) {
-				return tfsdk.NewProtocol6Server(New()), nil
-			},
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		ExternalProviders: map[string]resource.ExternalProvider{
 			"random": {
@@ -116,9 +110,7 @@ func TestAccFrameworkResourceUser_TF_VAR_Environment_Variable(t *testing.T) {
 
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": func() (tfprotov6.ProviderServer, error) {
-				return tfsdk.NewProtocol6Server(New()), nil
-			},
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{

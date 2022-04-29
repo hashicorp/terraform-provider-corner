@@ -193,8 +193,6 @@ func (r resourceUser) Delete(ctx context.Context, req tfsdk.DeleteResourceReques
 		resp.Diagnostics.AddError("Error deleting user", err.Error())
 		return
 	}
-
-	resp.State.RemoveResource(ctx)
 }
 
 func (r resourceUser) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
