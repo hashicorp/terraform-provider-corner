@@ -56,6 +56,7 @@ jobs:
           - '0.15.*'
           - '1.0.*'
           - '1.1.*'
+          - '1.2.*'
     steps:
       - uses: actions/setup-go@v3
         with:
@@ -66,6 +67,7 @@ jobs:
           terraform_wrapper: false
       - uses: actions/checkout@v3
       - run: go mod download
+      - run: go test -v -cover ./internal/framework5provider/
       - run: go test -v -cover ./internal/protocolprovider/
       - run: go test -v -cover ./internal/sdkv2provider/
         env:
@@ -85,6 +87,7 @@ jobs:
         terraform:
           - '1.0.*'
           - '1.1.*'
+          - '1.2.*'
     steps:
       - uses: actions/setup-go@v3
         with:
@@ -95,7 +98,7 @@ jobs:
           terraform_wrapper: false
       - uses: actions/checkout@v3
       - run: go mod download
-      - run: go test -v -cover ./internal/frameworkprovider/
+      - run: go test -v -cover ./internal/framework6provider/
       - run: go test -v -cover ./internal/protocolv6provider/
       - # Terraform CLI 1.1.5+ is required for upgrading sdk/v2
         if: matrix.terraform != '1.0.*'
