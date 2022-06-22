@@ -4,9 +4,9 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
@@ -198,5 +198,5 @@ func (r resourceUser) Delete(ctx context.Context, req tfsdk.DeleteResourceReques
 }
 
 func (r resourceUser) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
-	tfsdk.ResourceImportStatePassthroughID(ctx, tftypes.NewAttributePath().WithAttributeName("name"), req, resp)
+	tfsdk.ResourceImportStatePassthroughID(ctx, path.Root("name"), req, resp)
 }
