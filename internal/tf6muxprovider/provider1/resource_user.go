@@ -20,7 +20,7 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 			"email": {
 				Type:          types.StringType,
 				Required:      true,
-				PlanModifiers: []tfsdk.AttributePlanModifier{tfsdk.RequiresReplace()},
+				PlanModifiers: []tfsdk.AttributePlanModifier{resource.RequiresReplace()},
 			},
 			"name": {
 				Type:     types.StringType,
@@ -39,7 +39,7 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 				Type:     types.StringType,
 				Computed: true,
 				PlanModifiers: []tfsdk.AttributePlanModifier{
-					tfsdk.UseStateForUnknown(),
+					resource.UseStateForUnknown(),
 				},
 			},
 			"language": {
@@ -47,7 +47,7 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 				Optional: true,
 				Computed: true,
 				PlanModifiers: []tfsdk.AttributePlanModifier{
-					tfsdk.UseStateForUnknown(),
+					resource.UseStateForUnknown(),
 				},
 			},
 		},
