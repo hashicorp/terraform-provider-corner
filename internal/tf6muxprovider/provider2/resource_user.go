@@ -5,6 +5,8 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
+	"github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
@@ -52,14 +54,14 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 	}, nil
 }
 
-func (r resourceUserType) NewResource(_ context.Context, p tfsdk.Provider) (tfsdk.Resource, diag.Diagnostics) {
+func (r resourceUserType) NewResource(_ context.Context, p provider.Provider) (resource.Resource, diag.Diagnostics) {
 	return resourceUser{
-		p: *(p.(*provider)),
+		p: *(p.(*testProvider)),
 	}, nil
 }
 
 type resourceUser struct {
-	p provider
+	p testProvider
 }
 
 type user struct {
@@ -71,7 +73,7 @@ type user struct {
 	Language   types.String `tfsdk:"language"`
 }
 
-func (r resourceUser) Create(ctx context.Context, req tfsdk.CreateResourceRequest, resp *tfsdk.CreateResourceResponse) {
+func (r resourceUser) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var plan user
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -114,7 +116,7 @@ func (r resourceUser) Create(ctx context.Context, req tfsdk.CreateResourceReques
 	}
 }
 
-func (r resourceUser) Read(ctx context.Context, req tfsdk.ReadResourceRequest, resp *tfsdk.ReadResourceResponse) {
+func (r resourceUser) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var state user
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -144,7 +146,7 @@ func (r resourceUser) Read(ctx context.Context, req tfsdk.ReadResourceRequest, r
 	}
 }
 
-func (r resourceUser) Update(ctx context.Context, req tfsdk.UpdateResourceRequest, resp *tfsdk.UpdateResourceResponse) {
+func (r resourceUser) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var plan user
 	diags := req.Plan.Get(ctx, &plan)
 	resp.Diagnostics.Append(diags...)
@@ -174,7 +176,7 @@ func (r resourceUser) Update(ctx context.Context, req tfsdk.UpdateResourceReques
 	}
 }
 
-func (r resourceUser) Delete(ctx context.Context, req tfsdk.DeleteResourceRequest, resp *tfsdk.DeleteResourceResponse) {
+func (r resourceUser) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 	var state user
 	diags := req.State.Get(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -197,6 +199,6 @@ func (r resourceUser) Delete(ctx context.Context, req tfsdk.DeleteResourceReques
 	resp.State.RemoveResource(ctx)
 }
 
-func (r resourceUser) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
-	tfsdk.ResourceImportStatePassthroughID(ctx, path.Root("name"), req, resp)
+func (r resourceUser) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+	resource.ImportStatePassthroughID(ctx, path.Root("name"), req, resp)
 }

@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/hashicorp/go-memdb v1.3.3
-	github.com/hashicorp/terraform-plugin-framework v0.10.0
+	github.com/hashicorp/terraform-plugin-framework v0.10.1-0.20220802131049-3b0c5196c215
 	github.com/hashicorp/terraform-plugin-go v0.13.0
 	github.com/hashicorp/terraform-plugin-mux v0.7.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.19.0
