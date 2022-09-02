@@ -27,11 +27,11 @@ resource "tf6muxprovider_nested" "example" {
 
 	list {
 
-    }
+	}
 
 	list {
 
-    }
+	}
   }
 
   set {
