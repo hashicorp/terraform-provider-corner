@@ -39,7 +39,8 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 
 func (p *testProvider) GetResources(_ context.Context) (map[string]provider.ResourceType, diag.Diagnostics) {
 	return map[string]provider.ResourceType{
-		"tf6muxprovider_user1": resourceUserType{},
+		"tf6muxprovider_user1":  resourceUserType{},
+		"tf6muxprovider_nested": resourceNestedType{},
 	}, nil
 }
 
