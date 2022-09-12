@@ -19,7 +19,7 @@ func New() provider.Provider {
 type testProvider struct{}
 
 func (p *testProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
-	resp.TypeName = "tf6to6provider"
+	resp.TypeName = "tf6to5provider"
 }
 
 func (p *testProvider) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
