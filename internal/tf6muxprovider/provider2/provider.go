@@ -3,8 +3,10 @@ package provider2
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
@@ -14,8 +16,10 @@ func New() provider.Provider {
 	return &testProvider{}
 }
 
-type testProvider struct {
-	client *backend.Client
+type testProvider struct{}
+
+func (p *testProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
+	resp.TypeName = "tf6muxprovider"
 }
 
 func (p *testProvider) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
@@ -34,15 +38,15 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 	if err != nil {
 		resp.Diagnostics.AddError("Error initialising client", err.Error())
 	}
-	p.client = client
+	resp.ResourceData = client
 }
 
-func (p *testProvider) GetResources(_ context.Context) (map[string]provider.ResourceType, diag.Diagnostics) {
-	return map[string]provider.ResourceType{
-		"tf6muxprovider_user2": resourceUserType{},
-	}, nil
+func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
+	return []func() resource.Resource{
+		NewUserResource,
+	}
 }
 
-func (p *testProvider) GetDataSources(_ context.Context) (map[string]provider.DataSourceType, diag.Diagnostics) {
-	return map[string]provider.DataSourceType{}, nil
+func (p *testProvider) DataSources(_ context.Context) []func() datasource.DataSource {
+	return nil
 }
