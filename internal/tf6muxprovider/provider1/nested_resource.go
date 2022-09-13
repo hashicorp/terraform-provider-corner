@@ -2,24 +2,30 @@ package provider1
 
 import (
 	"context"
+	"math/rand"
+
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
-	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"math/rand"
 )
 
-type resourceNestedType struct{}
+var (
+	_ resource.Resource = &resourceNested{}
+)
 
-func (r resourceNestedType) NewResource(_ context.Context, p provider.Provider) (resource.Resource, diag.Diagnostics) {
-	return resourceNested{
-		p: *(p.(*testProvider)),
-	}, nil
+func NewNestedResource() resource.Resource {
+	return &resourceNested{}
 }
 
-func (r resourceNestedType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
+type resourceNested struct{}
+
+func (r resourceNested) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_nested"
+}
+
+func (r resourceNested) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
 		Attributes: map[string]tfsdk.Attribute{
 			"id": {
@@ -60,10 +66,6 @@ func (r resourceNestedType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Dia
 			},
 		},
 	}, nil
-}
-
-type resourceNested struct {
-	p testProvider
 }
 
 var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
