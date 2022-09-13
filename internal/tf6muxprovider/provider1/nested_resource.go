@@ -62,7 +62,7 @@ func (r resourceNested) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnos
 						NestingMode: tfsdk.BlockNestingModeList,
 					},
 				},
-				NestingMode: tfsdk.BlockNestingModeSet,
+				NestingMode: tfsdk.BlockNestingModeList,
 			},
 		},
 	}, nil
