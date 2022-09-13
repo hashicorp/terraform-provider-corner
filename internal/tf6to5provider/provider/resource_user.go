@@ -5,16 +5,31 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
-	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
-type resourceUserType struct{}
+var (
+	_ resource.Resource                = &resourceUser{}
+	_ resource.ResourceWithConfigure   = &resourceUser{}
+	_ resource.ResourceWithImportState = &resourceUser{}
+)
 
-func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
+func NewUserResource() resource.Resource {
+	return &resourceUser{}
+}
+
+type resourceUser struct {
+	client *backend.Client
+}
+
+func (r *resourceUser) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_user"
+}
+
+func (r *resourceUser) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
 		Attributes: map[string]tfsdk.Attribute{
 			"email": {
@@ -54,14 +69,12 @@ func (r resourceUserType) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagn
 	}, nil
 }
 
-func (r resourceUserType) NewResource(_ context.Context, p provider.Provider) (resource.Resource, diag.Diagnostics) {
-	return resourceUser{
-		p: *(p.(*testProvider)),
-	}, nil
-}
+func (r *resourceUser) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
+	if req.ProviderData == nil {
+		return
+	}
 
-type resourceUser struct {
-	p testProvider
+	r.client = req.ProviderData.(*backend.Client)
 }
 
 type user struct {
@@ -90,13 +103,13 @@ func (r resourceUser) Create(ctx context.Context, req resource.CreateRequest, re
 		newUser.Language = plan.Language.Value
 	}
 
-	err := r.p.client.CreateUser(newUser)
+	err := r.client.CreateUser(newUser)
 	if err != nil {
 		resp.Diagnostics.AddError("Error creating user", err.Error())
 		return
 	}
 
-	p, err := r.p.client.ReadUser(newUser.Email)
+	p, err := r.client.ReadUser(newUser.Email)
 	if err != nil {
 		resp.Diagnostics.AddError("Error reading user", err.Error())
 		return
@@ -124,7 +137,7 @@ func (r resourceUser) Read(ctx context.Context, req resource.ReadRequest, resp *
 		return
 	}
 
-	p, err := r.p.client.ReadUser(state.Email)
+	p, err := r.client.ReadUser(state.Email)
 	if err != nil {
 		resp.Diagnostics.AddError("Error reading user", err.Error())
 		return
@@ -163,7 +176,7 @@ func (r resourceUser) Update(ctx context.Context, req resource.UpdateRequest, re
 		newUser.Language = plan.Language.Value
 	}
 
-	err := r.p.client.UpdateUser(newUser)
+	err := r.client.UpdateUser(newUser)
 	if err != nil {
 		resp.Diagnostics.AddError("Error updating user", err.Error())
 		return
@@ -190,7 +203,7 @@ func (r resourceUser) Delete(ctx context.Context, req resource.DeleteRequest, re
 		Age:   state.Age,
 	}
 
-	err := r.p.client.DeleteUser(userToDelete)
+	err := r.client.DeleteUser(userToDelete)
 	if err != nil {
 		resp.Diagnostics.AddError("Error deleting user", err.Error())
 		return
