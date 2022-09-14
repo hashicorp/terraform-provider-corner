@@ -2,6 +2,8 @@ module github.com/hashicorp/terraform-provider-corner
 
 go 1.18
 
+replace github.com/hashicorp/terraform-plugin-framework => ../terraform-plugin-framework
+
 require (
 	github.com/hashicorp/go-memdb v1.3.3
 	github.com/hashicorp/terraform-plugin-framework v0.12.0

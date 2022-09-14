@@ -24,10 +24,18 @@ const configResourceNestedBasic = `
 resource "tf6muxprovider_nested" "example" {
   set {
 	id = "one"
+
+	list {
+
+    }
+
+    list {
+
+    }
   }
 
   set {
-	id = "two"
+
   }
 }
 `
