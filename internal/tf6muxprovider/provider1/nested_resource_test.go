@@ -23,9 +23,9 @@ func TestAccResourceNested(t *testing.T) {
 const configResourceNestedBasic = `
 resource "tf6muxprovider_nested" "example" {
   set {
-	id = "one"
+    id = "one"
 
-	list {
+    list {
 
     }
 
