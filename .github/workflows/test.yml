@@ -53,6 +53,7 @@ jobs:
           - '1.0.*'
           - '1.1.*'
           - '1.2.*'
+          - '1.3.*'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
@@ -84,6 +85,7 @@ jobs:
           - '1.0.*'
           - '1.1.*'
           - '1.2.*'
+          - '1.3.*'
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-go@v3
