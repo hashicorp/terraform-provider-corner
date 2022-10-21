@@ -3,7 +3,7 @@ module github.com/hashicorp/terraform-provider-corner
 go 1.18
 
 require (
-	github.com/hashicorp/go-memdb v1.3.3
+	github.com/hashicorp/go-memdb v1.3.4
 	github.com/hashicorp/terraform-plugin-framework v0.14.0
 	github.com/hashicorp/terraform-plugin-go v0.14.0
 	github.com/hashicorp/terraform-plugin-mux v0.7.0
