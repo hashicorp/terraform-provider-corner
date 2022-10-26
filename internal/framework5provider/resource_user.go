@@ -99,8 +99,8 @@ func (r *resourceUser) Create(ctx context.Context, req resource.CreateRequest, r
 		Name:  plan.Name,
 		Age:   plan.Age,
 	}
-	if !plan.Language.Unknown {
-		newUser.Language = plan.Language.Value
+	if !plan.Language.IsUnknown() {
+		newUser.Language = plan.Language.ValueString()
 	}
 
 	err := r.client.CreateUser(newUser)
@@ -119,8 +119,8 @@ func (r *resourceUser) Create(ctx context.Context, req resource.CreateRequest, r
 		resp.Diagnostics.AddError("Error reading user", "could not find user after it was created")
 		return
 	}
-	plan.DateJoined = types.String{Value: p.DateJoined}
-	plan.Language = types.String{Value: p.Language}
+	plan.DateJoined = types.StringValue(p.DateJoined)
+	plan.Language = types.StringValue(p.Language)
 
 	diags = resp.State.Set(ctx, plan)
 	resp.Diagnostics.Append(diags...)
@@ -149,8 +149,8 @@ func (r resourceUser) Read(ctx context.Context, req resource.ReadRequest, resp *
 
 	state.Name = p.Name
 	state.Age = p.Age
-	state.DateJoined = types.String{Value: p.DateJoined}
-	state.Language = types.String{Value: p.Language}
+	state.DateJoined = types.StringValue(p.DateJoined)
+	state.Language = types.StringValue(p.Language)
 
 	diags = resp.State.Set(ctx, &state)
 	resp.Diagnostics.Append(diags...)
@@ -172,8 +172,8 @@ func (r resourceUser) Update(ctx context.Context, req resource.UpdateRequest, re
 		Name:  plan.Name,
 		Age:   plan.Age,
 	}
-	if !plan.Language.Unknown {
-		newUser.Language = plan.Language.Value
+	if !plan.Language.IsUnknown() {
+		newUser.Language = plan.Language.ValueString()
 	}
 
 	err := r.client.UpdateUser(newUser)
