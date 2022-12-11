@@ -3,10 +3,11 @@ package provider1
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
-	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
+	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
@@ -29,44 +30,40 @@ func (r *resourceUser) Metadata(_ context.Context, req resource.MetadataRequest,
 	resp.TypeName = req.ProviderTypeName + "_user1"
 }
 
-func (r *resourceUser) GetSchema(_ context.Context) (tfsdk.Schema, diag.Diagnostics) {
-	return tfsdk.Schema{
-		Attributes: map[string]tfsdk.Attribute{
-			"email": {
-				Type:          types.StringType,
-				Required:      true,
-				PlanModifiers: []tfsdk.AttributePlanModifier{resource.RequiresReplace()},
+func (r *resourceUser) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+	resp.Schema = schema.Schema{
+		Attributes: map[string]schema.Attribute{
+			"email": schema.StringAttribute{
+				Required: true,
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.RequiresReplace(),
+				},
 			},
-			"name": {
-				Type:     types.StringType,
+			"name": schema.StringAttribute{
 				Required: true,
 			},
-			"age": {
-				Type:     types.NumberType,
+			"age": schema.NumberAttribute{
 				Required: true,
 			},
 			// included only for compatibility with SDKv2 test framework
-			"id": {
-				Type:     types.StringType,
+			"id": schema.StringAttribute{
 				Optional: true,
 			},
-			"date_joined": {
-				Type:     types.StringType,
+			"date_joined": schema.StringAttribute{
 				Computed: true,
-				PlanModifiers: []tfsdk.AttributePlanModifier{
-					resource.UseStateForUnknown(),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
-			"language": {
-				Type:     types.StringType,
+			"language": schema.StringAttribute{
 				Optional: true,
 				Computed: true,
-				PlanModifiers: []tfsdk.AttributePlanModifier{
-					resource.UseStateForUnknown(),
+				PlanModifiers: []planmodifier.String{
+					stringplanmodifier.UseStateForUnknown(),
 				},
 			},
 		},
-	}, nil
+	}
 }
 
 func (r *resourceUser) Configure(_ context.Context, req resource.ConfigureRequest, _ *resource.ConfigureResponse) {
