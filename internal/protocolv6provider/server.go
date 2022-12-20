@@ -59,16 +59,11 @@ func (s server) StopProvider(ctx context.Context, req *tfprotov6.StopProviderReq
 func Server() tfprotov6.ProviderServer {
 	return server{
 		providerSchema: &tfprotov6.Schema{
-			Version: 1,
-			Block: &tfprotov6.SchemaBlock{
-				Version: 1,
-			},
+			Block: &tfprotov6.SchemaBlock{},
 		},
 		dataSourceSchemas: map[string]*tfprotov6.Schema{
 			"corner_v6_time": {
-				Version: 1,
 				Block: &tfprotov6.SchemaBlock{
-					Version: 1,
 					Attributes: []*tfprotov6.SchemaAttribute{
 						{
 							Name:            "current",
