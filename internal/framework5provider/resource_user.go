@@ -71,7 +71,12 @@ func (r *resourceUser) Configure(_ context.Context, req resource.ConfigureReques
 		return
 	}
 
-	r.client = req.ProviderData.(*backend.Client)
+	client, ok := req.ProviderData.(*backend.Client)
+	if !ok {
+		return
+	}
+
+	r.client = client
 }
 
 type user struct {

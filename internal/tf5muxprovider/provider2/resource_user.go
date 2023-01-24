@@ -1,3 +1,4 @@
+//nolint:forcetypeassert // Test provider
 package provider2
 
 import (

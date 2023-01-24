@@ -1,3 +1,4 @@
+//nolint:forcetypeassert // Test SDK provider
 package sdkv2
 
 import (
