@@ -15,7 +15,6 @@ linters:
     - makezero
     - misspell
     - nilerr
-    # - paralleltest
     - predeclared
     - staticcheck
     - tenv
