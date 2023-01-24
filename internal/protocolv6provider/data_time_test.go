@@ -11,6 +11,7 @@ import (
 func TestAccV6DataSourceTime(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			//nolint:unparam // False positive in unparam related to map: https://github.com/mvdan/unparam/issues/40
 			"corner": func() (tfprotov6.ProviderServer, error) {
 				return Server(), nil
 			},

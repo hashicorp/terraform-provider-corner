@@ -129,7 +129,10 @@ func (c *Client) ReadUser(email string) (*User, error) {
 	}
 
 	if raw != nil {
-		p := raw.(*User)
+		p, ok := raw.(*User)
+		if !ok {
+			return nil, fmt.Errorf("unexpected type %T while reading user", raw)
+		}
 		return p, nil
 	}
 
@@ -146,7 +149,10 @@ func (c *Client) UpdateUser(user *User) error {
 		return err
 	}
 
-	p := raw.(*User)
+	p, ok := raw.(*User)
+	if !ok {
+		return fmt.Errorf("unexpected type %T while updating user", raw)
+	}
 
 	p.Name = user.Name
 	p.Age = user.Age
@@ -198,7 +204,10 @@ func (c *Client) ReadRegions() ([]*Region, error) {
 	}
 
 	for obj := it.Next(); obj != nil; obj = it.Next() {
-		r := obj.(*Region)
+		r, ok := obj.(*Region)
+		if !ok {
+			return nil, fmt.Errorf("unexpected type %T while reading regions", obj)
+		}
 		regions = append(regions, r)
 	}
 

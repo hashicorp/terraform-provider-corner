@@ -2,7 +2,6 @@ package framework
 
 import (
 	"context"
-	"os"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -10,8 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
-
-var stderr = os.Stderr
 
 func New() provider.Provider {
 	return &testProvider{}
