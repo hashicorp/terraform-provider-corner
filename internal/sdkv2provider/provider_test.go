@@ -39,7 +39,7 @@ func TestAccTests(t *testing.T) {
 	}
 }
 
-// public map of test cases that can be imported by Core/SDK etc
+// public map of test cases that can be imported by Core/SDK etc.
 var TestCases = map[string]func(*testing.T) resource.TestCase{
 	"corner_user":        testAccResourceUser,
 	"corner_regions":     testAccDataSourceRegions,

@@ -21,7 +21,7 @@ type server struct {
 	client *backend.Client
 }
 
-func (s server) GetProviderSchema(ctx context.Context, req *tfprotov5.GetProviderSchemaRequest) (*tfprotov5.GetProviderSchemaResponse, error) {
+func (s *server) GetProviderSchema(ctx context.Context, req *tfprotov5.GetProviderSchemaRequest) (*tfprotov5.GetProviderSchemaResponse, error) {
 	return &tfprotov5.GetProviderSchemaResponse{
 		Provider:          s.providerSchema,
 		ProviderMeta:      s.providerMetaSchema,
@@ -30,13 +30,13 @@ func (s server) GetProviderSchema(ctx context.Context, req *tfprotov5.GetProvide
 	}, nil
 }
 
-func (s server) PrepareProviderConfig(ctx context.Context, req *tfprotov5.PrepareProviderConfigRequest) (*tfprotov5.PrepareProviderConfigResponse, error) {
+func (s *server) PrepareProviderConfig(ctx context.Context, req *tfprotov5.PrepareProviderConfigRequest) (*tfprotov5.PrepareProviderConfigResponse, error) {
 	return &tfprotov5.PrepareProviderConfigResponse{
 		PreparedConfig: req.Config,
 	}, nil
 }
 
-func (s server) ConfigureProvider(ctx context.Context, req *tfprotov5.ConfigureProviderRequest) (*tfprotov5.ConfigureProviderResponse, error) {
+func (s *server) ConfigureProvider(ctx context.Context, req *tfprotov5.ConfigureProviderRequest) (*tfprotov5.ConfigureProviderResponse, error) {
 	var diags []*tfprotov5.Diagnostic
 	client, err := backend.NewClient()
 	if err != nil {
@@ -52,12 +52,12 @@ func (s server) ConfigureProvider(ctx context.Context, req *tfprotov5.ConfigureP
 	}, nil
 }
 
-func (s server) StopProvider(ctx context.Context, req *tfprotov5.StopProviderRequest) (*tfprotov5.StopProviderResponse, error) {
+func (s *server) StopProvider(ctx context.Context, req *tfprotov5.StopProviderRequest) (*tfprotov5.StopProviderResponse, error) {
 	return &tfprotov5.StopProviderResponse{}, nil
 }
 
 func Server() tfprotov5.ProviderServer {
-	return server{
+	return &server{
 		providerSchema: &tfprotov5.Schema{
 			Block: &tfprotov5.SchemaBlock{},
 		},
