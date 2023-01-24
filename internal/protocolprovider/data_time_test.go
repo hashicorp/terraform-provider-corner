@@ -9,8 +9,6 @@ import (
 )
 
 func TestAccDataSourceTime(t *testing.T) {
-	t.Parallel()
-
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
 			//nolint:unparam // False positive in unparam related to map: https://github.com/mvdan/unparam/issues/40
