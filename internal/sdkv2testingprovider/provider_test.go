@@ -1,10 +1,10 @@
-package sdkv2
+package sdkv2testingprovider
 
 import (
 	"testing"
 
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
-	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
 var testAccProviders map[string]*schema.Provider
