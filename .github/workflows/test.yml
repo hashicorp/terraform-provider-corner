@@ -74,6 +74,9 @@ jobs:
       - run: go test -v -cover ./internal/sdkv2provider/
         env:
           TF_ACC: "1"
+      - run: go test -v -cover ./internal/sdkv2testingprovider/
+        env:
+          TF_ACC: "1"
       - run: go test -v -cover ./internal/tf5muxprovider/
       - run: go test -v -cover ./internal/tf6to5provider/
 
