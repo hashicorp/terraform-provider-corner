@@ -6,7 +6,7 @@ require (
 	github.com/hashicorp/go-memdb v1.3.4
 	github.com/hashicorp/terraform-plugin-framework v1.2.0
 	github.com/hashicorp/terraform-plugin-go v0.15.0
-	github.com/hashicorp/terraform-plugin-mux v0.9.0
+	github.com/hashicorp/terraform-plugin-mux v0.10.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.26.1
 	github.com/hashicorp/terraform-plugin-testing v1.2.0
 )
