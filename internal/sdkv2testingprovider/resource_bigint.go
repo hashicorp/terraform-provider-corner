@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 //nolint:forcetypeassert // Test SDK provider
 package sdkv2testingprovider
 
