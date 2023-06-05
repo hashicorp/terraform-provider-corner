@@ -18,4 +18,8 @@ vet:
 		exit 1; \
 	fi
 
+# Generate copywrite headers
+generate:
+	cd tools; go generate ./...
+
 .PHONY: testacc vet fmt
