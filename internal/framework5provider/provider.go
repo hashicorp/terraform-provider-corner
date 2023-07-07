@@ -44,6 +44,7 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewSchemaResource,
+		NewTimeoutsResource,
 		NewUserResource,
 	}
 }
