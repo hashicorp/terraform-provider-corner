@@ -154,10 +154,7 @@ func (r SchemaResource) Create(ctx context.Context, req resource.CreateRequest, 
 
 	// Test semantic equality by losing the precision of the initial *big.Float
 	// https://github.com/hashicorp/terraform-plugin-framework/issues/815
-	if !data.Float64AttributePrecise.IsNull() {
-		data.Float64AttributePrecise = types.Float64Value(data.Float64AttributePrecise.ValueFloat64())
-	}
-
+	data.Float64AttributePrecise = types.Float64Value(data.Float64AttributePrecise.ValueFloat64())
 	data.Id = types.StringValue("test")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -183,6 +180,10 @@ func (r SchemaResource) Update(ctx context.Context, req resource.UpdateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
+
+	// Test semantic equality by losing the precision of the initial *big.Float
+	// https://github.com/hashicorp/terraform-plugin-framework/issues/815
+	data.Float64AttributePrecise = types.Float64Value(data.Float64AttributePrecise.ValueFloat64())
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
