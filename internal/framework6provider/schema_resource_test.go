@@ -168,12 +168,12 @@ func TestSchemaResource_Float64Attribute_Precise(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `resource "framework_schema" "test" {
-					float64_attribute_precise = 1 - 0.99
+					float64_attribute_precise = 0.01
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute_precise", "0.010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003"),
+					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute_precise", "0.01"),
 					resource.TestCheckResourceAttr("framework_schema.test", "id", "test"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "int64_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "list_attribute"),
@@ -193,12 +193,12 @@ func TestSchemaResource_Float64Attribute_Precise(t *testing.T) {
 			},
 			{
 				Config: `resource "framework_schema" "test" {
-					float64_attribute_precise = 0.01
+					float64_attribute_precise = 1 - 0.99
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute_precise", "0.01"),
+					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute_precise", "0.010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003"),
 					resource.TestCheckResourceAttr("framework_schema.test", "id", "test"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "int64_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "list_attribute"),
