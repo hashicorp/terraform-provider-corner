@@ -36,10 +36,6 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"float64_attribute": schema.Float64Attribute{
 				Optional: true,
 			},
-			"float64_attribute_precise": schema.Float64Attribute{
-				Optional: true,
-				Computed: true,
-			},
 			// id attribute is required for acceptance testing.
 			"id": schema.StringAttribute{
 				Computed: true,
@@ -152,9 +148,6 @@ func (r SchemaResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	// Test semantic equality by losing the precision of the initial *big.Float
-	// https://github.com/hashicorp/terraform-plugin-framework/issues/815
-	data.Float64AttributePrecise = types.Float64Value(data.Float64AttributePrecise.ValueFloat64())
 	data.Id = types.StringValue("test")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
@@ -181,10 +174,6 @@ func (r SchemaResource) Update(ctx context.Context, req resource.UpdateRequest, 
 		return
 	}
 
-	// Test semantic equality by losing the precision of the initial *big.Float
-	// https://github.com/hashicorp/terraform-plugin-framework/issues/815
-	data.Float64AttributePrecise = types.Float64Value(data.Float64AttributePrecise.ValueFloat64())
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -192,22 +181,21 @@ func (r SchemaResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 }
 
 type SchemaResourceModel struct {
-	BoolAttribute           types.Bool    `tfsdk:"bool_attribute"`
-	Float64Attribute        types.Float64 `tfsdk:"float64_attribute"`
-	Float64AttributePrecise types.Float64 `tfsdk:"float64_attribute_precise"`
-	Id                      types.String  `tfsdk:"id"`
-	Int64Attribute          types.Int64   `tfsdk:"int64_attribute"`
-	ListAttribute           types.List    `tfsdk:"list_attribute"`
-	ListNestedAttribute     types.List    `tfsdk:"list_nested_attribute"`
-	ListNestedBlock         types.List    `tfsdk:"list_nested_block"`
-	MapAttribute            types.Map     `tfsdk:"map_attribute"`
-	MapNestedAttribute      types.Map     `tfsdk:"map_nested_attribute"`
-	NumberAttribute         types.Number  `tfsdk:"number_attribute"`
-	ObjectAttribute         types.Object  `tfsdk:"object_attribute"`
-	SetAttribute            types.Set     `tfsdk:"set_attribute"`
-	SetNestedAttribute      types.Set     `tfsdk:"set_nested_attribute"`
-	SetNestedBlock          types.Set     `tfsdk:"set_nested_block"`
-	SingleNestedAttribute   types.Object  `tfsdk:"single_nested_attribute"`
-	SingleNestedBlock       types.Object  `tfsdk:"single_nested_block"`
-	StringAttribute         types.String  `tfsdk:"string_attribute"`
+	BoolAttribute         types.Bool    `tfsdk:"bool_attribute"`
+	Float64Attribute      types.Float64 `tfsdk:"float64_attribute"`
+	Id                    types.String  `tfsdk:"id"`
+	Int64Attribute        types.Int64   `tfsdk:"int64_attribute"`
+	ListAttribute         types.List    `tfsdk:"list_attribute"`
+	ListNestedAttribute   types.List    `tfsdk:"list_nested_attribute"`
+	ListNestedBlock       types.List    `tfsdk:"list_nested_block"`
+	MapAttribute          types.Map     `tfsdk:"map_attribute"`
+	MapNestedAttribute    types.Map     `tfsdk:"map_nested_attribute"`
+	NumberAttribute       types.Number  `tfsdk:"number_attribute"`
+	ObjectAttribute       types.Object  `tfsdk:"object_attribute"`
+	SetAttribute          types.Set     `tfsdk:"set_attribute"`
+	SetNestedAttribute    types.Set     `tfsdk:"set_nested_attribute"`
+	SetNestedBlock        types.Set     `tfsdk:"set_nested_block"`
+	SingleNestedAttribute types.Object  `tfsdk:"single_nested_attribute"`
+	SingleNestedBlock     types.Object  `tfsdk:"single_nested_block"`
+	StringAttribute       types.String  `tfsdk:"string_attribute"`
 }

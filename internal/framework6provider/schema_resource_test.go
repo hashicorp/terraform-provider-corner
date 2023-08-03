@@ -159,67 +159,6 @@ func TestSchemaResource_Float64Attribute(t *testing.T) {
 	})
 }
 
-// https://github.com/hashicorp/terraform-plugin-framework/issues/815
-func TestSchemaResource_Float64Attribute_Precise(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": providerserver.NewProtocol6WithError(New()),
-		},
-		Steps: []resource.TestStep{
-			{
-				Config: `resource "framework_schema" "test" {
-					float64_attribute_precise = 1 - 0.99
-				}`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute_precise", "0.010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003"),
-					resource.TestCheckResourceAttr("framework_schema.test", "id", "test"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "int64_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "list_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "list_nested_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "list_nested_block.#", "0"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "map_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "map_nested_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "number_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "object_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "set_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "set_nested_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "set_nested_block.#", "0"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "single_nested_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "single_nested_block"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "string_attribute"),
-				),
-			},
-			{
-				Config: `resource "framework_schema" "test" {
-					float64_attribute_precise = 1 - 0.98
-				}`,
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute_precise", "0.020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006"),
-					resource.TestCheckResourceAttr("framework_schema.test", "id", "test"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "int64_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "list_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "list_nested_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "list_nested_block.#", "0"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "map_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "map_nested_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "number_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "object_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "set_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "set_nested_attribute"),
-					resource.TestCheckResourceAttr("framework_schema.test", "set_nested_block.#", "0"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "single_nested_attribute"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "single_nested_block"),
-					resource.TestCheckNoResourceAttr("framework_schema.test", "string_attribute"),
-				),
-			},
-		},
-	})
-}
-
 func TestSchemaResource_Int64Attribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
