@@ -24,12 +24,41 @@ type server struct {
 	client *backend.Client
 }
 
+func (s *server) serverCapabilities() *tfprotov5.ServerCapabilities {
+	return &tfprotov5.ServerCapabilities{
+		GetProviderSchemaOptional: true,
+	}
+}
+
+func (s *server) GetMetadata(ctx context.Context, req *tfprotov5.GetMetadataRequest) (*tfprotov5.GetMetadataResponse, error) {
+	resp := &tfprotov5.GetMetadataResponse{
+		DataSources:        make([]tfprotov5.DataSourceMetadata, 0, len(s.dataSourceSchemas)),
+		Resources:          make([]tfprotov5.ResourceMetadata, 0, len(s.resourceSchemas)),
+		ServerCapabilities: s.serverCapabilities(),
+	}
+
+	for typeName := range s.dataSourceSchemas {
+		resp.DataSources = append(resp.DataSources, tfprotov5.DataSourceMetadata{
+			TypeName: typeName,
+		})
+	}
+
+	for typeName := range s.resourceSchemas {
+		resp.Resources = append(resp.Resources, tfprotov5.ResourceMetadata{
+			TypeName: typeName,
+		})
+	}
+
+	return resp, nil
+}
+
 func (s *server) GetProviderSchema(ctx context.Context, req *tfprotov5.GetProviderSchemaRequest) (*tfprotov5.GetProviderSchemaResponse, error) {
 	return &tfprotov5.GetProviderSchemaResponse{
-		Provider:          s.providerSchema,
-		ProviderMeta:      s.providerMetaSchema,
-		ResourceSchemas:   s.resourceSchemas,
-		DataSourceSchemas: s.dataSourceSchemas,
+		Provider:           s.providerSchema,
+		ProviderMeta:       s.providerMetaSchema,
+		ResourceSchemas:    s.resourceSchemas,
+		DataSourceSchemas:  s.dataSourceSchemas,
+		ServerCapabilities: s.serverCapabilities(),
 	}, nil
 }
 
