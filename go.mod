@@ -1,6 +1,6 @@
 module github.com/hashicorp/terraform-provider-corner
 
-go 1.19
+go 1.20
 
 require (
 	github.com/hashicorp/go-memdb v1.3.4
