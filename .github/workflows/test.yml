@@ -6,12 +6,14 @@ on:
       - 'README.md'
       - 'CHANGELOG.md'
       - 'website/*'
+      - 'tools/*'
   push:
     branches: [ main ]
     paths-ignore:
       - 'README.md'
       - 'CHANGELOG.md'
       - 'website/*'
+      - 'tools/*'
 jobs:
   build:
     name: Build
