@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/hashicorp/go-memdb v1.3.4
-	github.com/hashicorp/terraform-plugin-framework v1.4.1
+	github.com/hashicorp/terraform-plugin-framework v1.4.2
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.4.1
 	github.com/hashicorp/terraform-plugin-go v0.19.0
 	github.com/hashicorp/terraform-plugin-mux v0.12.0
@@ -19,7 +19,7 @@ require (
 	github.com/cloudflare/circl v1.3.3 // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/golang/protobuf v1.5.3 // indirect
-	github.com/google/go-cmp v0.5.9 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
 	github.com/hashicorp/go-checkpoint v0.5.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
