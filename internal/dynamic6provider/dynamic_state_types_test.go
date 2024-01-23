@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
@@ -255,22 +256,38 @@ func Test_Dynamic_TypePreservedInState(t *testing.T) {
 
 func Test_Dynamic_TypeChangesInState(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
-		// This test verifies that for a computed DynamicPseudoType attribute, the state value type can change during refresh.
+		// This test verifies that a DynamicPseudoType attribute type can change during refresh. This will
+		// always cause drift because Terraform will not use prior state type information to convert future state values.
 		Steps: []r.TestStep{
 			{
-				Config: `resource "corner_dynamic_thing" "foo" {}`,
+				Config: `resource "corner_dynamic_thing" "foo" {
+					dynamic_config_attr = ["change me to a list"]
+				}`,
 				// TODO: switch to use nice new state checks :)
 				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr", "first a string"),
+					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.0", "change me to a list"),
 				),
+				// State will drift because the literal is always determined as a tuple type by Terraform, but the read will set state to a list type
+				ExpectNonEmptyPlan: true,
+				ConfigPlanChecks: r.ConfigPlanChecks{
+					PostApplyPostRefresh: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction("corner_dynamic_thing.foo", plancheck.ResourceActionUpdate),
+					},
+				},
 			},
 			{
-				Config: `resource "corner_dynamic_thing" "foo" {}`,
+				// Adding a type conversion will prevent the drift
+				Config: `resource "corner_dynamic_thing" "foo" {
+					dynamic_config_attr = tolist(["change me to a list"])
+				}`,
 				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr.0", "then"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr.1", "a"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr.2", "list"),
+					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.0", "change me to a list"),
 				),
+				ConfigPlanChecks: r.ConfigPlanChecks{
+					PostApplyPostRefresh: []plancheck.PlanCheck{
+						plancheck.ExpectEmptyPlan(),
+					},
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -282,8 +299,9 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 								Block: &tfprotov6.SchemaBlock{
 									Attributes: []*tfprotov6.SchemaAttribute{
 										{
-											Name:     "dynamic_computed_attr",
+											Name:     "dynamic_config_attr",
 											Type:     tftypes.DynamicPseudoType,
+											Optional: true,
 											Computed: true,
 										},
 									},
@@ -291,31 +309,40 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 							},
 						},
 						CreateResponse: &resource.CreateResponse{
-							// During create, set to a string type
+							// Create as a tuple
 							NewState: tftypes.NewValue(tftypes.Object{
 								AttributeTypes: map[string]tftypes.Type{
-									"dynamic_computed_attr": tftypes.String,
+									"dynamic_config_attr": tftypes.Tuple{
+										ElementTypes: []tftypes.Type{
+											tftypes.String,
+										},
+									},
 								},
 							}, map[string]tftypes.Value{
-								"dynamic_computed_attr": tftypes.NewValue(tftypes.String, "first a string"),
+								"dynamic_config_attr": tftypes.NewValue(
+									tftypes.Tuple{
+										ElementTypes: []tftypes.Type{
+											tftypes.String,
+										},
+									}, []tftypes.Value{
+										tftypes.NewValue(tftypes.String, "change me to a list"),
+									}),
 							}),
 						},
+						// Read as a list
 						ReadResponse: &resource.ReadResponse{
-							// During read, set to a list type
 							NewState: tftypes.NewValue(tftypes.Object{
 								AttributeTypes: map[string]tftypes.Type{
-									"dynamic_computed_attr": tftypes.List{
+									"dynamic_config_attr": tftypes.List{
 										ElementType: tftypes.String,
 									},
 								},
 							}, map[string]tftypes.Value{
-								"dynamic_computed_attr": tftypes.NewValue(
+								"dynamic_config_attr": tftypes.NewValue(
 									tftypes.List{
 										ElementType: tftypes.String,
 									}, []tftypes.Value{
-										tftypes.NewValue(tftypes.String, "then"),
-										tftypes.NewValue(tftypes.String, "a"),
-										tftypes.NewValue(tftypes.String, "list"),
+										tftypes.NewValue(tftypes.String, "change me to a list"),
 									}),
 							}),
 						},
