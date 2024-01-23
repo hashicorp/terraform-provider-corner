@@ -267,7 +267,7 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 			//		dynamic_state_types_test.go:258: Step 1/2 error: Error retrieving second post-apply plan: exit status 1
 			// 		Failed to marshal plan to json: error in marshalResourceDrift: failed to encode refreshed data for corner_dynamic_thing.foo as JSON: attribute "dynamic_config_attr": tuple required
 			//
-			tfversion.SkipIf(tfversion.Version1_0_0),
+			tfversion.SkipBelow(tfversion.Version1_1_0),
 		},
 		Steps: []r.TestStep{
 			{
