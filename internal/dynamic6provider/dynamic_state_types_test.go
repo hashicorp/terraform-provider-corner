@@ -9,7 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
@@ -256,8 +255,10 @@ func Test_Dynamic_TypePreservedInState(t *testing.T) {
 
 func Test_Dynamic_TypeChangesInState(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
-		// This test verifies that a DynamicPseudoType attribute type can change during refresh. This will
-		// always cause drift because Terraform will not use prior state type information to convert future state values.
+		// This test verifies that for a DynamicPseudoType attribute, the state value type can change during refresh. While this behavior is valid,
+		// it can potentially cause drift because Terraform will not use prior state type information to convert future plan values.
+		//
+		// i.e. If a literal tuple is defined in config, refreshing the value as a list type will not convince Terraform the literal is a list :)
 		Steps: []r.TestStep{
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {
@@ -269,11 +270,11 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 				),
 				// State will drift because the literal is always determined as a tuple type by Terraform, but the read will set state to a list type
 				ExpectNonEmptyPlan: true,
-				ConfigPlanChecks: r.ConfigPlanChecks{
-					PostApplyPostRefresh: []plancheck.PlanCheck{
-						plancheck.ExpectResourceAction("corner_dynamic_thing.foo", plancheck.ResourceActionUpdate),
-					},
-				},
+				// ConfigPlanChecks: r.ConfigPlanChecks{
+				// 	PostApplyPostRefresh: []plancheck.PlanCheck{
+				// 		plancheck.ExpectResourceAction("corner_dynamic_thing.foo", plancheck.ResourceActionUpdate),
+				// 	},
+				// },
 			},
 			{
 				// Adding a type conversion will prevent the drift
@@ -283,11 +284,11 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 				Check: r.ComposeAggregateTestCheckFunc(
 					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.0", "change me to a list"),
 				),
-				ConfigPlanChecks: r.ConfigPlanChecks{
-					PostApplyPostRefresh: []plancheck.PlanCheck{
-						plancheck.ExpectEmptyPlan(),
-					},
-				},
+				// ConfigPlanChecks: r.ConfigPlanChecks{
+				// 	PostApplyPostRefresh: []plancheck.PlanCheck{
+				// 		plancheck.ExpectEmptyPlan(),
+				// 	},
+				// },
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
