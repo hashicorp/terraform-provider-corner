@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
@@ -270,11 +271,11 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 				),
 				// State will drift because the literal is always determined as a tuple type by Terraform, but the read will set state to a list type
 				ExpectNonEmptyPlan: true,
-				// ConfigPlanChecks: r.ConfigPlanChecks{
-				// 	PostApplyPostRefresh: []plancheck.PlanCheck{
-				// 		plancheck.ExpectResourceAction("corner_dynamic_thing.foo", plancheck.ResourceActionUpdate),
-				// 	},
-				// },
+				ConfigPlanChecks: r.ConfigPlanChecks{
+					PostApplyPostRefresh: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction("corner_dynamic_thing.foo", plancheck.ResourceActionUpdate),
+					},
+				},
 			},
 			{
 				// Adding a type conversion will prevent the drift
@@ -284,11 +285,11 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 				Check: r.ComposeAggregateTestCheckFunc(
 					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.0", "change me to a list"),
 				),
-				// ConfigPlanChecks: r.ConfigPlanChecks{
-				// 	PostApplyPostRefresh: []plancheck.PlanCheck{
-				// 		plancheck.ExpectEmptyPlan(),
-				// 	},
-				// },
+				ConfigPlanChecks: r.ConfigPlanChecks{
+					PostApplyPostRefresh: []plancheck.PlanCheck{
+						plancheck.ExpectEmptyPlan(),
+					},
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
