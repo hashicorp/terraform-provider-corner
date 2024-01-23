@@ -262,11 +262,13 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 		//
 		// i.e. If a literal tuple is defined in config, refreshing the value as a list type will not convince Terraform the literal is a list :)
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Currently fails on Terraform 1.0.x, I believe due to some plan renderer issue:
+			// This test fails on Terraform 1.0.x due to a plan renderer issue where the old state type is used to try and render the planned drift.
+			// Since the type has been changed, and is causing the drift, it fails with an error message of:
 			//
 			//		dynamic_state_types_test.go:258: Step 1/2 error: Error retrieving second post-apply plan: exit status 1
 			// 		Failed to marshal plan to json: error in marshalResourceDrift: failed to encode refreshed data for corner_dynamic_thing.foo as JSON: attribute "dynamic_config_attr": tuple required
 			//
+			// - https://github.com/hashicorp/terraform/commit/f0cf4235f9e8eafe1d13a6a6e0720f0f0bc67e7e#diff-aec0f9962c6764cbde3325886b9b81650e1007d96d7693a9dcf0df9b53f09d2e
 			tfversion.SkipBelow(tfversion.Version1_1_0),
 		},
 		Steps: []r.TestStep{
