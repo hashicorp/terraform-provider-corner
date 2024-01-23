@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
@@ -260,6 +261,14 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 		// it can potentially cause drift because Terraform will not use prior state type information to convert future plan values.
 		//
 		// i.e. If a literal tuple is defined in config, refreshing the value as a list type will not convince Terraform the literal is a list :)
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// TODO: Currently fails on Terraform 1.0.x, I believe due to some plan renderer issue:
+			//
+			//		dynamic_state_types_test.go:258: Step 1/2 error: Error retrieving second post-apply plan: exit status 1
+			// 		Failed to marshal plan to json: error in marshalResourceDrift: failed to encode refreshed data for corner_dynamic_thing.foo as JSON: attribute "dynamic_config_attr": tuple required
+			//
+			tfversion.SkipIf(tfversion.Version1_0_0),
+		},
 		Steps: []r.TestStep{
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {
