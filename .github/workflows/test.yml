@@ -65,6 +65,8 @@ jobs:
       - run: go mod download
       - run: go test -v -cover ./internal/framework5provider/
       - run: go test -v -cover ./internal/protocolprovider/
+      # TODO: implement v5 provider
+      # - run: go test -v -cover ./internal/dynamic5provider/
       - run: go test -v -cover ./internal/sdkv2provider/
         env:
           TF_ACC: "1"
