@@ -100,3 +100,4 @@ jobs:
         if: matrix.terraform != '1.0.*'
         run: go test -v -cover ./internal/tf5to6provider/
       - run: go test -v -cover ./internal/tf6muxprovider/
+      - run: go test -v -cover ./internal/dynamic6provider/
