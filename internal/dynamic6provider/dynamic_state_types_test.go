@@ -457,7 +457,7 @@ func Test_Dynamic_ApplyChangesType_Error(t *testing.T) {
 		// where once a type is determined during a run, the provider is prevented from changing the type.
 		//
 		// This test shows an error, where the type is determined by the provider during plan modification ( tuple[string, string, string] ),
-		// then changed during the apply ( list[string]).
+		// then changed during the apply ( list[string] ).
 		Steps: []r.TestStep{
 			{
 				Config:      `resource "corner_dynamic_thing" "foo" {}`,
