@@ -248,7 +248,7 @@ func Test_Dynamic_TypeConversion_Set(t *testing.T) {
 
 func verifyDynamicTypeByPath(path *tftypes.AttributePath, expectedTyp tftypes.Type) func(context.Context, resource.PlanChangeRequest, *resource.PlanChangeResponse) {
 	return func(ctx context.Context, req resource.PlanChangeRequest, resp *resource.PlanChangeResponse) {
-		if req.Config.IsNull() {
+		if req.ProposedNewState.IsNull() {
 			return
 		}
 

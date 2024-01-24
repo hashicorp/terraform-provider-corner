@@ -4,6 +4,8 @@
 package dynamic6provider_test
 
 import (
+	"context"
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -356,6 +358,176 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 										ElementType: tftypes.String,
 									}, []tftypes.Value{
 										tftypes.NewValue(tftypes.String, "change me to a list"),
+									}),
+							}),
+						},
+					},
+				},
+			}),
+		},
+	})
+}
+
+func Test_Dynamic_PlanChangesType_Error(t *testing.T) {
+	r.UnitTest(t, r.TestCase{
+		// Provider developers typically experience Terraform's data consistency rules in relation to the "value" of an attribute, like changing
+		// a planned value to a different value during apply. Terraform's data consistency rules also extend to the type of a DynamicPseudoType attribute,
+		// where once a type is determined during a run, the provider is prevented from changing the type.
+		//
+		// This test shows an error, where the type is determined by Terraform in config ( tuple[string, string, string] ), then changed during the plan ( list[string]).
+		Steps: []r.TestStep{
+			{
+				Config: `resource "corner_dynamic_thing" "foo" {
+					dynamic_config_attr = ["turn", "to", "list"]
+				}`,
+				ExpectError: regexp.MustCompile(`planned an invalid value`),
+			},
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"corner": providerserver.NewProviderServer(testprovider.Provider{
+				Resources: map[string]testprovider.Resource{
+					"corner_dynamic_thing": {
+						SchemaResponse: &resource.SchemaResponse{
+							Schema: &tfprotov6.Schema{
+								Block: &tfprotov6.SchemaBlock{
+									Attributes: []*tfprotov6.SchemaAttribute{
+										{
+											Name:     "dynamic_config_attr",
+											Type:     tftypes.DynamicPseudoType,
+											Optional: true,
+											Computed: true,
+										},
+									},
+								},
+							},
+						},
+						PlanChangeFunc: func(ctx context.Context, req resource.PlanChangeRequest, resp *resource.PlanChangeResponse) {
+							if req.ProposedNewState.IsNull() {
+								return
+							}
+
+							// Plan as a list
+							resp.PlannedState = tftypes.NewValue(tftypes.Object{
+								AttributeTypes: map[string]tftypes.Type{
+									"dynamic_config_attr": tftypes.List{
+										ElementType: tftypes.String,
+									},
+								},
+							}, map[string]tftypes.Value{
+								"dynamic_config_attr": tftypes.NewValue(
+									tftypes.List{
+										ElementType: tftypes.String,
+									}, []tftypes.Value{
+										tftypes.NewValue(tftypes.String, "turn"),
+										tftypes.NewValue(tftypes.String, "to"),
+										tftypes.NewValue(tftypes.String, "list"),
+									}),
+							})
+						},
+						CreateResponse: &resource.CreateResponse{
+							// Apply as a list
+							NewState: tftypes.NewValue(tftypes.Object{
+								AttributeTypes: map[string]tftypes.Type{
+									"dynamic_config_attr": tftypes.List{
+										ElementType: tftypes.String,
+									},
+								},
+							}, map[string]tftypes.Value{
+								"dynamic_config_attr": tftypes.NewValue(
+									tftypes.List{
+										ElementType: tftypes.String,
+									}, []tftypes.Value{
+										tftypes.NewValue(tftypes.String, "turn"),
+										tftypes.NewValue(tftypes.String, "to"),
+										tftypes.NewValue(tftypes.String, "list"),
+									}),
+							}),
+						},
+					},
+				},
+			}),
+		},
+	})
+}
+
+func Test_Dynamic_ApplyChangesType_Error(t *testing.T) {
+	r.UnitTest(t, r.TestCase{
+		// Provider developers typically experience Terraform's data consistency rules in relation to the "value" of an attribute, like changing
+		// a planned value to a different value during apply. Terraform's data consistency rules also extend to the type of a DynamicPseudoType attribute,
+		// where once a type is determined during a run, the provider is prevented from changing the type.
+		//
+		// This test shows an error, where the type is determined by the provider during plan modification ( tuple[string, string, string] ),
+		// then changed during the apply ( list[string]).
+		Steps: []r.TestStep{
+			{
+				Config:      `resource "corner_dynamic_thing" "foo" {}`,
+				ExpectError: regexp.MustCompile(`.dynamic_computed_attr: wrong final value type: tuple required`),
+			},
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"corner": providerserver.NewProviderServer(testprovider.Provider{
+				Resources: map[string]testprovider.Resource{
+					"corner_dynamic_thing": {
+						SchemaResponse: &resource.SchemaResponse{
+							Schema: &tfprotov6.Schema{
+								Block: &tfprotov6.SchemaBlock{
+									Attributes: []*tfprotov6.SchemaAttribute{
+										{
+											Name:     "dynamic_computed_attr",
+											Type:     tftypes.DynamicPseudoType,
+											Computed: true,
+										},
+									},
+								},
+							},
+						},
+						PlanChangeFunc: func(ctx context.Context, req resource.PlanChangeRequest, resp *resource.PlanChangeResponse) {
+							if req.ProposedNewState.IsNull() {
+								return
+							}
+
+							// Plan as a tuple
+							resp.PlannedState = tftypes.NewValue(tftypes.Object{
+								AttributeTypes: map[string]tftypes.Type{
+									"dynamic_computed_attr": tftypes.Tuple{
+										ElementTypes: []tftypes.Type{
+											tftypes.String,
+											tftypes.String,
+											tftypes.String,
+										},
+									},
+								},
+							}, map[string]tftypes.Value{
+								"dynamic_computed_attr": tftypes.NewValue(
+									tftypes.Tuple{
+										ElementTypes: []tftypes.Type{
+											tftypes.String,
+											tftypes.String,
+											tftypes.String,
+										},
+									}, []tftypes.Value{
+										tftypes.NewValue(tftypes.String, "hey"),
+										tftypes.NewValue(tftypes.String, "there"),
+										tftypes.NewValue(tftypes.String, "tuple"),
+									}),
+							})
+						},
+						CreateResponse: &resource.CreateResponse{
+							// Apply as a list
+							NewState: tftypes.NewValue(tftypes.Object{
+								AttributeTypes: map[string]tftypes.Type{
+									"dynamic_computed_attr": tftypes.List{
+										ElementType: tftypes.String,
+									},
+								},
+							}, map[string]tftypes.Value{
+								"dynamic_computed_attr": tftypes.NewValue(
+									tftypes.List{
+										ElementType: tftypes.String,
+									}, []tftypes.Value{
+										tftypes.NewValue(tftypes.String, "hey"),
+										tftypes.NewValue(tftypes.String, "there"),
+										tftypes.NewValue(tftypes.String, "tuple"),
 									}),
 							}),
 						},
