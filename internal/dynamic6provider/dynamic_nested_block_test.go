@@ -59,8 +59,61 @@ func Test_Dynamic_NestingModeList_Bug(t *testing.T) {
 									BlockTypes: []*tfprotov6.SchemaNestedBlock{
 										{
 											TypeName: "block_with_dpt",
-											// List nesting mode
+											// Nesting Mode: List
 											Nesting: tfprotov6.SchemaNestedBlockNestingModeList,
+											Block: &tfprotov6.SchemaBlock{
+												Attributes: []*tfprotov6.SchemaAttribute{
+													{
+														Name:     "bar",
+														Type:     tftypes.DynamicPseudoType,
+														Optional: true,
+													},
+													{
+														Name:     "foo",
+														Type:     tftypes.Number,
+														Optional: true,
+													},
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}),
+		},
+	})
+}
+
+func Test_Dynamic_NestingModeSet_Bug(t *testing.T) {
+	r.UnitTest(t, r.TestCase{
+		Steps: []r.TestStep{
+			{
+				// This error message shows that using a nesting mode of `Set` is currently invalid
+				// https://github.com/hashicorp/terraform/blob/a9b43f332ea2b8fcf152a74a60af1d3a4a26e5f7/internal/configs/configschema/internal_validate.go#L79
+				Config: `resource "corner_dynamic_thing" "foo" {
+					block_with_dpt {
+						bar = "hello"
+						foo = 4
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`NestingSet blocks may not contain attributes of cty.DynamicPseudoType`),
+			},
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"corner": providerserver.NewProviderServer(testprovider.Provider{
+				Resources: map[string]testprovider.Resource{
+					"corner_dynamic_thing": {
+						SchemaResponse: &resource.SchemaResponse{
+							Schema: &tfprotov6.Schema{
+								Block: &tfprotov6.SchemaBlock{
+									BlockTypes: []*tfprotov6.SchemaNestedBlock{
+										{
+											TypeName: "block_with_dpt",
+											// Nesting Mode: Set
+											Nesting: tfprotov6.SchemaNestedBlockNestingModeSet,
 											Block: &tfprotov6.SchemaBlock{
 												Attributes: []*tfprotov6.SchemaAttribute{
 													{
@@ -125,7 +178,7 @@ func Test_Dynamic_NestingModeMap_Bug(t *testing.T) {
 									BlockTypes: []*tfprotov6.SchemaNestedBlock{
 										{
 											TypeName: "block_with_dpt",
-											// Map nesting mode
+											// Nesting Mode: Map
 											Nesting: tfprotov6.SchemaNestedBlockNestingModeMap,
 											Block: &tfprotov6.SchemaBlock{
 												Attributes: []*tfprotov6.SchemaAttribute{
@@ -188,7 +241,7 @@ func Test_Dynamic_NestingModeSingle_Success(t *testing.T) {
 									BlockTypes: []*tfprotov6.SchemaNestedBlock{
 										{
 											TypeName: "block_with_dpt",
-											// Single nesting mode
+											// Nesting Mode: Single
 											Nesting: tfprotov6.SchemaNestedBlockNestingModeSingle,
 											Block: &tfprotov6.SchemaBlock{
 												Attributes: []*tfprotov6.SchemaAttribute{
