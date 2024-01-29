@@ -278,7 +278,6 @@ func Test_Dynamic_Block_NestingModeSet_Invalid(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// This test will fail on Terraform 1.1.x due to the differences in how this specific validation is raised.
-			// Example Error:
 			//
 			// Error retrieving state, there may be dangling resources: exit status 1
 			//
@@ -292,9 +291,8 @@ func Test_Dynamic_Block_NestingModeSet_Invalid(t *testing.T) {
 			// 	error occurred:\n\t* block_with_dpt: NestingSet blocks may not contain
 			// 	attributes of cty.DynamicPseudoType\n\n"..
 			//
-			tfversion.SkipIf(tfversion.Version1_1_0),
 			// This test will fail on Terraform 1.0.x as this specific validation was not exposed yet.
-			tfversion.SkipIf(tfversion.Version1_0_0),
+			tfversion.SkipBelow(tfversion.Version1_2_0),
 		},
 		Steps: []r.TestStep{
 			{
@@ -350,7 +348,6 @@ func Test_Dynamic_Attribute_NestingModeSet_Invalid(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// This test will fail on Terraform 1.1.x due to the differences in how this specific validation is raised.
-			// Example Error:
 			//
 			// Error retrieving state, there may be dangling resources: exit status 1
 			//
@@ -364,9 +361,8 @@ func Test_Dynamic_Attribute_NestingModeSet_Invalid(t *testing.T) {
 			// 	error occurred:\n\t* block_with_dpt: NestingSet blocks may not contain
 			// 	attributes of cty.DynamicPseudoType\n\n"..
 			//
-			tfversion.SkipIf(tfversion.Version1_1_0),
 			// This test will fail on Terraform 1.0.x as this specific validation was not exposed yet.
-			tfversion.SkipIf(tfversion.Version1_0_0),
+			tfversion.SkipBelow(tfversion.Version1_2_0),
 		},
 		Steps: []r.TestStep{
 			{
