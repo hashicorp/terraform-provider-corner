@@ -10,6 +10,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
@@ -275,6 +276,26 @@ func Test_Dynamic_Attribute_NestingModeMap_Valid(t *testing.T) {
 
 func Test_Dynamic_Block_NestingModeSet_Invalid(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// This test will fail on Terraform 1.1.x due to the differences in how this specific validation is raised.
+			// Example Error:
+			//
+			// Error retrieving state, there may be dangling resources: exit status 1
+			//
+			// 	Error: Failed to load plugin schemas
+			//
+			// 	Error while loading schemas for plugin components: Failed to obtain provider
+			// 	schema: Could not load the schema for provider
+			// 	registry.terraform.io/hashicorp/corner: provider
+			// 	registry.terraform.io/hashicorp/corner has invalid schema for managed
+			// 	resource type "corner_dynamic_thing", which is a bug in the provider: "1
+			// 	error occurred:\n\t* block_with_dpt: NestingSet blocks may not contain
+			// 	attributes of cty.DynamicPseudoType\n\n"..
+			//
+			tfversion.SkipIf(tfversion.Version1_1_0),
+			// This test will fail on Terraform 1.0.x as this specific validation was not exposed yet.
+			tfversion.SkipIf(tfversion.Version1_0_0),
+		},
 		Steps: []r.TestStep{
 			{
 				// Blocks with a nesting mode of `Set` are considered invalid by Terraform Core when containing a DynamicPseudoType.
@@ -327,6 +348,26 @@ func Test_Dynamic_Block_NestingModeSet_Invalid(t *testing.T) {
 
 func Test_Dynamic_Attribute_NestingModeSet_Invalid(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// This test will fail on Terraform 1.1.x due to the differences in how this specific validation is raised.
+			// Example Error:
+			//
+			// Error retrieving state, there may be dangling resources: exit status 1
+			//
+			// 	Error: Failed to load plugin schemas
+			//
+			// 	Error while loading schemas for plugin components: Failed to obtain provider
+			// 	schema: Could not load the schema for provider
+			// 	registry.terraform.io/hashicorp/corner: provider
+			// 	registry.terraform.io/hashicorp/corner has invalid schema for managed
+			// 	resource type "corner_dynamic_thing", which is a bug in the provider: "1
+			// 	error occurred:\n\t* block_with_dpt: NestingSet blocks may not contain
+			// 	attributes of cty.DynamicPseudoType\n\n"..
+			//
+			tfversion.SkipIf(tfversion.Version1_1_0),
+			// This test will fail on Terraform 1.0.x as this specific validation was not exposed yet.
+			tfversion.SkipIf(tfversion.Version1_0_0),
+		},
 		Steps: []r.TestStep{
 			{
 				// Attributes with a nesting mode of `Set` are considered invalid by Terraform Core when containing a DynamicPseudoType.
