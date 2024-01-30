@@ -406,7 +406,7 @@ func Test_Dynamic_PlanChangesType_Error(t *testing.T) {
 								return
 							}
 
-							// Plan as a list
+							// Comes in as a tuple[string,string], plan as a list[string]
 							resp.PlannedState = tftypes.NewValue(tftypes.Object{
 								AttributeTypes: map[string]tftypes.Type{
 									"dynamic_config_attr": tftypes.List{
@@ -423,25 +423,6 @@ func Test_Dynamic_PlanChangesType_Error(t *testing.T) {
 										tftypes.NewValue(tftypes.String, "list"),
 									}),
 							})
-						},
-						CreateResponse: &resource.CreateResponse{
-							// Apply as a list
-							NewState: tftypes.NewValue(tftypes.Object{
-								AttributeTypes: map[string]tftypes.Type{
-									"dynamic_config_attr": tftypes.List{
-										ElementType: tftypes.String,
-									},
-								},
-							}, map[string]tftypes.Value{
-								"dynamic_config_attr": tftypes.NewValue(
-									tftypes.List{
-										ElementType: tftypes.String,
-									}, []tftypes.Value{
-										tftypes.NewValue(tftypes.String, "turn"),
-										tftypes.NewValue(tftypes.String, "to"),
-										tftypes.NewValue(tftypes.String, "list"),
-									}),
-							}),
 						},
 					},
 				},
@@ -529,6 +510,71 @@ func Test_Dynamic_ApplyChangesType_Error(t *testing.T) {
 										tftypes.NewValue(tftypes.String, "there"),
 										tftypes.NewValue(tftypes.String, "tuple"),
 									}),
+							}),
+						},
+					},
+				},
+			}),
+		},
+	})
+}
+
+func Test_Dynamic_ComputedNull_ToNewType(t *testing.T) {
+	r.UnitTest(t, r.TestCase{
+		// This test shows that an underlying type of DynamicPseudoType will be valid until a type is determined.
+		// In this test, the value is initially stored as null (with no determined type), then determined as a tftypes.String on refresh.
+		Steps: []r.TestStep{
+			{
+				Config: `resource "corner_dynamic_thing" "foo" {}`,
+				// TODO: switch to use nice new state checks :)
+				Check: r.ComposeAggregateTestCheckFunc(
+					r.TestCheckNoResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr"),
+				),
+			},
+			{
+				Config: `resource "corner_dynamic_thing" "foo" {}`,
+				// TODO: switch to use nice new state checks :)
+				Check: r.ComposeAggregateTestCheckFunc(
+					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr", "refreshed to a string"),
+				),
+			},
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"corner": providerserver.NewProviderServer(testprovider.Provider{
+				Resources: map[string]testprovider.Resource{
+					"corner_dynamic_thing": {
+						SchemaResponse: &resource.SchemaResponse{
+							Schema: &tfprotov6.Schema{
+								Block: &tfprotov6.SchemaBlock{
+									Attributes: []*tfprotov6.SchemaAttribute{
+										{
+											Name:     "dynamic_computed_attr",
+											Type:     tftypes.DynamicPseudoType,
+											Computed: true,
+											Optional: true,
+										},
+									},
+								},
+							},
+						},
+						CreateResponse: &resource.CreateResponse{
+							NewState: tftypes.NewValue(tftypes.Object{
+								AttributeTypes: map[string]tftypes.Type{
+									// It will initially be created as a null DPT
+									"dynamic_computed_attr": tftypes.DynamicPseudoType,
+								},
+							}, map[string]tftypes.Value{
+								"dynamic_computed_attr": tftypes.NewValue(tftypes.DynamicPseudoType, nil),
+							}),
+						},
+						ReadResponse: &resource.ReadResponse{
+							NewState: tftypes.NewValue(tftypes.Object{
+								AttributeTypes: map[string]tftypes.Type{
+									// Switch from DPT to String
+									"dynamic_computed_attr": tftypes.String,
+								},
+							}, map[string]tftypes.Value{
+								"dynamic_computed_attr": tftypes.NewValue(tftypes.String, "refreshed to a string"),
 							}),
 						},
 					},
