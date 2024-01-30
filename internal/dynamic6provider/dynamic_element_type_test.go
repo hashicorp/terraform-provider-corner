@@ -162,3 +162,42 @@ func Test_Dynamic_Attribute_SetType_Valid(t *testing.T) {
 		},
 	})
 }
+
+func Test_Dynamic_Attribute_TupleType_Valid(t *testing.T) {
+	r.UnitTest(t, r.TestCase{
+		Steps: []r.TestStep{
+			{
+				Config: `resource "corner_dynamic_thing" "foo" {
+					attribute_with_dpt = ["hey", { number = 12345 }, ["there", "tuple"]]
+				}`,
+			},
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"corner": providerserver.NewProviderServer(testprovider.Provider{
+				Resources: map[string]testprovider.Resource{
+					"corner_dynamic_thing": {
+						SchemaResponse: &resource.SchemaResponse{
+							Schema: &tfprotov6.Schema{
+								Block: &tfprotov6.SchemaBlock{
+									Attributes: []*tfprotov6.SchemaAttribute{
+										{
+											Name:     "attribute_with_dpt",
+											Required: true,
+											Type: tftypes.Tuple{
+												ElementTypes: []tftypes.Type{
+													tftypes.String,
+													tftypes.DynamicPseudoType,
+													tftypes.DynamicPseudoType,
+												},
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			}),
+		},
+	})
+}
