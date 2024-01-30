@@ -11,7 +11,10 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
@@ -31,13 +34,22 @@ func Test_Dynamic_TypedValueToState(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_config_attr = ["hey", "there", "tuple"]
 				}`,
-				// TODO: switch to use nice new state checks :)
-				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr", "hello world"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.0", "hey"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.1", "there"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.2", "tuple"),
-				),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_computed_attr"),
+						knownvalue.StringExact("hello world"),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_config_attr"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("hey"),
+							knownvalue.StringExact("there"),
+							knownvalue.StringExact("tuple"),
+						}),
+					),
+				},
 			},
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {
@@ -143,25 +155,47 @@ func Test_Dynamic_TypePreservedInState(t *testing.T) {
 		Steps: []r.TestStep{
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {}`,
-				// TODO: switch to use nice new state checks :)
-				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_list.0", "it's"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_list.1", "a"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_list.2", "list"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_map.prop1", "15"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_map.prop2", "1.23"),
-				),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_computed_list"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("it's"),
+							knownvalue.StringExact("a"),
+							knownvalue.StringExact("list"),
+						}),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_computed_map"),
+						knownvalue.MapExact(map[string]knownvalue.Check{
+							"prop1": knownvalue.Int64Exact(15),
+							"prop2": knownvalue.Float64Exact(1.23),
+						}),
+					),
+				},
 			},
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {}`,
-				// TODO: switch to use nice new state checks :)
-				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_list.0", "still"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_list.1", "a"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_list.2", "list"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_map.prop1", "10"),
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_map.prop2", "1.23"),
-				),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_computed_list"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("still"),
+							knownvalue.StringExact("a"),
+							knownvalue.StringExact("list"),
+						}),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_computed_map"),
+						knownvalue.MapExact(map[string]knownvalue.Check{
+							"prop1": knownvalue.Int64Exact(10),
+							"prop2": knownvalue.Float64Exact(1.23),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -278,10 +312,15 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_config_attr = ["change me to a list"]
 				}`,
-				// TODO: switch to use nice new state checks :)
-				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.0", "change me to a list"),
-				),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_config_attr"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("change me to a list"),
+						}),
+					),
+				},
 				// State will drift because the literal is always determined as a tuple type by Terraform, but the read will set state to a list type
 				ExpectNonEmptyPlan: true,
 				ConfigPlanChecks: r.ConfigPlanChecks{
@@ -295,9 +334,15 @@ func Test_Dynamic_TypeChangesInState(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_config_attr = tolist(["change me to a list"])
 				}`,
-				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_config_attr.0", "change me to a list"),
-				),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_config_attr"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("change me to a list"),
+						}),
+					),
+				},
 				ConfigPlanChecks: r.ConfigPlanChecks{
 					PostApplyPostRefresh: []plancheck.PlanCheck{
 						plancheck.ExpectEmptyPlan(),
@@ -526,17 +571,23 @@ func Test_Dynamic_ComputedNull_ToNewType(t *testing.T) {
 		Steps: []r.TestStep{
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {}`,
-				// TODO: switch to use nice new state checks :)
-				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckNoResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr"),
-				),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_computed_attr"),
+						knownvalue.Null(),
+					),
+				},
 			},
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {}`,
-				// TODO: switch to use nice new state checks :)
-				Check: r.ComposeAggregateTestCheckFunc(
-					r.TestCheckResourceAttr("corner_dynamic_thing.foo", "dynamic_computed_attr", "refreshed to a string"),
-				),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_computed_attr"),
+						knownvalue.StringExact("refreshed to a string"),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
