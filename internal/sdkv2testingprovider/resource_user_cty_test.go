@@ -16,6 +16,7 @@ func testAccResourceUserCty(t *testing.T) resource.TestCase {
 		Steps: []resource.TestStep{
 			{
 				Config: configResourceUserCtyBasic,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"corner_user.foo", "email", "ford@prefect.co"),
@@ -27,6 +28,7 @@ func testAccResourceUserCty(t *testing.T) resource.TestCase {
 			},
 			{
 				Config: configResourceUserCtyUpdate,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"corner_user.foo", "email", "ford@prefect.co"),

@@ -22,6 +22,7 @@ func TestAccV6DataSourceTime(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: testAccDataSourceTimeConfig,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestMatchResourceAttr("data.corner_v6_time.foo", "current", regexp.MustCompile(`[0-9]+`)),
 				),

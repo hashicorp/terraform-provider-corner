@@ -16,6 +16,7 @@ func testAccDataSourceRegionsCty(t *testing.T) resource.TestCase {
 		Steps: []resource.TestStep{
 			{
 				Config: configDataSourceRegionsCtyBasic,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttrSet("data.corner_regions_cty.foo", "names.#")),
 			},

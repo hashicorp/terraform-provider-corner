@@ -19,6 +19,7 @@ func TestTimeoutsResource_unconfigured(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `resource "framework_timeouts" "test" {}`,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_timeouts.test", "id", "test"),
 					resource.TestCheckNoResourceAttr("framework_timeouts.test", "timeouts"),
@@ -40,6 +41,7 @@ func TestTimeoutsResource_configured(t *testing.T) {
 						create = "120s"
 					}
 				}`,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_timeouts.test", "id", "test"),
 					resource.TestCheckResourceAttr("framework_timeouts.test", "timeouts.create", "120s"),

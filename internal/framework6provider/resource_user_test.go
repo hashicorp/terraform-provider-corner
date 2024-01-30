@@ -19,6 +19,7 @@ func TestAccFrameworkResourceUser(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: configResourceUserBasic,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"framework_user.foo", "name", "Ford Prefect"),
@@ -44,6 +45,7 @@ func TestAccFrameworkResourceUser_language(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: configResourceUserLanguage,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"framework_user.foo", "name", "J Doe"),
@@ -74,6 +76,7 @@ func TestAccFrameworkResourceUser_interpolateLanguage(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: configResourceUserBasic,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"framework_user.foo", "name", "Ford Prefect"),
@@ -89,6 +92,7 @@ func TestAccFrameworkResourceUser_interpolateLanguage(t *testing.T) {
 			},
 			{
 				Config: configResourceUserLanguageInterpolated,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"framework_user.foo", "name", "Ford Prefect"),
@@ -130,6 +134,7 @@ resource "framework_user" "test" {
   id    = "h"
 }
 `,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_user.test", "name", expectedUserName),
 				),

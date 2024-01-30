@@ -16,6 +16,7 @@ func testAccDataSourceBigint(t *testing.T) resource.TestCase {
 		Steps: []resource.TestStep{
 			{
 				Config: configDataSourceBigint,
+				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("data.corner_bigint.foo", "int64", "7227701560655103598")),
 			},
