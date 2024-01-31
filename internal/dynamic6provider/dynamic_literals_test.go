@@ -53,15 +53,21 @@ func Test_Dynamic_ComplexTypeLiterals_Tuple(t *testing.T) {
 								},
 							},
 						},
-						PlanChangeFunc: verifyDynamicTypeByPath(
+						PlanChangeFunc: verifyDynamicAttributeByPath(
 							tftypes.NewAttributePath().WithAttributeName("dynamic_attr"),
-							tftypes.Tuple{
-								ElementTypes: []tftypes.Type{
-									tftypes.String,
-									tftypes.String,
-									tftypes.String,
+							tftypes.NewValue(
+								tftypes.Tuple{
+									ElementTypes: []tftypes.Type{
+										tftypes.String,
+										tftypes.String,
+										tftypes.String,
+									},
+								}, []tftypes.Value{
+									tftypes.NewValue(tftypes.String, "it's"),
+									tftypes.NewValue(tftypes.String, "a"),
+									tftypes.NewValue(tftypes.String, "tuple"),
 								},
-							},
+							),
 						),
 					},
 				},
@@ -80,8 +86,8 @@ func Test_Dynamic_ComplexTypeLiterals_Object(t *testing.T) {
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_attr = {
-						prop1 = 15
-						prop2 = 1.8356
+						prop1 = "hello"
+						prop2 = "world"
 						prop3 = null
 					}
 				}`,
@@ -104,16 +110,21 @@ func Test_Dynamic_ComplexTypeLiterals_Object(t *testing.T) {
 								},
 							},
 						},
-						PlanChangeFunc: verifyDynamicTypeByPath(
+						PlanChangeFunc: verifyDynamicAttributeByPath(
 							tftypes.NewAttributePath().WithAttributeName("dynamic_attr"),
-							tftypes.Object{
-								AttributeTypes: map[string]tftypes.Type{
-									"prop1": tftypes.Number,
-									"prop2": tftypes.Number,
-									// `null` literal is passed as DynamicPseudoType, since the type of `prop3` has not been determined yet
-									"prop3": tftypes.DynamicPseudoType,
-								},
-							},
+							tftypes.NewValue(
+								tftypes.Object{
+									AttributeTypes: map[string]tftypes.Type{
+										"prop1": tftypes.String,
+										"prop2": tftypes.String,
+										// `null` literal is passed as DynamicPseudoType, since the type of `prop3` has not been determined yet
+										"prop3": tftypes.DynamicPseudoType,
+									},
+								}, map[string]tftypes.Value{
+									"prop1": tftypes.NewValue(tftypes.String, "hello"),
+									"prop2": tftypes.NewValue(tftypes.String, "world"),
+									"prop3": tftypes.NewValue(tftypes.DynamicPseudoType, nil),
+								}),
 						),
 					},
 				},
@@ -129,8 +140,8 @@ func Test_Dynamic_TypeConversion_Map(t *testing.T) {
 			{
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_attr = tomap({
-						prop1 = 15
-						prop2 = 1.8356
+						prop1 = "hello"
+						prop2 = "world"
 						prop3 = null
 					})
 				}`,
@@ -153,11 +164,18 @@ func Test_Dynamic_TypeConversion_Map(t *testing.T) {
 								},
 							},
 						},
-						PlanChangeFunc: verifyDynamicTypeByPath(
+						PlanChangeFunc: verifyDynamicAttributeByPath(
 							tftypes.NewAttributePath().WithAttributeName("dynamic_attr"),
-							tftypes.Map{
-								ElementType: tftypes.Number,
-							},
+							tftypes.NewValue(
+								tftypes.Map{
+									ElementType: tftypes.String,
+								},
+								map[string]tftypes.Value{
+									"prop1": tftypes.NewValue(tftypes.String, "hello"),
+									"prop2": tftypes.NewValue(tftypes.String, "world"),
+									"prop3": tftypes.NewValue(tftypes.String, nil),
+								},
+							),
 						),
 					},
 				},
@@ -193,11 +211,18 @@ func Test_Dynamic_TypeConversion_List(t *testing.T) {
 								},
 							},
 						},
-						PlanChangeFunc: verifyDynamicTypeByPath(
+						PlanChangeFunc: verifyDynamicAttributeByPath(
 							tftypes.NewAttributePath().WithAttributeName("dynamic_attr"),
-							tftypes.List{
-								ElementType: tftypes.String,
-							},
+							tftypes.NewValue(
+								tftypes.List{
+									ElementType: tftypes.String,
+								},
+								[]tftypes.Value{
+									tftypes.NewValue(tftypes.String, "it's"),
+									tftypes.NewValue(tftypes.String, "a"),
+									tftypes.NewValue(tftypes.String, "list"),
+								},
+							),
 						),
 					},
 				},
@@ -233,11 +258,17 @@ func Test_Dynamic_TypeConversion_Set(t *testing.T) {
 								},
 							},
 						},
-						PlanChangeFunc: verifyDynamicTypeByPath(
+						PlanChangeFunc: verifyDynamicAttributeByPath(
 							tftypes.NewAttributePath().WithAttributeName("dynamic_attr"),
-							tftypes.Set{
-								ElementType: tftypes.Bool,
-							},
+							tftypes.NewValue(
+								tftypes.Set{
+									ElementType: tftypes.Bool,
+								},
+								[]tftypes.Value{
+									tftypes.NewValue(tftypes.Bool, true),
+									tftypes.NewValue(tftypes.Bool, false),
+								},
+							),
 						),
 					},
 				},
@@ -246,7 +277,7 @@ func Test_Dynamic_TypeConversion_Set(t *testing.T) {
 	})
 }
 
-func verifyDynamicTypeByPath(path *tftypes.AttributePath, expectedTyp tftypes.Type) func(context.Context, resource.PlanChangeRequest, *resource.PlanChangeResponse) {
+func verifyDynamicAttributeByPath(path *tftypes.AttributePath, expectedVal tftypes.Value) func(context.Context, resource.PlanChangeRequest, *resource.PlanChangeResponse) {
 	return func(ctx context.Context, req resource.PlanChangeRequest, resp *resource.PlanChangeResponse) {
 		if req.ProposedNewState.IsNull() {
 			return
@@ -256,7 +287,7 @@ func verifyDynamicTypeByPath(path *tftypes.AttributePath, expectedTyp tftypes.Ty
 		if err != nil {
 			resp.Diagnostics = append(resp.Diagnostics, &tfprotov6.Diagnostic{
 				Severity:  tfprotov6.DiagnosticSeverityError,
-				Summary:   "Test Verify Failed",
+				Summary:   "Verify Dynamic Attribute Failed",
 				Detail:    fmt.Sprintf("error finding dynamic type path: %s", err.Error()),
 				Attribute: path,
 			})
@@ -265,17 +296,28 @@ func verifyDynamicTypeByPath(path *tftypes.AttributePath, expectedTyp tftypes.Ty
 		if !ok {
 			resp.Diagnostics = append(resp.Diagnostics, &tfprotov6.Diagnostic{
 				Severity:  tfprotov6.DiagnosticSeverityError,
-				Summary:   "Test Verify Failed",
+				Summary:   "Verify Dynamic Attribute Failed",
 				Detail:    fmt.Sprintf("error reading dynamic value, expected tftypes.Value, got %T", val),
 				Attribute: path,
 			})
 		}
 
-		if !tftypeVal.Type().Equal(expectedTyp) {
+		// Verify that the types match
+		if !tftypeVal.Type().Equal(expectedVal.Type()) {
 			resp.Diagnostics = append(resp.Diagnostics, &tfprotov6.Diagnostic{
 				Severity:  tfprotov6.DiagnosticSeverityError,
-				Summary:   "Test Verify Failed",
-				Detail:    fmt.Sprintf("expected: %s, got: %s", expectedTyp, tftypeVal.Type()),
+				Summary:   "Verify Dynamic Attribute Type Failed",
+				Detail:    fmt.Sprintf("expected: %s, got: %s", expectedVal.Type(), tftypeVal.Type()),
+				Attribute: path,
+			})
+		}
+
+		// Verify that the values match
+		if !tftypeVal.Equal(expectedVal) {
+			resp.Diagnostics = append(resp.Diagnostics, &tfprotov6.Diagnostic{
+				Severity:  tfprotov6.DiagnosticSeverityError,
+				Summary:   "Verify Dynamic Attribute Value Failed",
+				Detail:    fmt.Sprintf("expected: %s, got: %s", expectedVal, tftypeVal),
 				Attribute: path,
 			})
 		}
