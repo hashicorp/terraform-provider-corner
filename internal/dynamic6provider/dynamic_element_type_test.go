@@ -9,6 +9,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
@@ -33,6 +36,16 @@ func Test_Dynamic_Attribute_ListType(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					attribute_with_dpt = ["hey", 12345]
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("attribute_with_dpt"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("hey"),
+							knownvalue.StringExact("12345"),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -88,6 +101,16 @@ func Test_Dynamic_Attribute_MapType(t *testing.T) {
 						"key2" = 12345
 					}
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("attribute_with_dpt"),
+						knownvalue.MapExact(map[string]knownvalue.Check{
+							"key1": knownvalue.StringExact("hey"),
+							"key2": knownvalue.StringExact("12345"),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -135,6 +158,16 @@ func Test_Dynamic_Attribute_SetType(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					attribute_with_dpt = ["hey", 12345]
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("attribute_with_dpt"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.StringExact("hey"),
+							knownvalue.StringExact("12345"),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -170,6 +203,23 @@ func Test_Dynamic_Attribute_TupleType(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					attribute_with_dpt = ["hey", { number = 12345 }, ["there", "tuple"]]
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("attribute_with_dpt"),
+						// The type is stored as a tuple, but we can still use `ListExact` to verify state
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("hey"),
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"number": knownvalue.Int64Exact(12345),
+							}),
+							knownvalue.ListExact([]knownvalue.Check{
+								knownvalue.StringExact("there"),
+								knownvalue.StringExact("tuple"),
+							}),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){

@@ -11,6 +11,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	r "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testprovider"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/providerserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
@@ -34,6 +37,18 @@ func Test_Dynamic_ComplexTypeLiterals_Tuple(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_attr = ["it's", "a", "tuple"]
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_attr"),
+						// The type is stored as a tuple, but we can still use `ListExact` to verify state
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("it's"),
+							knownvalue.StringExact("a"),
+							knownvalue.StringExact("tuple"),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -91,6 +106,17 @@ func Test_Dynamic_ComplexTypeLiterals_Object(t *testing.T) {
 						prop3 = null
 					}
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_attr"),
+						knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"prop1": knownvalue.StringExact("hello"),
+							"prop2": knownvalue.StringExact("world"),
+							"prop3": knownvalue.Null(),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -145,6 +171,17 @@ func Test_Dynamic_TypeConversion_Map(t *testing.T) {
 						prop3 = null
 					})
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_attr"),
+						knownvalue.MapExact(map[string]knownvalue.Check{
+							"prop1": knownvalue.StringExact("hello"),
+							"prop2": knownvalue.StringExact("world"),
+							"prop3": knownvalue.Null(),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -192,6 +229,17 @@ func Test_Dynamic_TypeConversion_List(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_attr = tolist(["it's", "a", "list"])
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_attr"),
+						knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.StringExact("it's"),
+							knownvalue.StringExact("a"),
+							knownvalue.StringExact("list"),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -239,6 +287,16 @@ func Test_Dynamic_TypeConversion_Set(t *testing.T) {
 				Config: `resource "corner_dynamic_thing" "foo" {
 					dynamic_attr = toset([true, false])
 				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue(
+						"corner_dynamic_thing.foo",
+						tfjsonpath.New("dynamic_attr"),
+						knownvalue.SetExact([]knownvalue.Check{
+							knownvalue.Bool(false),
+							knownvalue.Bool(true),
+						}),
+					),
+				},
 			},
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
