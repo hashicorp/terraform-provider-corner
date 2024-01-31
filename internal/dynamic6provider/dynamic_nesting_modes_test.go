@@ -16,7 +16,7 @@ import (
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
 )
 
-func Test_Dynamic_Block_NestingModeList_Bug(t *testing.T) {
+func Test_Dynamic_Block_NestingModeList(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -88,7 +88,7 @@ func Test_Dynamic_Block_NestingModeList_Bug(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Attribute_NestingModeList_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_NestingModeList(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -142,7 +142,7 @@ func Test_Dynamic_Attribute_NestingModeList_Valid(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Block_NestingModeMap_Bug(t *testing.T) {
+func Test_Dynamic_Block_NestingModeMap(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -214,7 +214,7 @@ func Test_Dynamic_Block_NestingModeMap_Bug(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Attribute_NestingModeMap_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_NestingModeMap(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -415,7 +415,7 @@ func Test_Dynamic_Attribute_NestingModeSet_Invalid(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Block_NestingModeSingle_Valid(t *testing.T) {
+func Test_Dynamic_Block_NestingModeSingle(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -464,7 +464,7 @@ func Test_Dynamic_Block_NestingModeSingle_Valid(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Attribute_NestingModeSingle_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_NestingModeSingle(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{

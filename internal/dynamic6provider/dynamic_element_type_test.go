@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
 )
 
-func Test_Dynamic_Attribute_ListType_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_ListType(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -61,7 +61,7 @@ func Test_Dynamic_Attribute_ListType_Valid(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Attribute_MapType_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_MapType(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -116,7 +116,7 @@ func Test_Dynamic_Attribute_MapType_Valid(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Attribute_SetType_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_SetType(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -163,7 +163,7 @@ func Test_Dynamic_Attribute_SetType_Valid(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Attribute_TupleType_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_TupleType(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{

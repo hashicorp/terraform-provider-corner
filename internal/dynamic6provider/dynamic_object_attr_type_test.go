@@ -14,7 +14,7 @@ import (
 	"github.com/hashicorp/terraform-provider-corner/internal/testing/testsdk/resource"
 )
 
-func Test_Dynamic_Attribute_ObjectType_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_ObjectType(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
@@ -55,7 +55,7 @@ func Test_Dynamic_Attribute_ObjectType_Valid(t *testing.T) {
 	})
 }
 
-func Test_Dynamic_Attribute_ObjectTypeInCollections_Valid(t *testing.T) {
+func Test_Dynamic_Attribute_ObjectTypeInCollections(t *testing.T) {
 	r.UnitTest(t, r.TestCase{
 		Steps: []r.TestStep{
 			{
