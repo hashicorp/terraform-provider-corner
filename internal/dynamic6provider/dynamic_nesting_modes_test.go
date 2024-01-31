@@ -35,11 +35,15 @@ func Test_Dynamic_Block_NestingModeList(t *testing.T) {
 				//
 				// 	{
 				// 		"block_with_dpt": [
-				// 		  "[\"tuple\",[[\"object\",{\"bar\":\"string\",\"foo\":\"number\"}]]]",
+				// 		  "[\"tuple\",[[\"object\",{\"bar\":\"string\",\"foo\":\"number\"}],[\"object\",{\"bar\":\"string\",\"foo\":\"number\"}]]]",
 				// 		  [
 				// 			{
 				// 			  "bar": "hello",
 				// 			  "foo": 4
+				// 			},
+				// 			{
+				// 			  "bar": "world",
+				// 			  "foo": 5
 				// 			}
 				// 		  ]
 				// 		]
@@ -49,6 +53,10 @@ func Test_Dynamic_Block_NestingModeList(t *testing.T) {
 					block_with_dpt {
 						bar = "hello"
 						foo = 4
+					}
+					block_with_dpt {
+						bar = "world"
+						foo = 5
 					}
 				}`,
 				ExpectError: regexp.MustCompile(`unexpected code=c4 decoding map length`),
@@ -100,10 +108,16 @@ func Test_Dynamic_Attribute_NestingModeList(t *testing.T) {
 				//
 				// Related issue: https://github.com/hashicorp/terraform/issues/34574
 				Config: `resource "corner_dynamic_thing" "foo" {
-					attribute_with_dpt = [{
-						bar = "hello"
-						foo = 4
-					}]
+					attribute_with_dpt = [
+						{
+							bar = "hello"
+							foo = 4
+						},
+						{
+							bar = "world"
+							foo = 5
+						}
+					]
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue(
@@ -113,6 +127,10 @@ func Test_Dynamic_Attribute_NestingModeList(t *testing.T) {
 							knownvalue.ObjectExact(map[string]knownvalue.Check{
 								"bar": knownvalue.StringExact("hello"),
 								"foo": knownvalue.Int64Exact(4),
+							}),
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"bar": knownvalue.StringExact("world"),
+								"foo": knownvalue.Int64Exact(5),
 							}),
 						}),
 					),
@@ -173,20 +191,28 @@ func Test_Dynamic_Block_NestingModeMap(t *testing.T) {
 				//
 				// 	{
 				// 		"block_with_dpt": [
-				// 		  "[\"object\",{\"test\":[\"object\",{\"bar\":\"string\",\"foo\":\"number\"}]}]",
+				// 		  "[\"object\",{\"key1\":[\"object\",{\"bar\":\"string\",\"foo\":\"number\"}],\"key2\":[\"object\",{\"bar\":\"string\",\"foo\":\"number\"}]}]",
 				// 		  {
-				// 			"test": {
+				// 			"key1": {
 				// 			  "bar": "hello",
 				// 			  "foo": 4
-				// 			}
+				// 			},
+				// 			"key2": {
+				// 			  "bar": "world",
+				// 			  "foo": 5
+				// 			},
 				// 		  }
 				// 		]
 				// 	}
 				//
 				Config: `resource "corner_dynamic_thing" "foo" {
-					block_with_dpt "test" {
+					block_with_dpt "key1" {
 						bar = "hello"
 						foo = 4
+					}
+					block_with_dpt "key2" {
+						bar = "world"
+						foo = 5
 					}
 				}`,
 				ExpectError: regexp.MustCompile(`unexpected code=92 decoding map length`),
@@ -239,13 +265,13 @@ func Test_Dynamic_Attribute_NestingModeMap(t *testing.T) {
 				// Related issue: https://github.com/hashicorp/terraform/issues/34574
 				Config: `resource "corner_dynamic_thing" "foo" {
 					attribute_with_dpt = {
-						"test1" = {
+						"key1" = {
 							bar = "hello"
 							foo = 4
 						}
-						"test2" = {
+						"key2" = {
 							bar = "world"
-							foo = 6
+							foo = 5
 						}
 					}
 				}`,
@@ -254,13 +280,13 @@ func Test_Dynamic_Attribute_NestingModeMap(t *testing.T) {
 						"corner_dynamic_thing.foo",
 						tfjsonpath.New("attribute_with_dpt"),
 						knownvalue.MapExact(map[string]knownvalue.Check{
-							"test1": knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"key1": knownvalue.ObjectExact(map[string]knownvalue.Check{
 								"bar": knownvalue.StringExact("hello"),
 								"foo": knownvalue.Int64Exact(4),
 							}),
-							"test2": knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"key2": knownvalue.ObjectExact(map[string]knownvalue.Check{
 								"bar": knownvalue.StringExact("world"),
-								"foo": knownvalue.Int64Exact(6),
+								"foo": knownvalue.Int64Exact(5),
 							}),
 						}),
 					),
@@ -334,6 +360,10 @@ func Test_Dynamic_Block_NestingModeSet_Invalid(t *testing.T) {
 						bar = "hello"
 						foo = 4
 					}
+					block_with_dpt {
+						bar = "world"
+						foo = 5
+					}
 				}`,
 				ExpectError: regexp.MustCompile(`NestingSet blocks may not contain attributes of cty.DynamicPseudoType`),
 			},
@@ -400,10 +430,16 @@ func Test_Dynamic_Attribute_NestingModeSet_Invalid(t *testing.T) {
 				// Attributes with a nesting mode of `Set` are considered invalid by Terraform Core when containing a DynamicPseudoType.
 				// https://github.com/hashicorp/terraform/blob/a9b43f332ea2b8fcf152a74a60af1d3a4a26e5f7/internal/configs/configschema/internal_validate.go#L140-L148
 				Config: `resource "corner_dynamic_thing" "foo" {
-					attribute_with_dpt = [{
-						bar = "hello"
-						foo = 4
-					}]
+					attribute_with_dpt = [
+						{
+							bar = "hello"
+							foo = 4
+						},
+						{
+							bar = "world"
+							foo = 5
+						}
+					]
 				}`,
 				ExpectError: regexp.MustCompile(`NestingSet blocks may not contain attributes of cty.DynamicPseudoType`),
 			},
