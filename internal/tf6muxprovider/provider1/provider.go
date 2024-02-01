@@ -55,6 +55,6 @@ func (p *testProvider) DataSources(_ context.Context) []func() datasource.DataSo
 
 func (p *testProvider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
-		NewBoolFunction,
+		NewStringFunction,
 	}
 }

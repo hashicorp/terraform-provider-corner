@@ -16,7 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestBoolFunction_known(t *testing.T) {
+func TestFunctionString_known(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_8_0),
@@ -28,17 +28,17 @@ func TestBoolFunction_known(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::tf6muxprovider::bool(true)
+					value = provider::tf6muxprovider::string1("str1")
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownOutputValue("test", knownvalue.Bool(true)),
+					statecheck.ExpectKnownOutputValue("test", knownvalue.StringExact("str1")),
 				},
 			},
 		},
 	})
 }
 
-func TestBoolFunction_null(t *testing.T) {
+func TestFunctionString_null(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_8_0),
@@ -50,7 +50,7 @@ func TestBoolFunction_null(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::tf6muxprovider::bool(null)
+					value = provider::tf6muxprovider::string1(null)
 				}`,
 				ExpectError: regexp.MustCompile("Invalid function argument"),
 			},
@@ -58,7 +58,7 @@ func TestBoolFunction_null(t *testing.T) {
 	})
 }
 
-func TestBoolFunction_unknown(t *testing.T) {
+func TestFunctionString_unknown(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_8_0),
@@ -70,7 +70,7 @@ func TestBoolFunction_unknown(t *testing.T) {
 			{
 				Config: `
 				resource "terraform_data" "test" {
-					input = provider::tf6muxprovider::bool(true)
+					input = provider::tf6muxprovider::string1("str1")
 				}
 
 				output "test" {
@@ -82,7 +82,7 @@ func TestBoolFunction_unknown(t *testing.T) {
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownOutputValue("test", knownvalue.Bool(true)),
+					statecheck.ExpectKnownOutputValue("test", knownvalue.StringExact("str1")),
 				},
 			},
 		},
