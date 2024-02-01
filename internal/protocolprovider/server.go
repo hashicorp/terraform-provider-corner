@@ -9,6 +9,7 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
+
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
@@ -17,9 +18,11 @@ type server struct {
 	providerMetaSchema *tfprotov5.Schema
 	resourceSchemas    map[string]*tfprotov5.Schema
 	dataSourceSchemas  map[string]*tfprotov5.Schema
+	functions          map[string]*tfprotov5.Function
 
 	resourceRouter
 	dataSourceRouter
+	functionRouter
 
 	client *backend.Client
 }
@@ -59,6 +62,7 @@ func (s *server) GetProviderSchema(ctx context.Context, req *tfprotov5.GetProvid
 		ResourceSchemas:    s.resourceSchemas,
 		DataSourceSchemas:  s.dataSourceSchemas,
 		ServerCapabilities: s.serverCapabilities(),
+		Functions:          s.functions,
 	}, nil
 }
 
@@ -116,6 +120,22 @@ func Server() tfprotov5.ProviderServer {
 		},
 		dataSourceRouter: dataSourceRouter{
 			"corner_time": dataSourceTime{},
+		},
+		functions: map[string]*tfprotov5.Function{
+			"bool": {
+				Parameters: []*tfprotov5.FunctionParameter{
+					{
+						Name: "param",
+						Type: tftypes.Bool,
+					},
+				},
+				Return: &tfprotov5.FunctionReturn{
+					Type: tftypes.Bool,
+				},
+			},
+		},
+		functionRouter: functionRouter{
+			"bool": functionBool{},
 		},
 	}
 }
