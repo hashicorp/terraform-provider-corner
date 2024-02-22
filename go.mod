@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/hashicorp/go-memdb v1.3.4
-	github.com/hashicorp/terraform-plugin-framework v1.5.0
+	github.com/hashicorp/terraform-plugin-framework v1.5.1-0.20240222064911-3c7a391644c7
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.4.1
 	github.com/hashicorp/terraform-plugin-go v0.21.0
 	github.com/hashicorp/terraform-plugin-mux v0.14.0
