@@ -33,7 +33,7 @@ func (f BoolFunction) Definition(ctx context.Context, req function.DefinitionReq
 func (f BoolFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var arg bool
 
-	resp.Diagnostics.Append(req.Arguments.Get(ctx, &arg)...)
+	resp.Error = req.Arguments.Get(ctx, &arg)
 
-	resp.Diagnostics.Append(resp.Result.Set(ctx, arg)...)
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, arg))
 }

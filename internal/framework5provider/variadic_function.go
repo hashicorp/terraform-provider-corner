@@ -34,7 +34,7 @@ func (f VariadicFunction) Definition(ctx context.Context, req function.Definitio
 func (f VariadicFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var varg []string
 
-	resp.Diagnostics.Append(req.Arguments.Get(ctx, &varg)...)
+	resp.Error = req.Arguments.Get(ctx, &varg)
 
-	resp.Diagnostics.Append(resp.Result.Set(ctx, varg)...)
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, varg))
 }

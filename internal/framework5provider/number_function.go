@@ -34,7 +34,7 @@ func (f NumberFunction) Definition(ctx context.Context, req function.DefinitionR
 func (f NumberFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var arg *big.Float
 
-	resp.Diagnostics.Append(req.Arguments.Get(ctx, &arg)...)
+	resp.Error = req.Arguments.Get(ctx, &arg)
 
-	resp.Diagnostics.Append(resp.Result.Set(ctx, arg)...)
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, arg))
 }

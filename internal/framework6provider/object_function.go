@@ -48,7 +48,7 @@ func (f ObjectFunction) Run(ctx context.Context, req function.RunRequest, resp *
 		Attr2 *int64  `tfsdk:"attr2"`
 	}
 
-	resp.Diagnostics.Append(req.Arguments.Get(ctx, &arg)...)
+	resp.Error = req.Arguments.Get(ctx, &arg)
 
-	resp.Diagnostics.Append(resp.Result.Set(ctx, arg)...)
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, arg))
 }

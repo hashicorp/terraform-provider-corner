@@ -33,7 +33,7 @@ func (f Int64Function) Definition(ctx context.Context, req function.DefinitionRe
 func (f Int64Function) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var arg int64
 
-	resp.Diagnostics.Append(req.Arguments.Get(ctx, &arg)...)
+	resp.Error = req.Arguments.Get(ctx, &arg)
 
-	resp.Diagnostics.Append(resp.Result.Set(ctx, arg)...)
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, arg))
 }

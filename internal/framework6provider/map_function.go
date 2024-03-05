@@ -38,7 +38,7 @@ func (f MapFunction) Definition(ctx context.Context, req function.DefinitionRequ
 func (f MapFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var arg map[string]*string
 
-	resp.Diagnostics.Append(req.Arguments.Get(ctx, &arg)...)
+	resp.Error = req.Arguments.Get(ctx, &arg)
 
-	resp.Diagnostics.Append(resp.Result.Set(ctx, arg)...)
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, arg))
 }

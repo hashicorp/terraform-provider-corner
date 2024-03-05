@@ -33,7 +33,7 @@ func (f StringFunction) Definition(ctx context.Context, req function.DefinitionR
 func (f StringFunction) Run(ctx context.Context, req function.RunRequest, resp *function.RunResponse) {
 	var arg string
 
-	resp.Diagnostics.Append(req.Arguments.Get(ctx, &arg)...)
+	resp.Error = req.Arguments.Get(ctx, &arg)
 
-	resp.Diagnostics.Append(resp.Result.Set(ctx, arg)...)
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, arg))
 }
