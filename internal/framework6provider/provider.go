@@ -7,10 +7,16 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
+)
+
+var (
+	_ provider.ProviderWithFunctions = (*testProvider)(nil)
 )
 
 func New() provider.Provider {
@@ -52,4 +58,19 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 
 func (p *testProvider) DataSources(_ context.Context) []func() datasource.DataSource {
 	return nil
+}
+
+func (p *testProvider) Functions(ctx context.Context) []func() function.Function {
+	return []func() function.Function{
+		NewBoolFunction,
+		NewFloat64Function,
+		NewInt64Function,
+		NewListFunction,
+		NewMapFunction,
+		NewNumberFunction,
+		NewObjectFunction,
+		NewSetFunction,
+		NewStringFunction,
+		NewVariadicFunction,
+	}
 }
