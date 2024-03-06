@@ -19,7 +19,6 @@ func TestSchemaResource_basic(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `resource "framework_schema" "test" {}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -50,7 +49,6 @@ func TestSchemaResource_BoolAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					bool_attribute = true
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_schema.test", "bool_attribute", "true"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -71,7 +69,6 @@ func TestSchemaResource_BoolAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					bool_attribute = false
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_schema.test", "bool_attribute", "false"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -102,7 +99,6 @@ func TestSchemaResource_Float64Attribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					float64_attribute = 1234.5
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute", "1234.5"),
@@ -123,7 +119,6 @@ func TestSchemaResource_Float64Attribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					float64_attribute = 2234.5
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckResourceAttr("framework_schema.test", "float64_attribute", "2234.5"),
@@ -154,7 +149,6 @@ func TestSchemaResource_Int64Attribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					int64_attribute = 1234
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -175,7 +169,6 @@ func TestSchemaResource_Int64Attribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					int64_attribute = 2345
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -206,7 +199,6 @@ func TestSchemaResource_ListAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					list_attribute = ["value1"]
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -228,7 +220,6 @@ func TestSchemaResource_ListAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					list_attribute = ["value2"]
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -262,7 +253,6 @@ func TestSchemaResource_ListNestedBlock(t *testing.T) {
 						list_nested_block_attribute = "value1"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -286,7 +276,6 @@ func TestSchemaResource_ListNestedBlock(t *testing.T) {
 						list_nested_block_attribute = "value2"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -320,7 +309,6 @@ func TestSchemaResource_MapAttribute(t *testing.T) {
 						key1 = "value1"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -344,7 +332,6 @@ func TestSchemaResource_MapAttribute(t *testing.T) {
 						key1 = "value2"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -376,7 +363,6 @@ func TestSchemaResource_NumberAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					number_attribute = 1234.5
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -397,7 +383,6 @@ func TestSchemaResource_NumberAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					number_attribute = 2234.5
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -430,7 +415,6 @@ func TestSchemaResource_ObjectAttribute(t *testing.T) {
 						object_attribute_attribute = "value1"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -453,7 +437,6 @@ func TestSchemaResource_ObjectAttribute(t *testing.T) {
 						object_attribute_attribute = "value2"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -484,7 +467,6 @@ func TestSchemaResource_SetAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					set_attribute = ["value1"]
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -506,7 +488,6 @@ func TestSchemaResource_SetAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					set_attribute = ["value2"]
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -540,7 +521,6 @@ func TestSchemaResource_SetNestedBlock(t *testing.T) {
 						set_nested_block_attribute = "value1"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -566,7 +546,6 @@ func TestSchemaResource_SetNestedBlock(t *testing.T) {
 						set_nested_block_attribute = "value2"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -602,7 +581,6 @@ func TestSchemaResource_SingleNestedBlock(t *testing.T) {
 						single_nested_block_attribute = "value1"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -625,7 +603,6 @@ func TestSchemaResource_SingleNestedBlock(t *testing.T) {
 						single_nested_block_attribute = "value2"
 					}
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -656,7 +633,6 @@ func TestSchemaResource_StringAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					string_attribute = "value1"
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),
@@ -677,7 +653,6 @@ func TestSchemaResource_StringAttribute(t *testing.T) {
 				Config: `resource "framework_schema" "test" {
 					string_attribute = "value2"
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckNoResourceAttr("framework_schema.test", "bool_attribute"),
 					resource.TestCheckNoResourceAttr("framework_schema.test", "float64_attribute"),

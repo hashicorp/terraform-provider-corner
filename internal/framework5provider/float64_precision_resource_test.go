@@ -24,7 +24,6 @@ func TestSchemaResource_Float64Attribute_Precision(t *testing.T) {
 				Config: `resource "framework_float64_precision" "test" {
 					float64_attribute = 1 - 0.99
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_float64_precision.test", "float64_attribute", "0.010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003"),
 				),
@@ -33,7 +32,6 @@ func TestSchemaResource_Float64Attribute_Precision(t *testing.T) {
 				Config: `resource "framework_float64_precision" "test" {
 					float64_attribute = 1 - 0.98
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_float64_precision.test", "float64_attribute", "0.020000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000006"),
 				),
@@ -54,7 +52,6 @@ func TestSchemaResource_Float64Attribute_Precision_Plan(t *testing.T) {
 				Config: `resource "framework_float64_precision" "test" {
 					float64_attribute = 0.01
 				}`,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_float64_precision.test", "float64_attribute", "0.01"),
 				),
@@ -68,7 +65,6 @@ func TestSchemaResource_Float64Attribute_Precision_Plan(t *testing.T) {
 						plancheck.ExpectNonEmptyPlan(),
 					},
 				},
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr("framework_float64_precision.test", "float64_attribute", "0.010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003"),
 				),

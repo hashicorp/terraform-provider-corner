@@ -16,7 +16,6 @@ func TestAccResourceUser(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: configResourceBasic,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestMatchResourceAttr("tf5to6provider_user.example", "name", regexp.MustCompile("^Exam")),
 				),

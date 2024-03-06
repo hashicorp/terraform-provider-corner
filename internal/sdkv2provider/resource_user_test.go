@@ -17,7 +17,6 @@ func testAccResourceUser(t *testing.T) resource.TestCase {
 		Steps: []resource.TestStep{
 			{
 				Config: configResourceBasic,
-				//nolint:staticcheck //Deprecated functions
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestMatchResourceAttr(
 						"corner_user.foo", "name", regexp.MustCompile("^For")),

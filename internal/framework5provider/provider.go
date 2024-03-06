@@ -15,6 +15,10 @@ import (
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
+var (
+	_ provider.ProviderWithFunctions = (*testProvider)(nil)
+)
+
 func New() provider.Provider {
 	return &testProvider{}
 }
