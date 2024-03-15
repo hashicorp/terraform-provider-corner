@@ -46,6 +46,70 @@ func TestObjectFunction_known(t *testing.T) {
 	})
 }
 
+// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/955
+func TestObjectFunction_Known_AttributeRequired_Error(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_8_0),
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::object({
+    					"attr1" = "value1"
+					})
+				}`,
+				// This error should always remain with the existing definition
+				// as provider developers may be reliant and desire this
+				// Terraform behavior. If new framework functionality is added
+				// to support optional object attributes, it should be tested
+				// separately.
+				ExpectError: regexp.MustCompile(`attribute "attr2" is required`),
+			},
+		},
+	})
+}
+
+// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/955
+func TestObjectFunction_Known_AttributeRequired_Null(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_8_0),
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				// AllowNullValue being disabled should not affect this
+				// configuration being valid. That setting only refers to the
+				// object itself.
+				Config: `
+				output "test" {
+					value = provider::framework::object({
+    					"attr1" = "value1"
+    					"attr2" = null
+					})
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownOutputValue("test", knownvalue.ObjectExact(
+						map[string]knownvalue.Check{
+							"attr1": knownvalue.StringExact("value1"),
+							"attr2": knownvalue.Null(),
+						},
+					)),
+				},
+			},
+		},
+	})
+}
+
 func TestObjectFunction_null(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
