@@ -24,7 +24,9 @@ func (f StringFunction) Metadata(ctx context.Context, req function.MetadataReque
 func (f StringFunction) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Parameters: []function.Parameter{
-			function.StringParameter{},
+			function.StringParameter{
+				Name: "string_param",
+			},
 		},
 		Return: function.StringReturn{},
 	}

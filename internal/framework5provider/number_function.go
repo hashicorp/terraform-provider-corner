@@ -25,7 +25,9 @@ func (f NumberFunction) Metadata(ctx context.Context, req function.MetadataReque
 func (f NumberFunction) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Parameters: []function.Parameter{
-			function.NumberParameter{},
+			function.NumberParameter{
+				Name: "number_param",
+			},
 		},
 		Return: function.NumberReturn{},
 	}

@@ -27,6 +27,7 @@ func (f SetFunction) Definition(ctx context.Context, req function.DefinitionRequ
 		Parameters: []function.Parameter{
 			function.SetParameter{
 				ElementType: types.StringType,
+				Name:        "set_param",
 			},
 		},
 		Return: function.SetReturn{

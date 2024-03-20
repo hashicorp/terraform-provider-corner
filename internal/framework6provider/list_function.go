@@ -27,6 +27,7 @@ func (f ListFunction) Definition(ctx context.Context, req function.DefinitionReq
 		Parameters: []function.Parameter{
 			function.ListParameter{
 				ElementType: types.StringType,
+				Name:        "list_param",
 			},
 		},
 		Return: function.ListReturn{

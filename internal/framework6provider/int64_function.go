@@ -24,7 +24,9 @@ func (f Int64Function) Metadata(ctx context.Context, req function.MetadataReques
 func (f Int64Function) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Parameters: []function.Parameter{
-			function.Int64Parameter{},
+			function.Int64Parameter{
+				Name: "int64_param",
+			},
 		},
 		Return: function.Int64Return{},
 	}
