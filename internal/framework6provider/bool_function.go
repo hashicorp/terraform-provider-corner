@@ -24,7 +24,9 @@ func (f BoolFunction) Metadata(ctx context.Context, req function.MetadataRequest
 func (f BoolFunction) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Parameters: []function.Parameter{
-			function.BoolParameter{},
+			function.BoolParameter{
+				Name: "bool_param",
+			},
 		},
 		Return: function.BoolReturn{},
 	}

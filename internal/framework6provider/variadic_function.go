@@ -27,7 +27,9 @@ func (f VariadicFunction) Definition(ctx context.Context, req function.Definitio
 		Return: function.ListReturn{
 			ElementType: types.StringType,
 		},
-		VariadicParameter: function.StringParameter{},
+		VariadicParameter: function.StringParameter{
+			Name: "variadic_param",
+		},
 	}
 }
 

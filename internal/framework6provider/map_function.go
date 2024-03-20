@@ -27,6 +27,7 @@ func (f MapFunction) Definition(ctx context.Context, req function.DefinitionRequ
 		Parameters: []function.Parameter{
 			function.MapParameter{
 				ElementType: types.StringType,
+				Name:        "map_param",
 			},
 		},
 		Return: function.MapReturn{

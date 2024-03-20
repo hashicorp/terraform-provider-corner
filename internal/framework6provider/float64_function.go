@@ -24,7 +24,9 @@ func (f Float64Function) Metadata(ctx context.Context, req function.MetadataRequ
 func (f Float64Function) Definition(ctx context.Context, req function.DefinitionRequest, resp *function.DefinitionResponse) {
 	resp.Definition = function.Definition{
 		Parameters: []function.Parameter{
-			function.Float64Parameter{},
+			function.Float64Parameter{
+				Name: "float64_param",
+			},
 		},
 		Return: function.Float64Return{},
 	}

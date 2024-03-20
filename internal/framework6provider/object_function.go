@@ -31,6 +31,7 @@ func (f ObjectFunction) Definition(ctx context.Context, req function.DefinitionR
 					"attr1": types.StringType,
 					"attr2": types.Int64Type,
 				},
+				Name: "object_param",
 			},
 		},
 		Return: function.ObjectReturn{
