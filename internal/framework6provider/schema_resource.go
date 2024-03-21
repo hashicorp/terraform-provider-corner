@@ -33,6 +33,9 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"bool_attribute": schema.BoolAttribute{
 				Optional: true,
 			},
+			"dynamic_attribute": schema.DynamicAttribute{
+				Optional: true,
+			},
 			"float64_attribute": schema.Float64Attribute{
 				Optional: true,
 			},
@@ -182,6 +185,7 @@ func (r SchemaResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 type SchemaResourceModel struct {
 	BoolAttribute         types.Bool    `tfsdk:"bool_attribute"`
+	DynamicAttribute      types.Dynamic `tfsdk:"dynamic_attribute"`
 	Float64Attribute      types.Float64 `tfsdk:"float64_attribute"`
 	Id                    types.String  `tfsdk:"id"`
 	Int64Attribute        types.Int64   `tfsdk:"int64_attribute"`
