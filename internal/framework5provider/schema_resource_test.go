@@ -96,6 +96,106 @@ func TestSchemaResource_BoolAttribute(t *testing.T) {
 	})
 }
 
+func TestSchemaResource_DynamicAttribute(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "framework_schema" "test" {
+					dynamic_attribute = "value1"
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("dynamic_attribute"), knownvalue.StringExact("value1")),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: `resource "framework_schema" "test" {
+					dynamic_attribute = tolist(["value1", "value2"])
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("dynamic_attribute"),
+						knownvalue.ListExact(
+							[]knownvalue.Check{
+								knownvalue.StringExact("value1"),
+								knownvalue.StringExact("value2"),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: `resource "framework_schema" "test" {
+					dynamic_attribute = {
+						"attribute_one": "value1",
+						"attribute_two": false,
+						"attribute_three": 1234.5,
+						"attribute_four": [true, 1234.5],
+					}
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("dynamic_attribute"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"attribute_one":   knownvalue.StringExact("value1"),
+								"attribute_two":   knownvalue.Bool(false),
+								"attribute_three": knownvalue.NumberExact(big.NewFloat(1234.5)),
+								// ListExact can be used despite the underlying type being a tuple[bool, number]
+								"attribute_four": knownvalue.ListExact(
+									[]knownvalue.Check{
+										knownvalue.Bool(true),
+										knownvalue.NumberExact(big.NewFloat(1234.5)),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
 func TestSchemaResource_Float64Attribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
