@@ -64,6 +64,7 @@ func (p *testProvider) DataSources(_ context.Context) []func() datasource.DataSo
 func (p *testProvider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
 		NewBoolFunction,
+		NewDynamicFunction,
 		NewFloat64Function,
 		NewInt64Function,
 		NewListFunction,
@@ -73,5 +74,6 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 		NewSetFunction,
 		NewStringFunction,
 		NewVariadicFunction,
+		NewDynamicVariadicFunction,
 	}
 }
