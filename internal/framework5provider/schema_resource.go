@@ -20,7 +20,7 @@ func NewSchemaResource() resource.Resource {
 	return &SchemaResource{}
 }
 
-// SchemaResource is for testing all schema types.
+// SchemaResource is for testing all schema types, excluding dynamic schema types. (see `DynamicSchemaResource`)
 type SchemaResource struct{}
 
 func (r SchemaResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
@@ -31,9 +31,6 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"bool_attribute": schema.BoolAttribute{
-				Optional: true,
-			},
-			"dynamic_attribute": schema.DynamicAttribute{
 				Optional: true,
 			},
 			"float64_attribute": schema.Float64Attribute{
@@ -147,7 +144,6 @@ func (r SchemaResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 type SchemaResourceModel struct {
 	BoolAttribute     types.Bool    `tfsdk:"bool_attribute"`
-	DynamicAttribute  types.Dynamic `tfsdk:"dynamic_attribute"`
 	Float64Attribute  types.Float64 `tfsdk:"float64_attribute"`
 	Id                types.String  `tfsdk:"id"`
 	Int64Attribute    types.Int64   `tfsdk:"int64_attribute"`
