@@ -73,5 +73,6 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 		NewSetFunction,
 		NewStringFunction,
 		NewVariadicFunction,
+		NewDynamicVariadicFunction,
 	}
 }
