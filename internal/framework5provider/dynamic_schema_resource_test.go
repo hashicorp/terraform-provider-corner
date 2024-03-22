@@ -19,7 +19,7 @@ import (
 func TestDynamicSchemaResource_null(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// A bug in Terraform v0.12.x results in dynamic null values always causing a diff during plan.
+			// A bug in Terraform v0.12.x results in a dynamic null value incorrectly causing a diff during plan.
 			// This test will always fail on v0.12.x due to consistently having a non-empty plan after apply.
 			// The bug originated from go-cty and was resolved in the Terraform v0.13.0 release.
 			//
