@@ -73,9 +73,6 @@ func (r DynamicEdgeResource) Read(ctx context.Context, req resource.ReadRequest,
 		return
 	}
 
-	// Refreshed to a string type
-	data.ComputedDynamicTypeChanges = types.DynamicValue(types.StringValue("it's a string!"))
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
