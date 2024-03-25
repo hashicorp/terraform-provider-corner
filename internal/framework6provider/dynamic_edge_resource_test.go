@@ -4,7 +4,6 @@
 package framework
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -15,8 +14,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-// TODO: The computed dynamic value type should be allowed to change, bug will be fixed with:
-// - https://github.com/hashicorp/terraform-plugin-framework/issues/969
+// Ref: https://github.com/hashicorp/terraform-plugin-framework/issues/969
+// This test confirms that dynamic computed attributes are marked as unknown, both value AND type.
+// Dynamic computed attributes can change the type after plan in this scenario.
 func TestDynamicEdge_computed_type_changes(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
@@ -37,12 +37,11 @@ func TestDynamicEdge_computed_type_changes(t *testing.T) {
 				Config: `resource "framework_dynamic_edge" "test" {
 					required_dynamic = "new value"
 				}`,
-				// ConfigStateChecks: []statecheck.StateCheck{
-				// 	statecheck.ExpectKnownValue("framework_dynamic_edge.test", tfjsonpath.New("required_dynamic"), knownvalue.StringExact("new value")),
-				// 	// After update, it's a number!
-				// 	statecheck.ExpectKnownValue("framework_dynamic_edge.test", tfjsonpath.New("computed_dynamic_type_changes"), knownvalue.Int64Exact(200)),
-				// },
-				ExpectError: regexp.MustCompile(`.computed_dynamic_type_changes: wrong final value type:\sbool required.`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_dynamic_edge.test", tfjsonpath.New("required_dynamic"), knownvalue.StringExact("new value")),
+					// After update, it's a number!
+					statecheck.ExpectKnownValue("framework_dynamic_edge.test", tfjsonpath.New("computed_dynamic_type_changes"), knownvalue.Int64Exact(200)),
+				},
 			},
 		},
 	})
