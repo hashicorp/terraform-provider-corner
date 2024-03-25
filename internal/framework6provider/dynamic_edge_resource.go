@@ -32,7 +32,7 @@ func (r DynamicEdgeResource) Schema(_ context.Context, _ resource.SchemaRequest,
 			"required_dynamic": schema.DynamicAttribute{
 				Required: true,
 			},
-			// This computed dynamic attribute changes type during refresh
+			// This computed dynamic attribute changes type during update
 			"computed_dynamic_type_changes": schema.DynamicAttribute{
 				Computed: true,
 			},
