@@ -42,7 +42,7 @@ func TestDynamicEdge_computed_type_changes(t *testing.T) {
 				// 	// After update, it's a number!
 				// 	statecheck.ExpectKnownValue("framework_dynamic_edge.test", tfjsonpath.New("computed_dynamic_type_changes"), knownvalue.Int64Exact(200)),
 				// },
-				ExpectError: regexp.MustCompile(`unexpected new value: .computed_dynamic_type_changes: wrong final value type:\nbool required.`),
+				ExpectError: regexp.MustCompile(`.computed_dynamic_type_changes: wrong final value type:\sbool required.`),
 			},
 		},
 	})
