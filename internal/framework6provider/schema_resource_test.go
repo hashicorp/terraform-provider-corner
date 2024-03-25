@@ -188,8 +188,7 @@ func TestSchemaResource_DynamicAttribute(t *testing.T) {
 								"attribute_one":   knownvalue.StringExact("value1"),
 								"attribute_two":   knownvalue.Bool(false),
 								"attribute_three": knownvalue.NumberExact(big.NewFloat(1234.5)),
-								// ListExact can be used despite the underlying type being a tuple[bool, number]
-								"attribute_four": knownvalue.ListExact(
+								"attribute_four": knownvalue.TupleExact(
 									[]knownvalue.Check{
 										knownvalue.Bool(true),
 										knownvalue.NumberExact(big.NewFloat(1234.5)),

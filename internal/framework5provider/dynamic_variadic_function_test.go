@@ -36,9 +36,8 @@ func TestDynamicVariadicFunction_value_zero(t *testing.T) {
 					value = provider::framework::dynamic_variadic()
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					// Since no arguments were passed in to determine the type, the list will be dynamic
-					cornertesting.ExpectOutputType("test", cty.List(cty.DynamicPseudoType)),
-					statecheck.ExpectKnownOutputValue("test", knownvalue.ListExact([]knownvalue.Check{})),
+					cornertesting.ExpectOutputType("test", cty.Tuple([]cty.Type{})),
+					statecheck.ExpectKnownOutputValue("test", knownvalue.TupleExact([]knownvalue.Check{})),
 				},
 			},
 		},
@@ -61,9 +60,15 @@ func TestDynamicVariadicFunction_value_one(t *testing.T) {
 					value = provider::framework::dynamic_variadic("one")
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					cornertesting.ExpectOutputType("test", cty.List(cty.String)),
+					cornertesting.ExpectOutputType("test",
+						cty.Tuple(
+							[]cty.Type{
+								cty.String,
+							},
+						),
+					),
 					statecheck.ExpectKnownOutputValue("test",
-						knownvalue.ListExact(
+						knownvalue.TupleExact(
 							[]knownvalue.Check{
 								knownvalue.StringExact("one"),
 							},
@@ -91,9 +96,16 @@ func TestDynamicVariadicFunction_value_multiple_same_type_primitive(t *testing.T
 					value = provider::framework::dynamic_variadic("one", "two")
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					cornertesting.ExpectOutputType("test", cty.List(cty.String)),
+					cornertesting.ExpectOutputType("test",
+						cty.Tuple(
+							[]cty.Type{
+								cty.String,
+								cty.String,
+							},
+						),
+					),
 					statecheck.ExpectKnownOutputValue("test",
-						knownvalue.ListExact(
+						knownvalue.TupleExact(
 							[]knownvalue.Check{
 								knownvalue.StringExact("one"),
 								knownvalue.StringExact("two"),
@@ -125,18 +137,24 @@ func TestDynamicVariadicFunction_value_multiple_same_type_complex(t *testing.T) 
 					)
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					cornertesting.ExpectOutputType(
-						"test",
-						cty.List(
-							cty.Object(map[string]cty.Type{
-								"a": cty.Number,
-								"b": cty.Bool,
-								"c": cty.String,
-							}),
+					cornertesting.ExpectOutputType("test",
+						cty.Tuple(
+							[]cty.Type{
+								cty.Object(map[string]cty.Type{
+									"a": cty.Number,
+									"b": cty.Bool,
+									"c": cty.String,
+								}),
+								cty.Object(map[string]cty.Type{
+									"a": cty.Number,
+									"b": cty.Bool,
+									"c": cty.String,
+								}),
+							},
 						),
 					),
 					statecheck.ExpectKnownOutputValue("test",
-						knownvalue.ListExact(
+						knownvalue.TupleExact(
 							[]knownvalue.Check{
 								knownvalue.ObjectExact(
 									map[string]knownvalue.Check{
@@ -161,40 +179,46 @@ func TestDynamicVariadicFunction_value_multiple_same_type_complex(t *testing.T) 
 	})
 }
 
-// This test can't be completed until the `dynamic_variadic` function implementation uses a tuple return.
-// A `terraform-plugin-testing` bug is causing a panic when an output value is a tuple.
-// 	- https://github.com/hashicorp/terraform-plugin-testing/issues/310
-//
-// TODO: Uncomment this test when the upstream tuple bug is fixed and the function implementation switches to using a tuple.
-//
-// func TestDynamicVariadicFunction_value_multiple_different_type(t *testing.T) {
-// 	resource.UnitTest(t, resource.TestCase{
-// 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-// 			// TODO: Replace with the stable v1.8.0 release when available
-// 			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
-// 		},
-// 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-// 			"framework": providerserver.NewProtocol5WithError(New()),
-// 		},
-// 		Steps: []resource.TestStep{
-// 			{
-// 				Config: `
-// 				output "test" {
-// 					value = provider::framework::dynamic_variadic(true, "string", 1234.5)
-// 				}`,
-// 				ConfigStateChecks: []statecheck.StateCheck{
-// 					cornertesting.ExpectOutputType("test", cty.Tuple([]cty.Type{cty.Bool, cty.String, cty.Number})),
-// 					// ListExact can be used despite the underlying type being a tuple[bool, string, number]
-// 					statecheck.ExpectKnownOutputValue("test", knownvalue.ListExact([]knownvalue.Check{
-// 						knownvalue.Bool(true),
-// 						knownvalue.StringExact("string"),
-// 						knownvalue.NumberExact(big.NewFloat(1234.5)),
-// 					})),
-// 				},
-// 			},
-// 		},
-// 	})
-// }
+func TestDynamicVariadicFunction_value_multiple_different_type(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// TODO: Replace with the stable v1.8.0 release when available
+			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::dynamic_variadic(true, "string", 1234.5)
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					cornertesting.ExpectOutputType(
+						"test",
+						cty.Tuple(
+							[]cty.Type{
+								cty.Bool,
+								cty.String,
+								cty.Number,
+							},
+						),
+					),
+					statecheck.ExpectKnownOutputValue("test",
+						knownvalue.TupleExact(
+							[]knownvalue.Check{
+								knownvalue.Bool(true),
+								knownvalue.StringExact("string"),
+								knownvalue.NumberExact(big.NewFloat(1234.5)),
+							},
+						),
+					),
+				},
+			},
+		},
+	})
+}
 
 func TestDynamicVariadicFunction_null(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
@@ -268,8 +292,15 @@ func TestDynamicVariadicFunction_unknown(t *testing.T) {
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
+					cornertesting.ExpectOutputType("test",
+						cty.Tuple(
+							[]cty.Type{
+								cty.String,
+							},
+						),
+					),
 					statecheck.ExpectKnownOutputValue("test",
-						knownvalue.ListExact(
+						knownvalue.TupleExact(
 							[]knownvalue.Check{
 								knownvalue.StringExact("test-value"),
 							},

@@ -49,7 +49,7 @@ func (e expectOutputType) CheckState(ctx context.Context, req statecheck.CheckSt
 	}
 
 	if !output.Type.Equals(e.expectedType) {
-		resp.Error = fmt.Errorf("expected %q output type to be %q, got %q", e.outputAddress, output.Type.FriendlyName(), e.expectedType.FriendlyName())
+		resp.Error = fmt.Errorf("expected %q output type to be %q, got %q", e.outputAddress, e.expectedType.FriendlyName(), output.Type.FriendlyName())
 	}
 }
 

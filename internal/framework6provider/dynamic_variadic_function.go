@@ -37,22 +37,19 @@ func (f DynamicVariadicFunction) Run(ctx context.Context, req function.RunReques
 
 	resp.Error = req.Arguments.Get(ctx, &varg)
 
-	dynVals := make([]attr.Value, 0)
+	tupleTypes := make([]attr.Type, 0)
+	tupleValues := make([]attr.Value, 0)
 
 	for _, arg := range varg {
-		dynVals = append(dynVals, types.DynamicValue(arg.UnderlyingValue()))
+		tupleTypes = append(tupleTypes, arg.UnderlyingValue().Type(ctx))
+		tupleValues = append(tupleValues, arg.UnderlyingValue())
 	}
 
-	// Despite types.List not fully supporting dynamic types, in this restricted scenario it will work fine
-	// as long as all the dynamic types coming in are the same.
-	//
-	// TODO: Switch this to a tuple once `terraform-plugin-testing` bug has been fixed with Tuple output:
-	// 	- https://github.com/hashicorp/terraform-plugin-testing/issues/310
-	listReturn, diags := types.ListValue(types.DynamicType, dynVals)
+	tupleReturn, diags := types.TupleValue(tupleTypes, tupleValues)
 	if diags.HasError() {
 		resp.Error = function.FuncErrorFromDiags(ctx, diags)
 		return
 	}
 
-	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, types.DynamicValue(listReturn)))
+	resp.Error = function.ConcatFuncErrors(resp.Error, resp.Result.Set(ctx, types.DynamicValue(tupleReturn)))
 }
