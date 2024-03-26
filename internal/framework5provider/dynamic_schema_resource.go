@@ -6,6 +6,7 @@ package framework
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
@@ -36,11 +37,26 @@ func (r DynamicSchemaResource) Schema(_ context.Context, _ resource.SchemaReques
 			"dynamic_attribute": schema.DynamicAttribute{
 				Optional: true,
 			},
+			"object_attribute_with_dynamic": schema.ObjectAttribute{
+				AttributeTypes: map[string]attr.Type{
+					"dynamic_attribute": types.DynamicType,
+				},
+				Optional: true,
+			},
 			// id attribute is required for acceptance testing.
 			"id": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
 					stringplanmodifier.UseStateForUnknown(),
+				},
+			},
+		},
+		Blocks: map[string]schema.Block{
+			"single_nested_block_with_dynamic": schema.SingleNestedBlock{
+				Attributes: map[string]schema.Attribute{
+					"dynamic_attribute": schema.DynamicAttribute{
+						Optional: true,
+					},
 				},
 			},
 		},
@@ -89,6 +105,8 @@ func (r DynamicSchemaResource) Delete(ctx context.Context, req resource.DeleteRe
 }
 
 type DynamicSchemaResourceModel struct {
-	DynamicAttribute types.Dynamic `tfsdk:"dynamic_attribute"`
-	Id               types.String  `tfsdk:"id"`
+	DynamicAttribute             types.Dynamic `tfsdk:"dynamic_attribute"`
+	ObjectAttributeWithDynamic   types.Object  `tfsdk:"object_attribute_with_dynamic"`
+	SingleNestedBlockWithDynamic types.Object  `tfsdk:"single_nested_block_with_dynamic"`
+	Id                           types.String  `tfsdk:"id"`
 }
