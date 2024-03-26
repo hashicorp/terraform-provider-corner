@@ -72,6 +72,7 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 		NewMapFunction,
 		NewNumberFunction,
 		NewObjectFunction,
+		NewObjectWithDynamicFunction,
 		NewSetFunction,
 		NewStringFunction,
 		NewVariadicFunction,
