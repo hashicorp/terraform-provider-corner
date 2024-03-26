@@ -51,7 +51,7 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewSchemaResource,
 		NewDynamicSchemaResource,
-		NewDynamicEdgeResource,
+		NewDynamicComputedTypeChangeResource,
 		NewTimeoutsResource,
 		NewUserResource,
 		NewFloat64PrecisionResource,

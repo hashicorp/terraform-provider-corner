@@ -13,20 +13,21 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ resource.Resource = DynamicEdgeResource{}
+var _ resource.Resource = DynamicComputedTypeChangeResource{}
 
-func NewDynamicEdgeResource() resource.Resource {
-	return &DynamicEdgeResource{}
+func NewDynamicComputedTypeChangeResource() resource.Resource {
+	return &DynamicComputedTypeChangeResource{}
 }
 
-// DynamicEdgeResource is for testing specific scenarios for dynamic schema types.
-type DynamicEdgeResource struct{}
+// DynamicComputedTypeChangeResource is for testing the ability of a computed dynamic attribute type to change on apply (update) when unknown
+// Ref: https://github.com/hashicorp/terraform-plugin-framework/issues/969
+type DynamicComputedTypeChangeResource struct{}
 
-func (r DynamicEdgeResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_dynamic_edge"
+func (r DynamicComputedTypeChangeResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_dynamic_computed_type_change"
 }
 
-func (r DynamicEdgeResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r DynamicComputedTypeChangeResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"required_dynamic": schema.DynamicAttribute{
@@ -47,8 +48,8 @@ func (r DynamicEdgeResource) Schema(_ context.Context, _ resource.SchemaRequest,
 	}
 }
 
-func (r DynamicEdgeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var data DynamicEdgeResourceModel
+func (r DynamicComputedTypeChangeResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+	var data DynamicComputedTypeChangeResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -64,8 +65,8 @@ func (r DynamicEdgeResource) Create(ctx context.Context, req resource.CreateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r DynamicEdgeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
-	var data DynamicEdgeResourceModel
+func (r DynamicComputedTypeChangeResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+	var data DynamicComputedTypeChangeResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
 
@@ -76,8 +77,8 @@ func (r DynamicEdgeResource) Read(ctx context.Context, req resource.ReadRequest,
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r DynamicEdgeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var data DynamicEdgeResourceModel
+func (r DynamicComputedTypeChangeResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+	var data DynamicComputedTypeChangeResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
 
@@ -91,10 +92,10 @@ func (r DynamicEdgeResource) Update(ctx context.Context, req resource.UpdateRequ
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r DynamicEdgeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r DynamicComputedTypeChangeResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 }
 
-type DynamicEdgeResourceModel struct {
+type DynamicComputedTypeChangeResourceModel struct {
 	RequiredDynamic            types.Dynamic `tfsdk:"required_dynamic"`
 	ComputedDynamicTypeChanges types.Dynamic `tfsdk:"computed_dynamic_type_changes"`
 	Id                         types.String  `tfsdk:"id"`
