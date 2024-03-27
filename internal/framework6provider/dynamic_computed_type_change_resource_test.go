@@ -18,7 +18,7 @@ import (
 // Ref: https://github.com/hashicorp/terraform-plugin-framework/issues/969
 // This test confirms that dynamic computed attributes are marked as unknown, both value AND type.
 // Dynamic computed attributes can change the type after plan in this scenario.
-func TestDynamicTypeChangeOnUpdate(t *testing.T) {
+func TestDynamicComputedTypeChange(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
