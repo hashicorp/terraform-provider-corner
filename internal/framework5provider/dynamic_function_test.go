@@ -4,6 +4,7 @@
 package framework
 
 import (
+	"math/big"
 	"regexp"
 	"testing"
 
@@ -15,9 +16,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
+	"github.com/hashicorp/terraform-provider-corner/internal/cornertesting"
+	"github.com/zclconf/go-cty/cty"
 )
 
-func TestObjectFunction_known(t *testing.T) {
+func TestDynamicFunction_known_primitive(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// TODO: Replace with the stable v1.8.0 release when available
@@ -30,28 +33,18 @@ func TestObjectFunction_known(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::framework::object({
-    					"attr1" = "value1",
-    					"attr2" = 123,
-					})
+					value = provider::framework::dynamic("test-value")
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownOutputValue("test", knownvalue.ObjectExact(
-						map[string]knownvalue.Check{
-							"attr1": knownvalue.StringExact("value1"),
-							"attr2": knownvalue.Int64Exact(123),
-						},
-					)),
+					cornertesting.ExpectOutputType("test", cty.String),
+					statecheck.ExpectKnownOutputValue("test", knownvalue.StringExact("test-value")),
 				},
 			},
 		},
 	})
 }
 
-// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/955
-func TestObjectFunction_Known_AttributeRequired_Error(t *testing.T) {
-	t.Parallel()
-
+func TestDynamicFunction_known_collection(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// TODO: Replace with the stable v1.8.0 release when available
@@ -64,57 +57,26 @@ func TestObjectFunction_Known_AttributeRequired_Error(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::framework::object({
-    					"attr1" = "value1"
-					})
-				}`,
-				// This error should always remain with the existing definition
-				// as provider developers may be reliant and desire this
-				// Terraform behavior. If new framework functionality is added
-				// to support optional object attributes, it should be tested
-				// separately.
-				ExpectError: regexp.MustCompile(`attribute "attr2" is required`),
-			},
-		},
-	})
-}
-
-// Reference: https://github.com/hashicorp/terraform-plugin-framework/issues/955
-func TestObjectFunction_Known_AttributeRequired_Null(t *testing.T) {
-	resource.UnitTest(t, resource.TestCase{
-		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Replace with the stable v1.8.0 release when available
-			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
-		},
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
-		},
-		Steps: []resource.TestStep{
-			{
-				// AllowNullValue being disabled should not affect this
-				// configuration being valid. That setting only refers to the
-				// object itself.
-				Config: `
-				output "test" {
-					value = provider::framework::object({
-    					"attr1" = "value1"
-    					"attr2" = null
-					})
+					value = provider::framework::dynamic(tolist([true, false]))
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownOutputValue("test", knownvalue.ObjectExact(
-						map[string]knownvalue.Check{
-							"attr1": knownvalue.StringExact("value1"),
-							"attr2": knownvalue.Null(),
-						},
-					)),
+					cornertesting.ExpectOutputType("test", cty.List(cty.Bool)),
+					statecheck.ExpectKnownOutputValue(
+						"test",
+						knownvalue.ListExact(
+							[]knownvalue.Check{
+								knownvalue.Bool(true),
+								knownvalue.Bool(false),
+							},
+						),
+					),
 				},
 			},
 		},
 	})
 }
 
-func TestObjectFunction_null(t *testing.T) {
+func TestDynamicFunction_known_structural(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// TODO: Replace with the stable v1.8.0 release when available
@@ -127,7 +89,53 @@ func TestObjectFunction_null(t *testing.T) {
 			{
 				Config: `
 				output "test" {
-					value = provider::framework::object(null)
+					value = provider::framework::dynamic({
+						"attr1": "hello",
+						"attr2": 1234.5,
+						"attr3": true,
+					})
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					cornertesting.ExpectOutputType(
+						"test",
+						cty.Object(
+							map[string]cty.Type{
+								"attr1": cty.String,
+								"attr2": cty.Number,
+								"attr3": cty.Bool,
+							},
+						),
+					),
+					statecheck.ExpectKnownOutputValue(
+						"test",
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"attr1": knownvalue.StringExact("hello"),
+								"attr2": knownvalue.NumberExact(big.NewFloat(1234.5)),
+								"attr3": knownvalue.Bool(true),
+							},
+						),
+					),
+				},
+			},
+		},
+	})
+}
+
+func TestDynamicFunction_null(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// TODO: Replace with the stable v1.8.0 release when available
+			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::dynamic(null)
 				}`,
 				ExpectError: regexp.MustCompile("Invalid function argument"),
 			},
@@ -135,7 +143,33 @@ func TestObjectFunction_null(t *testing.T) {
 	})
 }
 
-func TestObjectFunction_unknown(t *testing.T) {
+func TestDynamicFunction_typed_null(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// TODO: Replace with the stable v1.8.0 release when available
+			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::dynamic(var.typed_null)
+				}
+				
+				variable "typed_null" {
+					type = string
+					default = null
+				}`,
+				ExpectError: regexp.MustCompile("Invalid function argument"),
+			},
+		},
+	})
+}
+
+func TestDynamicFunction_unknown(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// TODO: Replace with the stable v1.8.0 release when available
@@ -148,10 +182,7 @@ func TestObjectFunction_unknown(t *testing.T) {
 			{
 				Config: `
 				resource "terraform_data" "test" {
-					input = provider::framework::object({
-    					"attr1" = "value1",
-    					"attr2" = 123,
-					})
+					input = provider::framework::dynamic(toset(["hello", "world"]))
 				}
 
 				output "test" {
@@ -163,12 +194,16 @@ func TestObjectFunction_unknown(t *testing.T) {
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownOutputValue("test", knownvalue.ObjectExact(
-						map[string]knownvalue.Check{
-							"attr1": knownvalue.StringExact("value1"),
-							"attr2": knownvalue.Int64Exact(123),
-						},
-					)),
+					cornertesting.ExpectOutputType("test", cty.Set(cty.String)),
+					statecheck.ExpectKnownOutputValue(
+						"test",
+						knownvalue.SetExact(
+							[]knownvalue.Check{
+								knownvalue.StringExact("hello"),
+								knownvalue.StringExact("world"),
+							},
+						),
+					),
 				},
 			},
 		},

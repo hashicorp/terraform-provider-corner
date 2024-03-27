@@ -20,7 +20,7 @@ func NewSchemaResource() resource.Resource {
 	return &SchemaResource{}
 }
 
-// SchemaResource is for testing all schema types.
+// SchemaResource is for testing all schema types, excluding dynamic schema types. (see `DynamicSchemaResource`)
 type SchemaResource struct{}
 
 func (r SchemaResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

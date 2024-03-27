@@ -50,6 +50,8 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewSchemaResource,
+		NewDynamicSchemaResource,
+		NewDynamicComputedTypeChangeResource,
 		NewTimeoutsResource,
 		NewUserResource,
 		NewFloat64PrecisionResource,
@@ -63,14 +65,17 @@ func (p *testProvider) DataSources(_ context.Context) []func() datasource.DataSo
 func (p *testProvider) Functions(ctx context.Context) []func() function.Function {
 	return []func() function.Function{
 		NewBoolFunction,
+		NewDynamicFunction,
 		NewFloat64Function,
 		NewInt64Function,
 		NewListFunction,
 		NewMapFunction,
 		NewNumberFunction,
 		NewObjectFunction,
+		NewObjectWithDynamicFunction,
 		NewSetFunction,
 		NewStringFunction,
 		NewVariadicFunction,
+		NewDynamicVariadicFunction,
 	}
 }
