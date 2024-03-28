@@ -7,7 +7,6 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -20,8 +19,7 @@ import (
 func TestMapFunction_known(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Replace with the stable v1.8.0 release when available
-			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+			tfversion.SkipBelow(tfversion.Version1_8_0),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
@@ -51,8 +49,7 @@ func TestMapFunction_known(t *testing.T) {
 func TestMapFunction_null(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Replace with the stable v1.8.0 release when available
-			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+			tfversion.SkipBelow(tfversion.Version1_8_0),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
@@ -72,8 +69,7 @@ func TestMapFunction_null(t *testing.T) {
 func TestMapFunction_unknown(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Replace with the stable v1.8.0 release when available
-			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+			tfversion.SkipBelow(tfversion.Version1_8_0),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),

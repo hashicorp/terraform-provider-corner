@@ -6,7 +6,6 @@ package protocolv6
 import (
 	"testing"
 
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -17,8 +16,7 @@ import (
 func TestAccV6FunctionBool(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Replace with the stable v1.8.0 release when available
-			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+			tfversion.SkipBelow(tfversion.Version1_8_0),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			//nolint:unparam // False positive in unparam related to map: https://github.com/mvdan/unparam/issues/40
