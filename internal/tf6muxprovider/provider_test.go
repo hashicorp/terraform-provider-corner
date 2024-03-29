@@ -6,7 +6,6 @@ package tf6muxprovider
 import (
 	"testing"
 
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
@@ -62,8 +61,7 @@ resource "tf6muxprovider_user2" "example" {
 func TestAccFunctionString(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Replace with the stable v1.8.0 release when available
-			tfversion.SkipBelow(version.Must(version.NewVersion("v1.8.0-rc1"))),
+			tfversion.SkipBelow(tfversion.Version1_8_0),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"tf6muxprovider": func() (tfprotov6.ProviderServer, error) {
