@@ -9,9 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-timeouts/resource/timeouts"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
 var _ resource.Resource = TimeoutsResource{}
@@ -29,15 +26,6 @@ func (r TimeoutsResource) Metadata(_ context.Context, req resource.MetadataReque
 
 func (r TimeoutsResource) Schema(ctx context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
-		Attributes: map[string]schema.Attribute{
-			// id attribute is required for acceptance testing.
-			"id": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-			},
-		},
 		Blocks: map[string]schema.Block{
 			"timeouts": timeouts.Block(ctx, timeouts.Opts{
 				Create: true,
@@ -54,8 +42,6 @@ func (r TimeoutsResource) Create(ctx context.Context, req resource.CreateRequest
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	data.Id = types.StringValue("test")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -88,6 +74,5 @@ func (r TimeoutsResource) Delete(ctx context.Context, req resource.DeleteRequest
 }
 
 type TimeoutsResourceModel struct {
-	Id       types.String   `tfsdk:"id"`
 	Timeouts timeouts.Value `tfsdk:"timeouts"`
 }

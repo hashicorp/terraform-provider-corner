@@ -108,12 +108,6 @@ func Server() tfprotov6.ProviderServer {
 							DescriptionKind: tfprotov6.StringKindPlain,
 							Computed:        true,
 						},
-						{
-							Name:     "id",
-							Type:     tftypes.String,
-							Optional: true,
-							Computed: true,
-						},
 					},
 				},
 			},

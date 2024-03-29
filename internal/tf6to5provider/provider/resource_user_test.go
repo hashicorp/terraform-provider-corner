@@ -22,7 +22,6 @@ func TestAccResourceUser(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("tf6to5provider_user.example", "age", "123"),
 					resource.TestCheckResourceAttr("tf6to5provider_user.example", "email", "example@example.com"),
-					resource.TestCheckResourceAttr("tf6to5provider_user.example", "id", "h"),
 					resource.TestCheckResourceAttr("tf6to5provider_user.example", "language", "en"),
 					resource.TestCheckResourceAttr("tf6to5provider_user.example", "name", "Example Name"),
 				),
@@ -35,7 +34,6 @@ const configResourceUserBasic = `
 resource "tf6to5provider_user" "example" {
   age   = 123
   email = "example@example.com"
-  id    = "h"
   name  = "Example Name"
 }
 `

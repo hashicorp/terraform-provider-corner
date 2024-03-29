@@ -34,9 +34,7 @@ import (
 //	Terraform will perform the following actions:
 //
 //	  # framework_dynamic_schema.test will be updated in-place
-//	  ~ resource "framework_dynamic_schema" "test" {
-//			id = "test"
-//		}
+//	  ~ resource "framework_dynamic_schema" "test" {}
 //
 //	Plan: 0 to add, 1 to change, 0 to destroy.
 func TestDynamicSchemaResource_null(t *testing.T) {
