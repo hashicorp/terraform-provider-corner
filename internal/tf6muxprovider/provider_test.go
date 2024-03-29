@@ -28,12 +28,10 @@ func TestAccResourceUser(t *testing.T) {
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr("tf6muxprovider_user1.example", "age", "123"),
 					resource.TestCheckResourceAttr("tf6muxprovider_user1.example", "email", "example1@example.com"),
-					resource.TestCheckResourceAttr("tf6muxprovider_user1.example", "id", "h"),
 					resource.TestCheckResourceAttr("tf6muxprovider_user1.example", "language", "en"),
 					resource.TestCheckResourceAttr("tf6muxprovider_user1.example", "name", "Example Name 1"),
 					resource.TestCheckResourceAttr("tf6muxprovider_user2.example", "age", "234"),
 					resource.TestCheckResourceAttr("tf6muxprovider_user2.example", "email", "example2@example.com"),
-					resource.TestCheckResourceAttr("tf6muxprovider_user2.example", "id", "h"),
 					resource.TestCheckResourceAttr("tf6muxprovider_user2.example", "language", "en"),
 					resource.TestCheckResourceAttr("tf6muxprovider_user2.example", "name", "Example Name 2"),
 				),
@@ -46,14 +44,12 @@ const configResourceUserBasic = `
 resource "tf6muxprovider_user1" "example" {
   age   = 123
   email = "example1@example.com"
-  id    = "h"
   name  = "Example Name 1"
 }
 
 resource "tf6muxprovider_user2" "example" {
   age   = 234
   email = "example2@example.com"
-  id    = "h"
   name  = "Example Name 2"
 }
 `

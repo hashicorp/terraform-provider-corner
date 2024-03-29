@@ -20,7 +20,6 @@ func TestTimeoutsResource_unconfigured(t *testing.T) {
 			{
 				Config: `resource "framework_timeouts" "test" {}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("framework_timeouts.test", "id", "test"),
 					resource.TestCheckNoResourceAttr("framework_timeouts.test", "timeouts"),
 				),
 			},
@@ -41,7 +40,6 @@ func TestTimeoutsResource_configured(t *testing.T) {
 					}
 				}`,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("framework_timeouts.test", "id", "test"),
 					resource.TestCheckResourceAttr("framework_timeouts.test", "timeouts.create", "120s"),
 				),
 			},

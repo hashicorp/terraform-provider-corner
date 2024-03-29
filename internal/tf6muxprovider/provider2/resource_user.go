@@ -48,10 +48,6 @@ func (r *resourceUser) Schema(_ context.Context, _ resource.SchemaRequest, resp 
 			"age": schema.NumberAttribute{
 				Required: true,
 			},
-			// included only for compatibility with SDKv2 test framework
-			"id": schema.StringAttribute{
-				Optional: true,
-			},
 			"date_joined": schema.StringAttribute{
 				Computed: true,
 				PlanModifiers: []planmodifier.String{
@@ -86,7 +82,6 @@ type user struct {
 	Email      string       `tfsdk:"email"`
 	Name       string       `tfsdk:"name"`
 	Age        int          `tfsdk:"age"`
-	Id         string       `tfsdk:"id"`
 	DateJoined types.String `tfsdk:"date_joined"`
 	Language   types.String `tfsdk:"language"`
 }
