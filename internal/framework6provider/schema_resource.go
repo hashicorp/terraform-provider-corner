@@ -9,8 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -33,15 +31,11 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"bool_attribute": schema.BoolAttribute{
 				Optional: true,
 			},
-			"float64_attribute": schema.Float64Attribute{
+			"dynamic_attribute": schema.DynamicAttribute{
 				Optional: true,
 			},
-			// id attribute is required for acceptance testing.
-			"id": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
+			"float64_attribute": schema.Float64Attribute{
+				Optional: true,
 			},
 			"int64_attribute": schema.Int64Attribute{
 				Optional: true,
@@ -83,6 +77,12 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 				},
 				Optional: true,
 			},
+			"object_attribute_with_dynamic": schema.ObjectAttribute{
+				AttributeTypes: map[string]attr.Type{
+					"dynamic_attribute": types.DynamicType,
+				},
+				Optional: true,
+			},
 			"set_attribute": schema.SetAttribute{
 				ElementType: types.StringType,
 				Optional:    true,
@@ -100,6 +100,14 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"single_nested_attribute": schema.SingleNestedAttribute{
 				Attributes: map[string]schema.Attribute{
 					"single_nested_attribute_attribute": schema.StringAttribute{
+						Optional: true,
+					},
+				},
+				Optional: true,
+			},
+			"single_nested_attribute_with_dynamic": schema.SingleNestedAttribute{
+				Attributes: map[string]schema.Attribute{
+					"dynamic_attribute": schema.DynamicAttribute{
 						Optional: true,
 					},
 				},
@@ -135,6 +143,13 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 					},
 				},
 			},
+			"single_nested_block_with_dynamic": schema.SingleNestedBlock{
+				Attributes: map[string]schema.Attribute{
+					"dynamic_attribute": schema.DynamicAttribute{
+						Optional: true,
+					},
+				},
+			},
 		},
 	}
 }
@@ -147,8 +162,6 @@ func (r SchemaResource) Create(ctx context.Context, req resource.CreateRequest, 
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	data.Id = types.StringValue("test")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -181,21 +194,24 @@ func (r SchemaResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 }
 
 type SchemaResourceModel struct {
-	BoolAttribute         types.Bool    `tfsdk:"bool_attribute"`
-	Float64Attribute      types.Float64 `tfsdk:"float64_attribute"`
-	Id                    types.String  `tfsdk:"id"`
-	Int64Attribute        types.Int64   `tfsdk:"int64_attribute"`
-	ListAttribute         types.List    `tfsdk:"list_attribute"`
-	ListNestedAttribute   types.List    `tfsdk:"list_nested_attribute"`
-	ListNestedBlock       types.List    `tfsdk:"list_nested_block"`
-	MapAttribute          types.Map     `tfsdk:"map_attribute"`
-	MapNestedAttribute    types.Map     `tfsdk:"map_nested_attribute"`
-	NumberAttribute       types.Number  `tfsdk:"number_attribute"`
-	ObjectAttribute       types.Object  `tfsdk:"object_attribute"`
-	SetAttribute          types.Set     `tfsdk:"set_attribute"`
-	SetNestedAttribute    types.Set     `tfsdk:"set_nested_attribute"`
-	SetNestedBlock        types.Set     `tfsdk:"set_nested_block"`
-	SingleNestedAttribute types.Object  `tfsdk:"single_nested_attribute"`
-	SingleNestedBlock     types.Object  `tfsdk:"single_nested_block"`
-	StringAttribute       types.String  `tfsdk:"string_attribute"`
+	BoolAttribute                    types.Bool    `tfsdk:"bool_attribute"`
+	DynamicAttribute                 types.Dynamic `tfsdk:"dynamic_attribute"`
+	Float64Attribute                 types.Float64 `tfsdk:"float64_attribute"`
+	Int64Attribute                   types.Int64   `tfsdk:"int64_attribute"`
+	ListAttribute                    types.List    `tfsdk:"list_attribute"`
+	ListNestedAttribute              types.List    `tfsdk:"list_nested_attribute"`
+	ListNestedBlock                  types.List    `tfsdk:"list_nested_block"`
+	MapAttribute                     types.Map     `tfsdk:"map_attribute"`
+	MapNestedAttribute               types.Map     `tfsdk:"map_nested_attribute"`
+	NumberAttribute                  types.Number  `tfsdk:"number_attribute"`
+	ObjectAttribute                  types.Object  `tfsdk:"object_attribute"`
+	ObjectAttributeWithDynamic       types.Object  `tfsdk:"object_attribute_with_dynamic"`
+	SetAttribute                     types.Set     `tfsdk:"set_attribute"`
+	SetNestedAttribute               types.Set     `tfsdk:"set_nested_attribute"`
+	SetNestedBlock                   types.Set     `tfsdk:"set_nested_block"`
+	SingleNestedAttribute            types.Object  `tfsdk:"single_nested_attribute"`
+	SingleNestedAttributeWithDynamic types.Object  `tfsdk:"single_nested_attribute_with_dynamic"`
+	SingleNestedBlock                types.Object  `tfsdk:"single_nested_block"`
+	SingleNestedBlockWithDynamic     types.Object  `tfsdk:"single_nested_block_with_dynamic"`
+	StringAttribute                  types.String  `tfsdk:"string_attribute"`
 }
