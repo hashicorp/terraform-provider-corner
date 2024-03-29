@@ -26,7 +26,6 @@ func TestSchemaResource_basic(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -56,7 +55,6 @@ func TestSchemaResource_BoolAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Bool(true)),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -76,7 +74,6 @@ func TestSchemaResource_BoolAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Bool(false)),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -106,7 +103,6 @@ func TestSchemaResource_Float64Attribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Float64Exact(1234.5)),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -126,7 +122,6 @@ func TestSchemaResource_Float64Attribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Float64Exact(2234.5)),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -156,7 +151,6 @@ func TestSchemaResource_Int64Attribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Int64Exact(1234)),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -176,7 +170,6 @@ func TestSchemaResource_Int64Attribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Int64Exact(2345)),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -206,7 +199,6 @@ func TestSchemaResource_ListAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"),
 						knownvalue.ListExact(
@@ -232,7 +224,6 @@ func TestSchemaResource_ListAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"),
 						knownvalue.ListExact(
@@ -270,7 +261,6 @@ func TestSchemaResource_ListNestedBlock(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"),
@@ -300,7 +290,6 @@ func TestSchemaResource_ListNestedBlock(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"),
@@ -340,7 +329,6 @@ func TestSchemaResource_MapAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -368,7 +356,6 @@ func TestSchemaResource_MapAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -404,7 +391,6 @@ func TestSchemaResource_NumberAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -424,7 +410,6 @@ func TestSchemaResource_NumberAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -456,7 +441,6 @@ func TestSchemaResource_ObjectAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -484,7 +468,6 @@ func TestSchemaResource_ObjectAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -520,7 +503,6 @@ func TestSchemaResource_SetAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -546,7 +528,6 @@ func TestSchemaResource_SetAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -584,7 +565,6 @@ func TestSchemaResource_SetNestedBlock(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -614,7 +594,6 @@ func TestSchemaResource_SetNestedBlock(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -654,7 +633,6 @@ func TestSchemaResource_SingleNestedBlock(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -682,7 +660,6 @@ func TestSchemaResource_SingleNestedBlock(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -718,7 +695,6 @@ func TestSchemaResource_StringAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -738,7 +714,6 @@ func TestSchemaResource_StringAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_schema.test", tfjsonpath.New("list_nested_block"), knownvalue.ListSizeExact(0)),

@@ -9,8 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -38,13 +36,6 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			},
 			"float64_attribute": schema.Float64Attribute{
 				Optional: true,
-			},
-			// id attribute is required for acceptance testing.
-			"id": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
 			},
 			"int64_attribute": schema.Int64Attribute{
 				Optional: true,
@@ -172,8 +163,6 @@ func (r SchemaResource) Create(ctx context.Context, req resource.CreateRequest, 
 		return
 	}
 
-	data.Id = types.StringValue("test")
-
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
@@ -208,7 +197,6 @@ type SchemaResourceModel struct {
 	BoolAttribute                    types.Bool    `tfsdk:"bool_attribute"`
 	DynamicAttribute                 types.Dynamic `tfsdk:"dynamic_attribute"`
 	Float64Attribute                 types.Float64 `tfsdk:"float64_attribute"`
-	Id                               types.String  `tfsdk:"id"`
 	Int64Attribute                   types.Int64   `tfsdk:"int64_attribute"`
 	ListAttribute                    types.List    `tfsdk:"list_attribute"`
 	ListNestedAttribute              types.List    `tfsdk:"list_nested_attribute"`

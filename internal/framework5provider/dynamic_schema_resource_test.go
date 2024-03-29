@@ -54,7 +54,6 @@ func TestDynamicSchemaResource_null(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("object_attribute_with_dynamic"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"), knownvalue.Null()),
 				},
 			},
@@ -79,7 +78,6 @@ func TestDynamicSchemaResource_DynamicAttribute(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("dynamic_attribute"), knownvalue.StringExact("value1")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("object_attribute_with_dynamic"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"), knownvalue.Null()),
 				},
 			},
@@ -97,7 +95,6 @@ func TestDynamicSchemaResource_DynamicAttribute(t *testing.T) {
 						),
 					),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("object_attribute_with_dynamic"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"), knownvalue.Null()),
 				},
 			},
@@ -127,7 +124,6 @@ func TestDynamicSchemaResource_DynamicAttribute(t *testing.T) {
 						),
 					),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("object_attribute_with_dynamic"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"), knownvalue.Null()),
 				},
 			},
@@ -160,7 +156,6 @@ func TestDynamicSchemaResource_ObjectAttributeWithDynamic(t *testing.T) {
 							},
 						),
 					),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"), knownvalue.Null()),
 				},
 			},
@@ -184,7 +179,6 @@ func TestDynamicSchemaResource_ObjectAttributeWithDynamic(t *testing.T) {
 							},
 						),
 					),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"), knownvalue.Null()),
 				},
 			},
@@ -220,7 +214,6 @@ func TestDynamicSchemaResource_ObjectAttributeWithDynamic(t *testing.T) {
 							},
 						),
 					),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"), knownvalue.Null()),
 				},
 			},
@@ -247,7 +240,6 @@ func TestDynamicSchemaResource_SingleNestedBlockWithDynamic(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("object_attribute_with_dynamic"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"),
 						knownvalue.ObjectExact(
 							map[string]knownvalue.Check{
@@ -266,7 +258,6 @@ func TestDynamicSchemaResource_SingleNestedBlockWithDynamic(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("object_attribute_with_dynamic"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"),
 						knownvalue.ObjectExact(
 							map[string]knownvalue.Check{
@@ -295,7 +286,6 @@ func TestDynamicSchemaResource_SingleNestedBlockWithDynamic(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("object_attribute_with_dynamic"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("id"), knownvalue.StringExact("test")),
 					statecheck.ExpectKnownValue("framework_dynamic_schema.test", tfjsonpath.New("single_nested_block_with_dynamic"),
 						knownvalue.ObjectExact(
 							map[string]knownvalue.Check{

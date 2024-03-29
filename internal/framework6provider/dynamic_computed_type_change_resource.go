@@ -8,8 +8,6 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -37,13 +35,6 @@ func (r DynamicComputedTypeChangeResource) Schema(_ context.Context, _ resource.
 			"computed_dynamic_type_changes": schema.DynamicAttribute{
 				Computed: true,
 			},
-			// id attribute is required for acceptance testing.
-			"id": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-			},
 		},
 	}
 }
@@ -59,8 +50,6 @@ func (r DynamicComputedTypeChangeResource) Create(ctx context.Context, req resou
 
 	// Created as a boolean type
 	data.ComputedDynamicTypeChanges = types.DynamicValue(types.BoolValue(true))
-
-	data.Id = types.StringValue("test")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -98,5 +87,4 @@ func (r DynamicComputedTypeChangeResource) Delete(ctx context.Context, req resou
 type DynamicComputedTypeChangeResourceModel struct {
 	RequiredDynamic            types.Dynamic `tfsdk:"required_dynamic"`
 	ComputedDynamicTypeChanges types.Dynamic `tfsdk:"computed_dynamic_type_changes"`
-	Id                         types.String  `tfsdk:"id"`
 }

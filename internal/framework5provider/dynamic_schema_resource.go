@@ -9,8 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/attr"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
-	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -43,13 +41,6 @@ func (r DynamicSchemaResource) Schema(_ context.Context, _ resource.SchemaReques
 				},
 				Optional: true,
 			},
-			// id attribute is required for acceptance testing.
-			"id": schema.StringAttribute{
-				Computed: true,
-				PlanModifiers: []planmodifier.String{
-					stringplanmodifier.UseStateForUnknown(),
-				},
-			},
 		},
 		Blocks: map[string]schema.Block{
 			"single_nested_block_with_dynamic": schema.SingleNestedBlock{
@@ -71,8 +62,6 @@ func (r DynamicSchemaResource) Create(ctx context.Context, req resource.CreateRe
 	if resp.Diagnostics.HasError() {
 		return
 	}
-
-	data.Id = types.StringValue("test")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -108,5 +97,4 @@ type DynamicSchemaResourceModel struct {
 	DynamicAttribute             types.Dynamic `tfsdk:"dynamic_attribute"`
 	ObjectAttributeWithDynamic   types.Object  `tfsdk:"object_attribute_with_dynamic"`
 	SingleNestedBlockWithDynamic types.Object  `tfsdk:"single_nested_block_with_dynamic"`
-	Id                           types.String  `tfsdk:"id"`
 }
