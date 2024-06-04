@@ -111,9 +111,23 @@ func Server() tfprotov6.ProviderServer {
 					},
 				},
 			},
+			"corner_v6_deferred_action": {
+				Block: &tfprotov6.SchemaBlock{
+					Attributes: []*tfprotov6.SchemaAttribute{
+						{
+							Name:            "current",
+							Type:            tftypes.String,
+							Description:     "The current time in RFC3339 format.",
+							DescriptionKind: tfprotov6.StringKindPlain,
+							Computed:        true,
+						},
+					},
+				},
+			},
 		},
 		dataSourceRouter: dataSourceRouter{
-			"corner_v6_time": dataSourceTime{},
+			"corner_v6_time":            dataSourceTime{},
+			"corner_v6_deferred_action": dataSourceDeferredAction{},
 		},
 		functions: map[string]*tfprotov6.Function{
 			"bool": {
