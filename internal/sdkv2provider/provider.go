@@ -15,8 +15,8 @@ import (
 func New() *schema.Provider {
 	p := &schema.Provider{
 		Schema: map[string]*schema.Schema{
-			"api_key": {
-				Type:     schema.TypeString,
+			"deferral": {
+				Type:     schema.TypeBool,
 				Optional: true,
 			},
 		},
@@ -35,14 +35,12 @@ func New() *schema.Provider {
 	}
 
 	p.ConfigureProvider = func(ctx context.Context, req schema.ConfigureProviderRequest, resp *schema.ConfigureProviderResponse) {
-		providerConfig := req.ResourceData.GetRawConfig()
-
 		client, err := backend.NewClient()
 		if err != nil {
 			resp.Diagnostics = diag.FromErr(err)
 		}
 
-		if !providerConfig.IsWhollyKnown() && req.DeferralAllowed {
+		if req.ResourceData.Get("deferral") == true && req.DeferralAllowed {
 			resp.Deferred = &schema.Deferred{
 				Reason: schema.DeferredReasonProviderConfigUnknown,
 			}
