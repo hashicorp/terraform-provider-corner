@@ -55,7 +55,7 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 	if err != nil {
 		resp.Diagnostics.AddError("Error initialising client", err.Error())
 	}
-	if req.ClientCapabilities.DeferralAllowed == true && config.Deferral.ValueBool() == true {
+	if req.ClientCapabilities.DeferralAllowed && config.Deferral.ValueBool() {
 		resp.Deferred = &provider.Deferred{
 			Reason: provider.DeferredReasonProviderConfigUnknown,
 		}

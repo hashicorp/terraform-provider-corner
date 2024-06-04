@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package framework
 
 import (
@@ -48,7 +51,7 @@ func (r *DeferredActionResource) ModifyPlan(ctx context.Context, req resource.Mo
 		return
 	}
 
-	if plan != nil && plan.ModifyPlanDeferral.ValueBool() == true && req.ClientCapabilities.DeferralAllowed == true {
+	if plan != nil && plan.ModifyPlanDeferral.ValueBool() && req.ClientCapabilities.DeferralAllowed {
 		resp.Deferred = &resource.Deferred{
 			Reason: resource.DeferredReasonResourceConfigUnknown,
 		}
@@ -95,7 +98,7 @@ func (r *DeferredActionResource) Read(ctx context.Context, req resource.ReadRequ
 		return
 	}
 
-	if data.ReadDeferral.ValueBool() == true && req.ClientCapabilities.DeferralAllowed == true {
+	if data.ReadDeferral.ValueBool() && req.ClientCapabilities.DeferralAllowed {
 		resp.Deferred = &resource.Deferred{
 			Reason: resource.DeferredReasonResourceConfigUnknown,
 		}
@@ -127,7 +130,7 @@ type DeferredActionResourceModel struct {
 }
 
 func (r *DeferredActionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	if req.ClientCapabilities.DeferralAllowed == true {
+	if req.ClientCapabilities.DeferralAllowed {
 		resp.Deferred = &resource.Deferred{
 			Reason: resource.DeferredReasonResourceConfigUnknown,
 		}
