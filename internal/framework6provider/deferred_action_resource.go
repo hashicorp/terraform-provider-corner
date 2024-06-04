@@ -9,25 +9,44 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ resource.Resource = DeferredActionResource{}
-var _ resource.ResourceWithModifyPlan = DeferredActionResource{}
-var _ resource.ResourceWithImportState = DeferredActionResource{}
+var _ resource.Resource = (*DeferredActionResource)(nil)
+var _ resource.ResourceWithModifyPlan = (*DeferredActionResource)(nil)
+var _ resource.ResourceWithImportState = (*DeferredActionResource)(nil)
 
 func NewDeferredActionResource() resource.Resource {
-	return &DeferredActionResource{}
+	return &DeferredActionResource{
+		typeName:         "_deferred_action",
+		planModification: false,
+	}
+}
+
+func NewDeferredActionPlanModificationResource() resource.Resource {
+	return &DeferredActionResource{
+		typeName:         "_deferred_action_plan_modification",
+		planModification: true,
+	}
 }
 
 // DeferredActionResource is for testing all schema types.
-type DeferredActionResource struct{}
-
-func (r DeferredActionResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_deferred_action"
+type DeferredActionResource struct {
+	typeName         string
+	planModification bool
 }
 
-func (r DeferredActionResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+func (r *DeferredActionResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + r.typeName
+	resp.ResourceBehavior.ProviderDeferred.EnablePlanModification = r.planModification
+}
+
+func (r *DeferredActionResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
 	var plan *DeferredActionResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+
+	if plan != nil && !plan.ID.IsNull() && !plan.ID.IsUnknown() && plan.ID.ValueString() != "test_id" {
+		resp.Diagnostics.AddError("invalid id value", "id should be test_id")
+		return
+	}
 
 	if plan != nil && plan.ModifyPlanDeferral.ValueBool() == true && req.ClientCapabilities.DeferralAllowed == true {
 		resp.Deferred = &resource.Deferred{
@@ -36,7 +55,7 @@ func (r DeferredActionResource) ModifyPlan(ctx context.Context, req resource.Mod
 	}
 }
 
-func (r DeferredActionResource) Schema(ctx context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
+func (r *DeferredActionResource) Schema(ctx context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"modify_plan_deferral": schema.BoolAttribute{
@@ -55,7 +74,7 @@ func (r DeferredActionResource) Schema(ctx context.Context, _ resource.SchemaReq
 	}
 }
 
-func (r DeferredActionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
+func (r *DeferredActionResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
 	var data DeferredActionResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -67,7 +86,7 @@ func (r DeferredActionResource) Create(ctx context.Context, req resource.CreateR
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r DeferredActionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
+func (r *DeferredActionResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
 	var data DeferredActionResourceModel
 
 	resp.Diagnostics.Append(req.State.Get(ctx, &data)...)
@@ -85,7 +104,7 @@ func (r DeferredActionResource) Read(ctx context.Context, req resource.ReadReque
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r DeferredActionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
+func (r *DeferredActionResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
 	var data DeferredActionResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &data)...)
@@ -97,7 +116,7 @@ func (r DeferredActionResource) Update(ctx context.Context, req resource.UpdateR
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
-func (r DeferredActionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
+func (r *DeferredActionResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
 }
 
 type DeferredActionResourceModel struct {
@@ -107,7 +126,7 @@ type DeferredActionResourceModel struct {
 	ID                 types.String `tfsdk:"id"`
 }
 
-func (r DeferredActionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
+func (r *DeferredActionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
 	if req.ClientCapabilities.DeferralAllowed == true {
 		resp.Deferred = &resource.Deferred{
 			Reason: resource.DeferredReasonResourceConfigUnknown,

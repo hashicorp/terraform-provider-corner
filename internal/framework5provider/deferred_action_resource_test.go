@@ -4,6 +4,7 @@
 package framework
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -16,7 +17,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-// TODO: test provider deferral with modify plan enabled
 func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -37,11 +37,12 @@ func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 				}
 
 				resource "framework_deferred_action" "test" {
-					id = "test_id"
+					id = "test"
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
-						plancheck.ExpectDeferredChange("framework_deferred_action.test", plancheck.DeferredReasonProviderConfigUnknown),
+						plancheck.ExpectDeferredChange("framework_deferred_action.test",
+							plancheck.DeferredReasonProviderConfigUnknown),
 					},
 				},
 			},
@@ -49,14 +50,15 @@ func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 				Config: `provider "framework" {
 					deferral = true
 				}
-
+			
 				resource "framework_deferred_action" "test" {
 					id = "test_id"
 					modify_plan_deferral = true
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
-						plancheck.ExpectDeferredChange("framework_deferred_action.test", plancheck.DeferredReasonResourceConfigUnknown),
+						plancheck.ExpectDeferredChange("framework_deferred_action.test",
+							plancheck.DeferredReasonProviderConfigUnknown),
 					},
 				},
 			},
@@ -70,7 +72,81 @@ func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("framework_deferred_action.test", tfjsonpath.New("id"), knownvalue.StringExact("test_id")),
+					statecheck.ExpectKnownValue("framework_deferred_action.test",
+						tfjsonpath.New("id"), knownvalue.StringExact("test_id")),
+				},
+			},
+		},
+	})
+}
+
+func TestDeferredActionPlanModificationResource_ProviderDeferral(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_9_0),
+			tfversion.SkipIfNotPrerelease(),
+		},
+		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
+			Plan:  resource.PlanOptions{AllowDeferral: true},
+			Apply: resource.ApplyOptions{AllowDeferral: true},
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `provider "framework" {
+					deferral = true
+				}
+
+				resource "framework_deferred_action_plan_modification" "test" {
+					id = "test"
+				}`,
+				ExpectError: regexp.MustCompile("Error: invalid id value"),
+			},
+			{
+				Config: `provider "framework" {
+					deferral = true
+				}
+			
+				resource "framework_deferred_action_plan_modification"  "test" {
+					id = "test_id"
+				}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectDeferredChange("framework_deferred_action_plan_modification.test",
+							plancheck.DeferredReasonProviderConfigUnknown),
+					},
+				},
+			},
+			{
+				Config: `provider "framework" {
+					deferral = true
+				}
+			
+				resource "framework_deferred_action_plan_modification"  "test" {
+					id = "test_id"
+					modify_plan_deferral = true
+				}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectDeferredChange("framework_deferred_action_plan_modification.test",
+							plancheck.DeferredReasonResourceConfigUnknown),
+					},
+				},
+			},
+			{
+				Config: `resource "framework_deferred_action_plan_modification" "test" {
+					id = "test_id"
+				}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectNoDeferredChanges(),
+					},
+				},
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_deferred_action_plan_modification.test",
+						tfjsonpath.New("id"), knownvalue.StringExact("test_id")),
 				},
 			},
 		},
