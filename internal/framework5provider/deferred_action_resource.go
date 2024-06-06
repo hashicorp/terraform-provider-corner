@@ -42,16 +42,23 @@ func (r *DeferredActionResource) Metadata(_ context.Context, req resource.Metada
 }
 
 func (r *DeferredActionResource) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
-	var plan *DeferredActionResourceModel
+	if req.Plan.Raw.IsNull() {
+		return
+	}
+
+	var plan DeferredActionResourceModel
 
 	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
 
-	if plan != nil && !plan.ID.IsNull() && !plan.ID.IsUnknown() && plan.ID.ValueString() != "test_id" {
+	if !plan.ID.IsNull() && !plan.ID.IsUnknown() && plan.ID.ValueString() != "test_id" {
 		resp.Diagnostics.AddError("invalid id value", "id should be test_id")
 		return
 	}
 
-	if plan != nil && plan.ModifyPlanDeferral.ValueBool() && req.ClientCapabilities.DeferralAllowed {
+	if plan.ModifyPlanDeferral.ValueBool() && req.ClientCapabilities.DeferralAllowed {
 		resp.Deferred = &resource.Deferred{
 			Reason: resource.DeferredReasonResourceConfigUnknown,
 		}
@@ -65,9 +72,6 @@ func (r *DeferredActionResource) Schema(ctx context.Context, _ resource.SchemaRe
 				Optional: true,
 			},
 			"read_deferral": schema.BoolAttribute{
-				Optional: true,
-			},
-			"import_deferral": schema.BoolAttribute{
 				Optional: true,
 			},
 			"id": schema.StringAttribute{
@@ -125,12 +129,11 @@ func (r *DeferredActionResource) Delete(ctx context.Context, req resource.Delete
 type DeferredActionResourceModel struct {
 	ModifyPlanDeferral types.Bool   `tfsdk:"modify_plan_deferral"`
 	ReadDeferral       types.Bool   `tfsdk:"read_deferral"`
-	ImportDeferral     types.Bool   `tfsdk:"import_deferral"`
 	ID                 types.String `tfsdk:"id"`
 }
 
 func (r *DeferredActionResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	if req.ClientCapabilities.DeferralAllowed {
+	if req.ClientCapabilities.DeferralAllowed && req.ID == "deferral-id" {
 		resp.Deferred = &resource.Deferred{
 			Reason: resource.DeferredReasonResourceConfigUnknown,
 		}

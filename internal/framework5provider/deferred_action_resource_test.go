@@ -31,14 +31,17 @@ func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 			"framework": providerserver.NewProtocol5WithError(New()),
 		},
 		Steps: []resource.TestStep{
+			// Test that the resource plan modification logic does NOT run during deferral
+			// when Plan Modification behavior is disabled.
 			{
 				Config: `provider "framework" {
 					deferral = true
 				}
 
 				resource "framework_deferred_action" "test" {
-					id = "test"
+					id = "test" # invalid id value
 				}`,
+				// Expect a passing test when an invalid id value is passed.
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectDeferredChange("framework_deferred_action.test",
@@ -46,6 +49,8 @@ func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 					},
 				},
 			},
+			// Test that the provider deferral reason overrides the resource deferral reason
+			// when Plan Modification behavior is disabled.
 			{
 				Config: `provider "framework" {
 					deferral = true
@@ -55,6 +60,7 @@ func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 					id = "test_id"
 					modify_plan_deferral = true
 				}`,
+				// Expect the deferred change to have the provider-defined deferred reason
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectDeferredChange("framework_deferred_action.test",
@@ -94,14 +100,17 @@ func TestDeferredActionPlanModificationResource_ProviderDeferral(t *testing.T) {
 			"framework": providerserver.NewProtocol5WithError(New()),
 		},
 		Steps: []resource.TestStep{
+			// Test that the resource plan modification logic correctly runs during deferral
+			// when Plan Modification behavior is enabled.
 			{
 				Config: `provider "framework" {
 					deferral = true
 				}
 
 				resource "framework_deferred_action_plan_modification" "test" {
-					id = "test"
+					id = "test" # invalid id value
 				}`,
+				// Expect an error when an invalid id value is passed.
 				ExpectError: regexp.MustCompile("Error: invalid id value"),
 			},
 			{
@@ -119,6 +128,8 @@ func TestDeferredActionPlanModificationResource_ProviderDeferral(t *testing.T) {
 					},
 				},
 			},
+			// Test that the resource deferral reason overrides the provider deferral reason
+			// when Plan Modification behavior is enabled.
 			{
 				Config: `provider "framework" {
 					deferral = true
@@ -128,6 +139,7 @@ func TestDeferredActionPlanModificationResource_ProviderDeferral(t *testing.T) {
 					id = "test_id"
 					modify_plan_deferral = true
 				}`,
+				// Expect the deferred change to have the resource-defined deferred reason
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectDeferredChange("framework_deferred_action_plan_modification.test",
@@ -241,12 +253,24 @@ func TestDeferredActionResource_ImportStateDeferral(t *testing.T) {
 			{
 				Config: `import {
 					to = framework_deferred_action.import_test
-					id = "test-id"
+					id = "deferral-id"
 				}
 				resource "framework_deferred_action" "import_test" {}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PostApplyPostRefresh: []plancheck.PlanCheck{
 						plancheck.ExpectDeferredChange("framework_deferred_action.import_test", plancheck.DeferredReasonResourceConfigUnknown),
+					},
+				},
+			},
+			{
+				Config: `import {
+					to = framework_deferred_action.import_test
+					id = "test-id"
+				}
+				resource "framework_deferred_action" "import_test" {}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PostApplyPostRefresh: []plancheck.PlanCheck{
+						plancheck.ExpectNoDeferredChanges(),
 					},
 				},
 			},

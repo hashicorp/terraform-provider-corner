@@ -25,6 +25,8 @@ func testAccResourceDeferredAction(t *testing.T) resource.TestCase {
 		PreCheck:  func() { testAccPreCheck(t) },
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
+			// Test that the resource CustomizeDiff logic is skipped during deferral
+			// when Plan Modification behavior is disabled.
 			{
 				Config: `provider "corner" {
 					deferral = true
@@ -33,8 +35,9 @@ func testAccResourceDeferredAction(t *testing.T) resource.TestCase {
 				resource "corner_deferred_action" "foo" {
 					email = "ford@prefect.co"
 					name = "Ford Prefect"
-					age = 200
+					age = 200 # invalid age value
 				}`,
+				// Expect a passing test with an invalid age value
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectDeferredChange("corner_deferred_action.foo", plancheck.DeferredReasonProviderConfigUnknown),
@@ -70,6 +73,8 @@ func testAccResourceDeferredActionPlanModification(t *testing.T) resource.TestCa
 		PreCheck:  func() { testAccPreCheck(t) },
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
+			// Test that the resource CustomizeDiff logic correctly runs during deferral
+			// when Plan Modification behavior is enabled.
 			{
 				Config: `provider "corner" {
 					deferral = true
@@ -78,8 +83,9 @@ func testAccResourceDeferredActionPlanModification(t *testing.T) resource.TestCa
 				resource "corner_deferred_action_plan_modification" "foo" {
 					email = "ford@prefect.co"
 					name = "Ford Prefect"
-					age = 200
+					age = 200 # invalid age value
 				}`,
+				// Expect a validation error with an invalid age value
 				ExpectError: regexp.MustCompile("Error: age value must be less than 100"),
 			},
 			{
