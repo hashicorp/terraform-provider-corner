@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
@@ -35,14 +36,29 @@ func (p *testProvider) Schema(_ context.Context, _ provider.SchemaRequest, resp 
 			"dummy": schema.StringAttribute{
 				Optional: true,
 			},
+			"deferral": schema.BoolAttribute{
+				Optional: true,
+			},
 		},
 	}
 }
 
 func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequest, resp *provider.ConfigureResponse) {
+	var config providerConfig
+	diags := req.Config.Get(ctx, &config)
+	resp.Diagnostics.Append(diags...)
+	if resp.Diagnostics.HasError() {
+		return
+	}
+
 	client, err := backend.NewClient()
 	if err != nil {
 		resp.Diagnostics.AddError("Error initialising client", err.Error())
+	}
+	if req.ClientCapabilities.DeferralAllowed && config.Deferral.ValueBool() {
+		resp.Deferred = &provider.Deferred{
+			Reason: provider.DeferredReasonProviderConfigUnknown,
+		}
 	}
 	resp.ResourceData = client
 }
@@ -50,6 +66,8 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 	return []func() resource.Resource{
 		NewSchemaResource,
+		NewDeferredActionResource,
+		NewDeferredActionPlanModificationResource,
 		NewDynamicSchemaResource,
 		NewDynamicComputedTypeChangeResource,
 		NewTimeoutsResource,
@@ -79,4 +97,9 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 		NewVariadicFunction,
 		NewDynamicVariadicFunction,
 	}
+}
+
+type providerConfig struct {
+	Dummy    types.String `tfsdk:"dummy"`
+	Deferral types.Bool   `tfsdk:"deferral"`
 }
