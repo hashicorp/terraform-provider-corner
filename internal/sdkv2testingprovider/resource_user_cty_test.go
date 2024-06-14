@@ -18,22 +18,22 @@ func testAccResourceUserCty(t *testing.T) resource.TestCase {
 				Config: configResourceUserCtyBasic,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"corner_user.foo", "email", "ford@prefect.co"),
+						"corner_user_cty.foo", "email", "ford@prefect.co"),
 					resource.TestCheckResourceAttr(
-						"corner_user.foo", "name", "Ford Prefect"),
+						"corner_user_cty.foo", "name", "Ford Prefect"),
 					resource.TestCheckResourceAttr(
-						"corner_user.foo", "age", "200"),
+						"corner_user_cty.foo", "age", "200"),
 				),
 			},
 			{
 				Config: configResourceUserCtyUpdate,
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"corner_user.foo", "email", "ford@prefect.co"),
+						"corner_user_cty.foo", "email", "ford@prefect.co"),
 					resource.TestCheckResourceAttr(
-						"corner_user.foo", "name", "Ford Prefect II"),
+						"corner_user_cty.foo", "name", "Ford Prefect II"),
 					resource.TestCheckResourceAttr(
-						"corner_user.foo", "age", "300"),
+						"corner_user_cty.foo", "age", "300"),
 				),
 			},
 		},
@@ -41,7 +41,7 @@ func testAccResourceUserCty(t *testing.T) resource.TestCase {
 }
 
 const configResourceUserCtyBasic = `
-resource "corner_user" "foo" {
+resource "corner_user_cty" "foo" {
   email = "ford@prefect.co"
   name = "Ford Prefect"
   age = 200
@@ -49,7 +49,7 @@ resource "corner_user" "foo" {
 `
 
 const configResourceUserCtyUpdate = `
-resource "corner_user" "foo" {
+resource "corner_user_cty" "foo" {
   email = "ford@prefect.co"
   name = "Ford Prefect II"
   age = 300
