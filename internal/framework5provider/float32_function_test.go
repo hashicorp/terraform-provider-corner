@@ -88,3 +88,48 @@ func TestFloat32Function_unknown(t *testing.T) {
 		},
 	})
 }
+
+func TestFloat32Function_overflow_underflow(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_8_0),
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			// float32 overflow
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::float32(3.40282346638528859811704183484516925440e+39)
+				}`,
+				ExpectError: regexp.MustCompile("Invalid function argument"),
+			},
+			// float32 negative overflow
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::float32(-3.40282346638528859811704183484516925440e+39)
+				}`,
+				ExpectError: regexp.MustCompile("Invalid function argument"),
+			},
+			// float32 underflow
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::float32(1.401298464324817070923729583289916131280e-46)
+				}`,
+				ExpectError: regexp.MustCompile("Invalid function argument"),
+			},
+			// float32 negative underflow
+			{
+				Config: `
+				output "test" {
+					value = provider::framework::float32(-1.401298464324817070923729583289916131280e-46)
+				}`,
+				ExpectError: regexp.MustCompile("Invalid function argument"),
+			},
+		},
+	})
+}

@@ -143,3 +143,53 @@ func TestSchemaResource_Float32Attribute_Precision_MaxFloat32(t *testing.T) {
 		},
 	})
 }
+
+func TestSchemaResource_Float32Attribute_Precision_Overflow_Underflow(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			// float32 overflow
+			{
+				Config: `resource "framework_float32_precision" "test" {
+					float32_attribute = 3.40282346638528859811704183484516925440e+39
+				}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("framework_float32_precision.test", "float32_attribute", "340282346638528859811704183484516925440"),
+				),
+				ExpectError: regexp.MustCompile(`.*Error: Value %!s\(\*big\.Float=3\.402823466e\+39\) cannot be represented as a\s{0,10}32-bit floating point.`),
+			},
+			// float32 negative overflow
+			{
+				Config: `resource "framework_float32_precision" "test" {
+					float32_attribute = -3.40282346638528859811704183484516925440e+39
+				}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("framework_float32_precision.test", "float32_attribute", "340282346638528859811704183484516925440"),
+				),
+				ExpectError: regexp.MustCompile(`.*Error: Value %!s\(\*big\.Float=-3\.402823466e\+39\) cannot be represented as a\s{0,10}32-bit floating point.`),
+			},
+			// float32 underflow
+			{
+				Config: `resource "framework_float32_precision" "test" {
+					float32_attribute = 1.401298464324817070923729583289916131280e-46
+				}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("framework_float32_precision.test", "float32_attribute", "340282346638528859811704183484516925440"),
+				),
+				ExpectError: regexp.MustCompile(`.*Error: Value %!s\(\*big\.Float=1\.401298464e-46\) cannot be represented as a\s{0,10}32-bit floating point.`),
+			},
+			// float32 negative underflow
+			{
+				Config: `resource "framework_float32_precision" "test" {
+					float32_attribute = -1.401298464324817070923729583289916131280e-46
+				}`,
+				Check: resource.ComposeAggregateTestCheckFunc(
+					resource.TestCheckResourceAttr("framework_float32_precision.test", "float32_attribute", "340282346638528859811704183484516925440"),
+				),
+				ExpectError: regexp.MustCompile(`.*Error: Value %!s\(\*big\.Float=-1\.401298464e-46\) cannot be represented as a\s{0,10}32-bit floating point.`),
+			},
+		},
+	})
+}
