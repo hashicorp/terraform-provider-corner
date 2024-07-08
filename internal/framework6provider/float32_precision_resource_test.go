@@ -89,7 +89,7 @@ func TestSchemaResource_Float32Attribute_Precision_MaxFloat32(t *testing.T) {
 			// Terraform v1.9.0-alpha20240501 is the first Terraform version to use this updated encoding.
 			tfversion.All(
 				tfversion.SkipBelow(tfversion.Version0_15_0),
-				tfversion.SkipAbove(tfversion.Version1_9_0),
+				tfversion.SkipAbove(tfversion.Version1_8_0),
 			),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
