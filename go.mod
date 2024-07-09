@@ -7,13 +7,13 @@ toolchain go1.21.6
 require (
 	github.com/hashicorp/go-memdb v1.3.4
 	github.com/hashicorp/terraform-json v0.22.1
-	github.com/hashicorp/terraform-plugin-framework v1.9.1-0.20240701192222-a7fd8bc89d73
+	github.com/hashicorp/terraform-plugin-framework v1.10.0
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.4.1
 	github.com/hashicorp/terraform-plugin-framework-timetypes v0.4.0
 	github.com/hashicorp/terraform-plugin-go v0.23.0
 	github.com/hashicorp/terraform-plugin-mux v0.16.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.34.0
-	github.com/hashicorp/terraform-plugin-testing v1.8.1-0.20240701165715-ac2ce0aac8d2
+	github.com/hashicorp/terraform-plugin-testing v1.9.0
 	github.com/zclconf/go-cty v1.14.4
 )
 
@@ -55,11 +55,11 @@ require (
 	github.com/vmihailenco/msgpack v4.0.4+incompatible // indirect
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
-	golang.org/x/crypto v0.24.0 // indirect
+	golang.org/x/crypto v0.25.0 // indirect
 	golang.org/x/mod v0.17.0 // indirect
 	golang.org/x/net v0.25.0 // indirect
 	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.21.0 // indirect
+	golang.org/x/sys v0.22.0 // indirect
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/tools v0.21.1-0.20240508182429-e35e4ccd0d2d // indirect
 	google.golang.org/appengine v1.6.8 // indirect
