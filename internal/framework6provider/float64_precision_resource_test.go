@@ -7,7 +7,6 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -86,7 +85,7 @@ func TestSchemaResource_Float64Attribute_Precision_MaxFloat32(t *testing.T) {
 			// go-cty v1.14.4 uses string msgpack encoding instead of float msgpack encoding for large whole numbers
 			// https://github.com/hashicorp/terraform/commit/cd252557e4200e031b942d9ff35c455bb30d858f
 			// This changes allows the math.MaxFloat32 value to succeed in planning but fail during apply.
-			// Terraform v1.9.0-alpha20240501 is the first Terraform version to use this updated encoding.
+			// Terraform v1.9.0 is the first Terraform version to use this updated encoding.
 			tfversion.All(
 				tfversion.SkipBelow(tfversion.Version0_15_0),
 				tfversion.SkipAbove(tfversion.Version1_8_0),
@@ -165,11 +164,11 @@ func TestSchemaResource_Float64Attribute_Precision_MaxFloat32(t *testing.T) {
 // go-cty v1.14.4 uses string msgpack encoding instead of float msgpack encoding for large whole numbers
 // https://github.com/hashicorp/terraform/commit/cd252557e4200e031b942d9ff35c455bb30d858f
 // This changes allows the math.MaxFloat32 value to succeed in planning but fail during apply.
-// Terraform v1.9.0-alpha20240501 is the first Terraform version to use this updated encoding.
+// Terraform v1.9.0 is the first Terraform version to use this updated encoding.
 func TestSchemaResource_Float64Attribute_Precision_MaxFloat32_TF1_9(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.9.0-alpha20240501"))),
+			tfversion.SkipBelow(tfversion.Version1_9_0),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
