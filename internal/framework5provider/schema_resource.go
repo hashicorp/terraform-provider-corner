@@ -31,7 +31,13 @@ func (r SchemaResource) Schema(_ context.Context, _ resource.SchemaRequest, resp
 			"bool_attribute": schema.BoolAttribute{
 				Optional: true,
 			},
+			"float32_attribute": schema.Float32Attribute{
+				Optional: true,
+			},
 			"float64_attribute": schema.Float64Attribute{
+				Optional: true,
+			},
+			"int32_attribute": schema.Int32Attribute{
 				Optional: true,
 			},
 			"int64_attribute": schema.Int64Attribute{
@@ -133,7 +139,9 @@ func (r SchemaResource) Delete(ctx context.Context, req resource.DeleteRequest, 
 
 type SchemaResourceModel struct {
 	BoolAttribute     types.Bool    `tfsdk:"bool_attribute"`
+	Float32Attribute  types.Float32 `tfsdk:"float32_attribute"`
 	Float64Attribute  types.Float64 `tfsdk:"float64_attribute"`
+	Int32attribute    types.Int32   `tfsdk:"int32_attribute"`
 	Int64Attribute    types.Int64   `tfsdk:"int64_attribute"`
 	ListAttribute     types.List    `tfsdk:"list_attribute"`
 	ListNestedBlock   types.List    `tfsdk:"list_nested_block"`
