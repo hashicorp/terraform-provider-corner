@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
+	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
 // This test asserts a bug that has yet to be fixed in plugin framework with defaults being used in an attribute inside of a set.
@@ -47,6 +48,10 @@ import (
 // Once this bug is fixed, the ExpectError regex in this test should be removed and the plan check should be switched to a state check.
 func TestSetNestedBlockWithDefaults(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// The "Duplicate Set Element" error was introduced in Terraform 1.4
+			tfversion.SkipBelow(tfversion.Version1_4_0),
+		},
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
 			"framework": providerserver.NewProtocol5WithError(New()),
 		},
