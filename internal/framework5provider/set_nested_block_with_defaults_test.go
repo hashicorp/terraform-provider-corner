@@ -23,6 +23,17 @@ import (
 // value, follow-up path lookups for other set elements can't find the correct data, resulting in default values being applied incorrectly
 // for the "value" attributes.
 //
+//	Error: Duplicate Set Element
+//
+//	with framework_set_nested_block_with_defaults.test,
+//	on terraform_plugin_test.tf line 11, in resource "framework_set_nested_block_with_defaults" "test":
+//	11: resource "framework_set_nested_block_with_defaults" "test" {
+//
+//	This attribute contains duplicate values of:
+//	tftypes.Object["default_value":tftypes.String,
+//	"value":tftypes.String]<"default_value":tftypes.String<"this is a default">,
+//	"value":tftypes.String<"zero">>
+//
 // Once this bug is fixed, the ExpectError regex in this test should be removed and the plan check should be switched to a state check.
 //
 // Ref: https://github.com/hashicorp/terraform-plugin-framework/issues/783

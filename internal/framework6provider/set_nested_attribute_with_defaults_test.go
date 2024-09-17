@@ -25,9 +25,13 @@ import (
 //
 //	Error: Duplicate Set Element
 //
-//	with framework_set_nested_block_with_defaults.test,
-//	on terraform_plugin_test.tf line 11, in resource "framework_set_nested_block_with_defaults" "test":
-//	11: resource "framework_set_nested_block_with_defaults" "test" {
+//	with framework_set_nested_attribute_with_defaults.test,
+//	on terraform_plugin_test.tf line 12, in resource "framework_set_nested_attribute_with_defaults" "test":
+//	12: 					set = [
+//	13: 						{ value = "one" },
+//	14: 						{ value = "two" },
+//	15: 						{ value = "three" },
+//	16: 					]
 //
 //	This attribute contains duplicate values of:
 //	tftypes.Object["default_value":tftypes.String,
@@ -37,28 +41,24 @@ import (
 // Once this bug is fixed, the ExpectError regex in this test should be removed and the plan check should be switched to a state check.
 //
 // Ref: https://github.com/hashicorp/terraform-plugin-framework/issues/783
-func TestSetNestedBlockWithDefaults(t *testing.T) {
+func TestSetNestedAttributeWithDefaults(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: `resource "framework_set_nested_block_with_defaults" "test" {
-					set {
-						value = "one"
-					}
-					set {
-						value = "two"
-					}
-					set {
-						value = "three"
-					}
+				Config: `resource "framework_set_nested_attribute_with_defaults" "test" {
+					set = [
+						{ value = "one" },
+						{ value = "two" },
+						{ value = "three" },
+					]
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectKnownValue(
-							"framework_set_nested_block_with_defaults.test",
+							"framework_set_nested_attribute_with_defaults.test",
 							tfjsonpath.New("set"),
 							knownvalue.SetExact(
 								[]knownvalue.Check{
