@@ -8,7 +8,7 @@ require (
 	github.com/hashicorp/terraform-plugin-framework v1.11.1-0.20240917200028-eea3a57f957a
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.4.1
 	github.com/hashicorp/terraform-plugin-framework-timetypes v0.5.0
-	github.com/hashicorp/terraform-plugin-go v0.23.1-0.20240916133607-11902aaf0b6b
+	github.com/hashicorp/terraform-plugin-go v0.23.1-0.20240917202719-94d8cc586c20
 	github.com/hashicorp/terraform-plugin-mux v0.16.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.34.0
 	github.com/hashicorp/terraform-plugin-testing v1.10.0
