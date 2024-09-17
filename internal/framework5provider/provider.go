@@ -76,6 +76,7 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewFloat32PrecisionResource,
 		NewFloat64PrecisionResource,
 		NewTFSDKReflectionResource,
+		NewMoveStateResource,
 	}
 }
 
