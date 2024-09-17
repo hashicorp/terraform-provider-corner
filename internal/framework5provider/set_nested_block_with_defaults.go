@@ -18,10 +18,14 @@ func NewSetNestedBlockWithDefaultsResource() resource.Resource {
 	return &SetNestedBlockWithDefaultsResource{}
 }
 
-// SetNestedBlockWithDefaultsResource is used for a test asserting a bug that has yet to be fixed in plugin framework with defaults
-// being used in an attribute inside of a set.
+// SetNestedBlockWithDefaultsResource is used for a test asserting a bug that has yet to be fixed in plugin framework
+// with defaults being used in an attribute inside of a set.
 //
-// Ref: https://github.com/hashicorp/terraform-plugin-framework/issues/783
+// This bug can be observed with various different outcomes: producing duplicate set element errors, incorrect diffs during plan,
+// consistent diffs with values switching back and forth, etc. Example bug reports:
+//   - https://github.com/hashicorp/terraform-plugin-framework/issues/783
+//   - https://github.com/hashicorp/terraform-plugin-framework/issues/867
+//   - https://github.com/hashicorp/terraform-plugin-framework/issues/1036
 type SetNestedBlockWithDefaultsResource struct{}
 
 func (r SetNestedBlockWithDefaultsResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
