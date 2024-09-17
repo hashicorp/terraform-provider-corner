@@ -17,9 +17,19 @@ import (
 
 // This test asserts a bug that has yet to be fixed in plugin framework with defaults being used in an attribute inside of a set.
 //
+// This bug can be observed with various different outcomes: producing duplicate set element errors, incorrect diffs during plan,
+// consistent diffs with values switching back and forth, etc. Example bug reports:
+//   - https://github.com/hashicorp/terraform-plugin-framework/issues/783
+//   - https://github.com/hashicorp/terraform-plugin-framework/issues/867
+//   - https://github.com/hashicorp/terraform-plugin-framework/issues/1036
+//
+// They all originate from the same root cause, which is when using `Default` on multiple attributes inside of a set, when one default
+// value is applied, the other default values may also be applied due to the set element being modified during traversal. The reason this
+// results in differing behavior is because Terraform core can't apply data consistency rules to sets that contain objects, so instead of
+// a single consistent error message, we get a bunch of different errors/odd behavior depending on the exact result of the defaulting logic.
+//
 // This specific test will successfully apply with the correct data, then following refresh/plan/apply commands will all raise
-// a "duplicate set element" error. The duplicate set elements are being created by the terraform-plugin-framework default logic
-// in PlanResourceChange. The framework logic defaults the set elements while traversing it, and since set elements are identified by their
+// a "duplicate set element" error. Since the framework logic defaults the set elements while traversing it and set elements are identified by their
 // value, follow-up path lookups for other set elements can't find the correct data, resulting in default values being applied incorrectly
 // for the "value" attributes.
 //
@@ -35,8 +45,6 @@ import (
 //	"value":tftypes.String<"zero">>
 //
 // Once this bug is fixed, the ExpectError regex in this test should be removed and the plan check should be switched to a state check.
-//
-// Ref: https://github.com/hashicorp/terraform-plugin-framework/issues/783
 func TestSetNestedBlockWithDefaults(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
