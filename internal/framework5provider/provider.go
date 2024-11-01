@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -17,7 +18,8 @@ import (
 )
 
 var (
-	_ provider.ProviderWithFunctions = (*testProvider)(nil)
+	_ provider.ProviderWithFunctions          = (*testProvider)(nil)
+	_ provider.ProviderWithEphemeralResources = (*testProvider)(nil)
 )
 
 func New() provider.Provider {
@@ -102,6 +104,12 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 		NewStringFunction,
 		NewVariadicFunction,
 		NewDynamicVariadicFunction,
+	}
+}
+
+func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
+	return []func() ephemeral.EphemeralResource{
+		NewThingEphemeralResource,
 	}
 }
 
