@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
+	"github.com/hashicorp/terraform-plugin-testing/testprovider/echo"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
-	"github.com/hashicorp/terraform-provider-corner/internal/echoprovider"
 )
 
 // Test that echos an ephemeral resource to state for testing purposes
@@ -27,8 +27,8 @@ func Test_EchoEntireEphemeralResource(t *testing.T) {
 			"framework": providerserver.NewProtocol5WithError(New()),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			// Provided test "echo" provider, would either be published in registry or from Go module in `terraform-plugin-testing`
-			"echo": echoprovider.NewServer(),
+			// Test "echo" provider from `terraform-plugin-testing`
+			"echo": echo.NewProviderServer(),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -41,10 +41,10 @@ func Test_EchoEntireEphemeralResource(t *testing.T) {
 					data = ephemeral.framework_thing.this
 				}
 
-				resource "echo_resource" "echo" {}
+				resource "echo_test" "echo" {}
 				`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo_resource.echo", tfjsonpath.New("data"),
+					statecheck.ExpectKnownValue("echo_test.echo", tfjsonpath.New("data"),
 						knownvalue.ObjectExact(
 							map[string]knownvalue.Check{
 								"name":  knownvalue.StringExact("thing-one"),
@@ -70,8 +70,8 @@ func Test_EchoSingleEphemeralAttribute(t *testing.T) {
 			"framework": providerserver.NewProtocol5WithError(New()),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			// Provided test "echo" provider, would either be published in registry or from Go module in `terraform-plugin-testing`
-			"echo": echoprovider.NewServer(),
+			// Test "echo" provider from `terraform-plugin-testing`
+			"echo": echo.NewProviderServer(),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -84,10 +84,10 @@ func Test_EchoSingleEphemeralAttribute(t *testing.T) {
 					data = ephemeral.framework_thing.this.token
 				}
 
-				resource "echo_resource" "echo" {}
+				resource "echo_test" "echo" {}
 				`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo_resource.echo", tfjsonpath.New("data"), knownvalue.StringExact("token-abc-123-do-re-mi")),
+					statecheck.ExpectKnownValue("echo_test.echo", tfjsonpath.New("data"), knownvalue.StringExact("token-abc-123-do-re-mi")),
 				},
 			},
 		},
