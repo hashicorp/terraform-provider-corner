@@ -3,7 +3,6 @@ package framework
 import (
 	"testing"
 
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -20,7 +19,7 @@ func Test_EchoEntireEphemeralResource(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.10.0"))),
+			tfversion.SkipBelow(tfversion.Version1_10_0),
 		},
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
 			// Target provider we want to test with an ephemeral resource
@@ -41,10 +40,10 @@ func Test_EchoEntireEphemeralResource(t *testing.T) {
 					data = ephemeral.framework_thing.this
 				}
 
-				resource "echo_test" "echo" {}
+				resource "echo_test" "test" {}
 				`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo_test.echo", tfjsonpath.New("data"),
+					statecheck.ExpectKnownValue("echo_test.test", tfjsonpath.New("data"),
 						knownvalue.ObjectExact(
 							map[string]knownvalue.Check{
 								"name":  knownvalue.StringExact("thing-one"),
@@ -63,7 +62,7 @@ func Test_EchoSingleEphemeralAttribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.10.0"))),
+			tfversion.SkipBelow(tfversion.Version1_10_0),
 		},
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
 			// Target provider we want to test with an ephemeral resource
@@ -84,10 +83,10 @@ func Test_EchoSingleEphemeralAttribute(t *testing.T) {
 					data = ephemeral.framework_thing.this.token
 				}
 
-				resource "echo_test" "echo" {}
+				resource "echo_test" "test" {}
 				`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo_test.echo", tfjsonpath.New("data"), knownvalue.StringExact("token-abc-123-do-re-mi")),
+					statecheck.ExpectKnownValue("echo_test.test", tfjsonpath.New("data"), knownvalue.StringExact("token-abc-123-do-re-mi")),
 				},
 			},
 		},
