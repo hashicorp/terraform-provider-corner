@@ -109,7 +109,7 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 
 func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
 	return []func() ephemeral.EphemeralResource{
-		NewThingEphemeralResource,
+		NewSchemaEphemeralResource,
 	}
 }
 
