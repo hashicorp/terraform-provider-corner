@@ -18,11 +18,11 @@ func NewSchemaEphemeralResource() ephemeral.EphemeralResource {
 // SchemaEphemeralResource is for testing all schema types
 type SchemaEphemeralResource struct{}
 
-func (t SchemaEphemeralResource) Metadata(ctx context.Context, req ephemeral.MetadataRequest, resp *ephemeral.MetadataResponse) {
+func (e SchemaEphemeralResource) Metadata(ctx context.Context, req ephemeral.MetadataRequest, resp *ephemeral.MetadataResponse) {
 	resp.TypeName = req.ProviderTypeName + "_schema"
 }
 
-func (t SchemaEphemeralResource) Schema(ctx context.Context, req ephemeral.SchemaRequest, resp *ephemeral.SchemaResponse) {
+func (e SchemaEphemeralResource) Schema(ctx context.Context, req ephemeral.SchemaRequest, resp *ephemeral.SchemaResponse) {
 
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
@@ -117,7 +117,7 @@ type SchemaEphemeralResourceModel struct {
 	StringAttribute   types.String  `tfsdk:"string_attribute"`
 }
 
-func (t SchemaEphemeralResource) Open(ctx context.Context, req ephemeral.OpenRequest, resp *ephemeral.OpenResponse) {
+func (e SchemaEphemeralResource) Open(ctx context.Context, req ephemeral.OpenRequest, resp *ephemeral.OpenResponse) {
 	var data SchemaEphemeralResourceModel
 
 	resp.Diagnostics.Append(req.Config.Get(ctx, &data)...)
