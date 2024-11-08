@@ -19,6 +19,8 @@ import (
 )
 
 func TestSchemaEphemeralResource_basic(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -30,7 +32,7 @@ func TestSchemaEphemeralResource_basic(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {}`),
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {}`),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
@@ -54,6 +56,8 @@ func TestSchemaEphemeralResource_basic(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_BoolAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -65,7 +69,7 @@ func TestSchemaEphemeralResource_BoolAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					bool_attribute = true
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -87,7 +91,7 @@ func TestSchemaEphemeralResource_BoolAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					bool_attribute = false
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -113,6 +117,8 @@ func TestSchemaEphemeralResource_BoolAttribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_DynamicAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -124,7 +130,7 @@ func TestSchemaEphemeralResource_DynamicAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					dynamic_attribute = "value1"
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -146,7 +152,7 @@ func TestSchemaEphemeralResource_DynamicAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					dynamic_attribute = [12,34]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -179,6 +185,8 @@ func TestSchemaEphemeralResource_DynamicAttribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_Float32Attribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -190,7 +198,7 @@ func TestSchemaEphemeralResource_Float32Attribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					float32_attribute = 1234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -212,7 +220,7 @@ func TestSchemaEphemeralResource_Float32Attribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					float32_attribute = 2234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -238,6 +246,8 @@ func TestSchemaEphemeralResource_Float32Attribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_Float64Attribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -249,7 +259,7 @@ func TestSchemaEphemeralResource_Float64Attribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					float64_attribute = 1234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -271,7 +281,7 @@ func TestSchemaEphemeralResource_Float64Attribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					float64_attribute = 2234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -297,6 +307,8 @@ func TestSchemaEphemeralResource_Float64Attribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_Int32Attribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -308,7 +320,7 @@ func TestSchemaEphemeralResource_Int32Attribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					int32_attribute = 1234
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -330,7 +342,7 @@ func TestSchemaEphemeralResource_Int32Attribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					int32_attribute = 2345
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -356,6 +368,8 @@ func TestSchemaEphemeralResource_Int32Attribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_Int64Attribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -367,7 +381,7 @@ func TestSchemaEphemeralResource_Int64Attribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					int64_attribute = 1234
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -389,7 +403,7 @@ func TestSchemaEphemeralResource_Int64Attribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					int64_attribute = 2345
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -415,6 +429,8 @@ func TestSchemaEphemeralResource_Int64Attribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -426,7 +442,7 @@ func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					list_attribute = ["value1"]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -454,7 +470,7 @@ func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					list_attribute = ["value2"]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -486,6 +502,8 @@ func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -497,7 +515,7 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					list_nested_block {
 						list_nested_block_attribute = "value1"
 					}
@@ -529,7 +547,7 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					list_nested_block {
 						list_nested_block_attribute = "value2"
 					}
@@ -565,6 +583,8 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -576,7 +596,7 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					map_attribute = {
 						key1 = "value1"
 					}
@@ -606,7 +626,7 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					map_attribute = {
 						key1 = "value2"
 					}
@@ -640,6 +660,8 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -651,7 +673,7 @@ func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					number_attribute = 1234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -673,7 +695,7 @@ func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					number_attribute = 2234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -699,6 +721,8 @@ func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -710,7 +734,7 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					object_attribute = {
 						object_attribute_attribute = "value1"
 					}
@@ -740,7 +764,7 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					object_attribute = {
 						object_attribute_attribute = "value2"
 					}
@@ -774,6 +798,8 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -785,7 +811,7 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					set_attribute = ["value1"]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -813,7 +839,7 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					set_attribute = ["value2"]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -845,6 +871,8 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -856,7 +884,7 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					set_nested_block {
 						set_nested_block_attribute = "value1"
 					}
@@ -888,7 +916,7 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					set_nested_block {
 						set_nested_block_attribute = "value2"
 					}
@@ -924,6 +952,8 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -935,7 +965,7 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					single_nested_block {
 						single_nested_block_attribute = "value1"
 					}
@@ -965,7 +995,7 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					single_nested_block {
 						single_nested_block_attribute = "value2"
 					}
@@ -999,6 +1029,8 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 }
 
 func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
+	t.Parallel()
+
 	resource.UnitTest(t, resource.TestCase{
 		// Ephemeral resources are only available in 1.10 and later
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
@@ -1010,7 +1042,7 @@ func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					string_attribute = "value1"
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -1032,7 +1064,7 @@ func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
 				},
 			},
 			{
-				Config: addEchoResourceToConfig(`ephemeral "framework_schema" "test" {
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
 					string_attribute = "value2"
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -1058,7 +1090,7 @@ func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
 }
 
 // Adds the test echo provider to enable using state checks with ephemeral resources
-func addEchoResourceToConfig(cfg string) string {
+func addEchoToEphemeralSchemaConfig(cfg string) string {
 	return fmt.Sprintf(`
 	%s
 	provider "echo" {

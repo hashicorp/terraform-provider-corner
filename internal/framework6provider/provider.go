@@ -23,10 +23,20 @@ var (
 )
 
 func New() provider.Provider {
-	return &testProvider{}
+	return &testProvider{
+		ephSpyClient: &EphemeralResourceSpyClient{},
+	}
 }
 
-type testProvider struct{}
+func NewWithEphemeralSpy(spy *EphemeralResourceSpyClient) provider.Provider {
+	return &testProvider{
+		ephSpyClient: spy,
+	}
+}
+
+type testProvider struct {
+	ephSpyClient *EphemeralResourceSpyClient
+}
 
 func (p *testProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
 	resp.TypeName = "framework"
@@ -63,6 +73,7 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 		}
 	}
 	resp.ResourceData = client
+	resp.EphemeralResourceData = p.ephSpyClient
 }
 
 func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
@@ -110,6 +121,7 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
 	return []func() ephemeral.EphemeralResource{
 		NewSchemaEphemeralResource,
+		NewEphemeralLifecycleResource,
 	}
 }
 
