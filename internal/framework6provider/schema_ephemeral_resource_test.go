@@ -41,13 +41,20 @@ func TestSchemaEphemeralResource_basic(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -80,13 +87,20 @@ func TestSchemaEphemeralResource_BoolAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -102,13 +116,20 @@ func TestSchemaEphemeralResource_BoolAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -141,42 +162,104 @@ func TestSchemaEphemeralResource_DynamicAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
 			{
 				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
-					dynamic_attribute = [12,34]
+					dynamic_attribute = tolist(["value1", "value2"])
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue(
-						"echo_test.schema_test",
-						tfjsonpath.New("data").AtMapKey("dynamic_attribute"),
-						knownvalue.TupleExact([]knownvalue.Check{
-							knownvalue.Int64Exact(12),
-							knownvalue.Int64Exact(34),
-						}),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"),
+						knownvalue.ListExact(
+							[]knownvalue.Check{
+								knownvalue.StringExact("value1"),
+								knownvalue.StringExact("value2"),
+							},
+						),
 					),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					dynamic_attribute = {
+						"attribute_one": "value1",
+						"attribute_two": false,
+						"attribute_three": 1234.5,
+						"attribute_four": [true, 1234.5],
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"attribute_one":   knownvalue.StringExact("value1"),
+								"attribute_two":   knownvalue.Bool(false),
+								"attribute_three": knownvalue.NumberExact(big.NewFloat(1234.5)),
+								"attribute_four": knownvalue.TupleExact(
+									[]knownvalue.Check{
+										knownvalue.Bool(true),
+										knownvalue.NumberExact(big.NewFloat(1234.5)),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -209,13 +292,20 @@ func TestSchemaEphemeralResource_Float32Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -231,13 +321,20 @@ func TestSchemaEphemeralResource_Float32Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -270,13 +367,20 @@ func TestSchemaEphemeralResource_Float64Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -292,13 +396,20 @@ func TestSchemaEphemeralResource_Float64Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -331,13 +442,20 @@ func TestSchemaEphemeralResource_Int32Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Int32Exact(1234)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -353,13 +471,20 @@ func TestSchemaEphemeralResource_Int32Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Int32Exact(2345)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -392,13 +517,20 @@ func TestSchemaEphemeralResource_Int64Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Int64Exact(1234)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -414,13 +546,20 @@ func TestSchemaEphemeralResource_Int64Attribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Int64Exact(2345)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -459,13 +598,20 @@ func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -487,13 +633,119 @@ func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaEphemeralResource_ListNestedAttribute(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Ephemeral resources are only available in 1.10 and later
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+			"echo":      echo.NewProviderServer(),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					list_nested_attribute = [
+						{
+							list_nested_attribute_attribute = "value1"
+						},
+					]
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"),
+						knownvalue.ListExact(
+							[]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"list_nested_attribute_attribute": knownvalue.StringExact("value1"),
+								}),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					list_nested_attribute = [
+						{
+							list_nested_attribute_attribute = "value2"
+						},
+					]
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"),
+						knownvalue.ListExact(
+							[]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"list_nested_attribute_attribute": knownvalue.StringExact("value2"),
+								}),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -528,6 +780,7 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"),
 						knownvalue.ListExact(
 							[]knownvalue.Check{
@@ -538,11 +791,17 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 						),
 					),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -560,6 +819,7 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"),
 						knownvalue.ListExact(
 							[]knownvalue.Check{
@@ -570,11 +830,17 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 						),
 					),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -609,6 +875,7 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"),
 						knownvalue.MapExact(
@@ -617,11 +884,17 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -639,6 +912,7 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"),
 						knownvalue.MapExact(
@@ -647,11 +921,120 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaEphemeralResource_MapNestedAttribute(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Ephemeral resources are only available in 1.10 and later
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+			"echo":      echo.NewProviderServer(),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					map_nested_attribute = {
+						"key1" = {
+							map_nested_attribute_attribute = "value1"
+						},
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"),
+						knownvalue.MapExact(
+							map[string]knownvalue.Check{
+								"key1": knownvalue.ObjectExact(
+									map[string]knownvalue.Check{
+										"map_nested_attribute_attribute": knownvalue.StringExact("value1"),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					map_nested_attribute = {
+						"key1" = {
+							map_nested_attribute_attribute = "value2"
+						},
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"),
+						knownvalue.MapExact(
+							map[string]knownvalue.Check{
+								"key1": knownvalue.ObjectExact(
+									map[string]knownvalue.Check{
+										"map_nested_attribute_attribute": knownvalue.StringExact("value2"),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -684,13 +1067,20 @@ func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.NumberExact(big.NewFloat(1234.5))),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -706,13 +1096,20 @@ func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.NumberExact(big.NewFloat(2234.5))),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -747,8 +1144,10 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"),
 						knownvalue.ObjectExact(
@@ -757,9 +1156,14 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -777,8 +1181,10 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"),
 						knownvalue.ObjectExact(
@@ -787,9 +1193,164 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaEphemeralResource_ObjectAttributeWithDynamic(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Ephemeral resources are only available in 1.10 and later
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+			"echo":      echo.NewProviderServer(),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					object_attribute_with_dynamic = {
+						dynamic_attribute = "value1"
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.StringExact("value1"),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					object_attribute_with_dynamic = {
+						dynamic_attribute = tolist(["value1", "value2"])
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.ListExact(
+									[]knownvalue.Check{
+										knownvalue.StringExact("value1"),
+										knownvalue.StringExact("value2"),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					object_attribute_with_dynamic = {
+						dynamic_attribute = {
+							"attribute_one": "value1",
+							"attribute_two": false,
+							"attribute_three": 1234.5,
+							"attribute_four": [true, 1234.5],
+						}
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.ObjectExact(
+									map[string]knownvalue.Check{
+										"attribute_one":   knownvalue.StringExact("value1"),
+										"attribute_two":   knownvalue.Bool(false),
+										"attribute_three": knownvalue.NumberExact(big.NewFloat(1234.5)),
+										"attribute_four": knownvalue.TupleExact(
+											[]knownvalue.Check{
+												knownvalue.Bool(true),
+												knownvalue.NumberExact(big.NewFloat(1234.5)),
+											},
+										),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -822,10 +1383,13 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"),
 						knownvalue.SetExact(
 							[]knownvalue.Check{
@@ -833,8 +1397,12 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -850,10 +1418,13 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"),
 						knownvalue.SetExact(
 							[]knownvalue.Check{
@@ -861,8 +1432,111 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaEphemeralResource_SetNestedAttribute(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Ephemeral resources are only available in 1.10 and later
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+			"echo":      echo.NewProviderServer(),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					set_nested_attribute = [
+						{
+							set_nested_attribute_attribute = "value1"
+						},
+					]
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"),
+						knownvalue.SetExact(
+							[]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"set_nested_attribute_attribute": knownvalue.StringExact("value1"),
+								}),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					set_nested_attribute = [
+						{
+							set_nested_attribute_attribute = "value2"
+						},
+					]
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"),
+						knownvalue.SetExact(
+							[]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"set_nested_attribute_attribute": knownvalue.StringExact("value2"),
+								}),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -897,11 +1571,15 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"),
 						knownvalue.SetExact(
 							[]knownvalue.Check{
@@ -911,7 +1589,10 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -929,11 +1610,15 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"),
 						knownvalue.SetExact(
 							[]knownvalue.Check{
@@ -943,7 +1628,251 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaEphemeralResource_SingleNestedAttribute(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Ephemeral resources are only available in 1.10 and later
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+			"echo":      echo.NewProviderServer(),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_attribute = {
+						single_nested_attribute_attribute = "value1"
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"single_nested_attribute_attribute": knownvalue.StringExact("value1"),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_attribute = {
+						single_nested_attribute_attribute = "value2"
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"single_nested_attribute_attribute": knownvalue.StringExact("value2"),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaEphemeralResource_SingleNestedAttributeWithDynamic(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Ephemeral resources are only available in 1.10 and later
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+			"echo":      echo.NewProviderServer(),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_attribute_with_dynamic = {
+						dynamic_attribute = "value1"
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.StringExact("value1"),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_attribute_with_dynamic = {
+						dynamic_attribute = tolist(["value1", "value2"])
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.ListExact(
+									[]knownvalue.Check{
+										knownvalue.StringExact("value1"),
+										knownvalue.StringExact("value2"),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_attribute_with_dynamic = {
+						dynamic_attribute = {
+							"attribute_one": "value1",
+							"attribute_two": false,
+							"attribute_three": 1234.5,
+							"attribute_four": [true, 1234.5],
+						}
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.ObjectExact(
+									map[string]knownvalue.Check{
+										"attribute_one":   knownvalue.StringExact("value1"),
+										"attribute_two":   knownvalue.Bool(false),
+										"attribute_three": knownvalue.NumberExact(big.NewFloat(1234.5)),
+										"attribute_four": knownvalue.TupleExact(
+											[]knownvalue.Check{
+												knownvalue.Bool(true),
+												knownvalue.NumberExact(big.NewFloat(1234.5)),
+											},
+										),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -978,12 +1907,18 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"),
 						knownvalue.ObjectExact(
 							map[string]knownvalue.Check{
@@ -991,6 +1926,7 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -1008,16 +1944,173 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"),
 						knownvalue.ObjectExact(
 							map[string]knownvalue.Check{
 								"single_nested_block_attribute": knownvalue.StringExact("value2"),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaEphemeralResource_SingleNestedBlockWithDynamic(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Ephemeral resources are only available in 1.10 and later
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+			"echo":      echo.NewProviderServer(),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_block_with_dynamic {
+						dynamic_attribute = "value1"
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.StringExact("value1"),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_block_with_dynamic {
+						dynamic_attribute = tolist(["value1", "value2"])
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.ListExact(
+									[]knownvalue.Check{
+										knownvalue.StringExact("value1"),
+										knownvalue.StringExact("value2"),
+									},
+								),
+							},
+						),
+					),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.Null()),
+				},
+			},
+			{
+				Config: addEchoToEphemeralSchemaConfig(`ephemeral "framework_schema" "test" {
+					single_nested_block_with_dynamic {
+						dynamic_attribute = {
+							"attribute_one": "value1",
+							"attribute_two": false,
+							"attribute_three": 1234.5,
+							"attribute_four": [true, 1234.5],
+						}
+					}
+				}`),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"dynamic_attribute": knownvalue.ObjectExact(
+									map[string]knownvalue.Check{
+										"attribute_one":   knownvalue.StringExact("value1"),
+										"attribute_two":   knownvalue.Bool(false),
+										"attribute_three": knownvalue.NumberExact(big.NewFloat(1234.5)),
+										"attribute_four": knownvalue.TupleExact(
+											[]knownvalue.Check{
+												knownvalue.Bool(true),
+												knownvalue.NumberExact(big.NewFloat(1234.5)),
+											},
+										),
+									},
+								),
 							},
 						),
 					),
@@ -1053,13 +2146,20 @@ func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.StringExact("value1")),
 				},
 			},
@@ -1075,13 +2175,20 @@ func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("map_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("object_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_attribute_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("single_nested_block_with_dynamic"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("string_attribute"), knownvalue.StringExact("value2")),
 				},
 			},
