@@ -9,8 +9,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ ephemeral.EphemeralResource = SchemaEphemeralResource{}
-
 func NewSchemaEphemeralResource() ephemeral.EphemeralResource {
 	return &SchemaEphemeralResource{}
 }

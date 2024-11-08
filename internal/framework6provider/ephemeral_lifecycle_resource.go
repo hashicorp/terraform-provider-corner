@@ -11,10 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-var _ ephemeral.EphemeralResource = &EphemeralLifecycleResource{}
-var _ ephemeral.EphemeralResourceWithConfigure = &EphemeralLifecycleResource{}
-var _ ephemeral.EphemeralResourceWithRenew = &EphemeralLifecycleResource{}
-var _ ephemeral.EphemeralResourceWithClose = &EphemeralLifecycleResource{}
+var (
+	_ ephemeral.EphemeralResourceWithConfigure = &EphemeralLifecycleResource{}
+	_ ephemeral.EphemeralResourceWithRenew     = &EphemeralLifecycleResource{}
+	_ ephemeral.EphemeralResourceWithClose     = &EphemeralLifecycleResource{}
+)
 
 func NewEphemeralLifecycleResource() ephemeral.EphemeralResource {
 	return &EphemeralLifecycleResource{}
