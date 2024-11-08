@@ -1,3 +1,6 @@
+// Copyright (c) HashiCorp, Inc.
+// SPDX-License-Identifier: MPL-2.0
+
 package framework
 
 // EphemeralResourceSpyClient is used in tests to verify that an ephemeral resource lifecycle handler has been executed.
