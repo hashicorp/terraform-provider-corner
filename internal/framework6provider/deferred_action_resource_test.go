@@ -21,7 +21,7 @@ func TestDeferredActionResource_ProviderDeferral(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_9_0),
-			tfversion.SkipIfNotPrerelease(),
+			tfversion.SkipIfNotAlpha(),
 		},
 		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
 			Plan:  resource.PlanOptions{AllowDeferral: true},
@@ -90,7 +90,7 @@ func TestDeferredActionPlanModificationResource_ProviderDeferral(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_9_0),
-			tfversion.SkipIfNotPrerelease(),
+			tfversion.SkipIfNotAlpha(),
 		},
 		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
 			Plan:  resource.PlanOptions{AllowDeferral: true},
@@ -169,7 +169,7 @@ func TestDeferredActionResource_ModifyPlanDeferral(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_9_0),
-			tfversion.SkipIfNotPrerelease(),
+			tfversion.SkipIfNotAlpha(),
 		},
 		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
 			Plan:  resource.PlanOptions{AllowDeferral: true},
@@ -211,7 +211,7 @@ func TestDeferredActionResource_ReadDeferral(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_9_0),
-			tfversion.SkipIfNotPrerelease(),
+			tfversion.SkipIfNotAlpha(),
 		},
 		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
 			Plan:  resource.PlanOptions{AllowDeferral: true},
@@ -240,7 +240,7 @@ func TestDeferredActionResource_ImportStateDeferral(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_9_0),
-			tfversion.SkipIfNotPrerelease(),
+			tfversion.SkipIfNotAlpha(),
 		},
 		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
 			Plan:  resource.PlanOptions{AllowDeferral: true},
