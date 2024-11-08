@@ -11,11 +11,11 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/hashicorp/terraform-plugin-testing/echoprovider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/hashicorp/terraform-plugin-testing/testprovider/echo"
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
@@ -39,7 +39,7 @@ func TestEphemeralLifecycleResource_basic(t *testing.T) {
 			"framework": providerserver.NewProtocol5WithError(NewWithEphemeralSpy(spyClient)),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"echo": echo.NewProviderServer(),
+			"echo": echoprovider.NewProviderServer(),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -50,12 +50,12 @@ func TestEphemeralLifecycleResource_basic(t *testing.T) {
 					resource "time_sleep" "wait_20_seconds" {
 						create_duration = "20s"
 						triggers = {
-							name = echo_test.schema_test.data.name
+							name = echo.lifecycle_test.data.name
 						}
 					}`),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("name"), knownvalue.StringExact("John Doe")),
-					statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
+					statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("name"), knownvalue.StringExact("John Doe")),
+					statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
 				},
 			},
 		},
@@ -94,7 +94,7 @@ func TestEphemeralLifecycleResource_SkipWithUnknown(t *testing.T) {
 			"framework": providerserver.NewProtocol5WithError(New()),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"echo": echo.NewProviderServer(),
+			"echo": echoprovider.NewProviderServer(),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -110,8 +110,8 @@ func TestEphemeralLifecycleResource_SkipWithUnknown(t *testing.T) {
 				// we can remove the ExpectError and uncomment the state checks.
 				ExpectError: regexp.MustCompile(`Unknown value encountered in Open lifecycle handler`),
 				// ConfigStateChecks: []statecheck.StateCheck{
-				// 	statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("name"), knownvalue.StringRegexp(regexp.MustCompile(`^John\s.{12}$`))),
-				// 	statecheck.ExpectKnownValue("echo_test.schema_test", tfjsonpath.New("data").AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
+				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("name"), knownvalue.StringRegexp(regexp.MustCompile(`^John\s.{12}$`))),
+				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
 				// },
 			},
 		},
@@ -125,6 +125,6 @@ func addEchoToEphemeralLifecycleConfig(cfg string) string {
 	provider "echo" {
 		data = ephemeral.framework_lifecycle.test
 	}
-	resource "echo_test" "schema_test" {}
+	resource "echo" "lifecycle_test" {}
 	`, cfg)
 }
