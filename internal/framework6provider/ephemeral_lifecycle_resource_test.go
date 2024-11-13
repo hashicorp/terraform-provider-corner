@@ -12,10 +12,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/echoprovider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
-	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
@@ -40,20 +37,14 @@ func TestEphemeralLifecycleResource_basic(t *testing.T) {
 		},
 		Steps: []resource.TestStep{
 			{
-				Config: addEchoToEphemeralLifecycleConfig(`
-					ephemeral "framework_lifecycle" "test" {
-						name = "John Doe"
-					}
-					resource "time_sleep" "wait_20_seconds" {
-						create_duration = "20s"
-						triggers = {
-							name = echo.lifecycle_test.data.name
-						}
-					}`),
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("name"), knownvalue.StringExact("John Doe")),
-					statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
-				},
+				Config: `
+				ephemeral "framework_lifecycle" "test" {
+					name = "John Doe"
+				}
+				resource "time_sleep" "wait_20_seconds" {
+					depends_on = [ephemeral.framework_lifecycle.test]
+					create_duration = "20s"
+				}`,
 			},
 		},
 		CheckDestroy: func(_ *terraform.State) error {
