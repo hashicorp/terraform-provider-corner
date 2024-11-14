@@ -96,8 +96,8 @@ func TestEphemeralLifecycleResource_SkipWithUnknown(t *testing.T) {
 				// we can remove the ExpectError and uncomment the state checks.
 				ExpectError: regexp.MustCompile(`Unknown value encountered in Open lifecycle handler`),
 				// ConfigStateChecks: []statecheck.StateCheck{
-				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("name"), knownvalue.StringRegexp(regexp.MustCompile(`^John\s.{12}$`))),
-				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", tfjsonpath.New("data").AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
+				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", echoDataPath.AtMapKey("name"), knownvalue.StringRegexp(regexp.MustCompile(`^John\s.{12}$`))),
+				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", echoDataPath.AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
 				// },
 			},
 		},
