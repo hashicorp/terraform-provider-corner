@@ -12,6 +12,8 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/echoprovider"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
+	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
@@ -92,13 +94,10 @@ func TestEphemeralLifecycleResource_SkipWithUnknown(t *testing.T) {
 					ephemeral "framework_lifecycle" "test" {
 						name = "John ${random_string.str.result}"
 					}`),
-				// TODO: This is currently a known bug in Terraform v1.10.0-beta1. Once that bug is fixed, this test will fail, and then
-				// we can remove the ExpectError and uncomment the state checks.
-				ExpectError: regexp.MustCompile(`Unknown value encountered in Open lifecycle handler`),
-				// ConfigStateChecks: []statecheck.StateCheck{
-				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", echoDataPath.AtMapKey("name"), knownvalue.StringRegexp(regexp.MustCompile(`^John\s.{12}$`))),
-				// 	statecheck.ExpectKnownValue("echo.lifecycle_test", echoDataPath.AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
-				// },
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.lifecycle_test", echoDataPath.AtMapKey("name"), knownvalue.StringRegexp(regexp.MustCompile(`^John\s.{12}$`))),
+					statecheck.ExpectKnownValue("echo.lifecycle_test", echoDataPath.AtMapKey("token"), knownvalue.StringExact("fake-token-12345")),
+				},
 			},
 		},
 	})

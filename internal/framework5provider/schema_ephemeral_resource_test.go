@@ -121,7 +121,6 @@ func TestSchemaEphemeralResource_DynamicAttribute(t *testing.T) {
 					dynamic_attribute = [12,34]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue(
 						"echo.schema_test",
 						echoDataPath.AtMapKey("dynamic_attribute"),
@@ -130,6 +129,7 @@ func TestSchemaEphemeralResource_DynamicAttribute(t *testing.T) {
 							knownvalue.Int64Exact(34),
 						}),
 					),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
@@ -169,9 +169,9 @@ func TestSchemaEphemeralResource_Float32Attribute(t *testing.T) {
 					float32_attribute = 1234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Float32Exact(1234.5)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Float32Exact(1234.5)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
@@ -210,10 +210,10 @@ func TestSchemaEphemeralResource_Float64Attribute(t *testing.T) {
 					float64_attribute = 1234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Float64Exact(1234.5)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Float64Exact(1234.5)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"), knownvalue.Null()),
@@ -251,11 +251,11 @@ func TestSchemaEphemeralResource_Int32Attribute(t *testing.T) {
 					int32_attribute = 1234
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Int32Exact(1234)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Int32Exact(1234)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
@@ -292,12 +292,12 @@ func TestSchemaEphemeralResource_Int64Attribute(t *testing.T) {
 					int64_attribute = 1234
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Int64Exact(1234)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Int64Exact(1234)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"), knownvalue.Null()),
@@ -333,12 +333,6 @@ func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
 					list_attribute = ["value1"]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"),
 						knownvalue.ListExact(
 							[]knownvalue.Check{
@@ -346,6 +340,12 @@ func TestSchemaEphemeralResource_ListAttribute(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.Null()),
@@ -382,13 +382,6 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 					}
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_nested_block"),
 						knownvalue.ListExact(
 							[]knownvalue.Check{
@@ -398,6 +391,13 @@ func TestSchemaEphemeralResource_ListNestedBlock(t *testing.T) {
 							},
 						),
 					),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int32_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"), knownvalue.Null()),
@@ -433,6 +433,13 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 					}
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"),
+						knownvalue.MapExact(
+							map[string]knownvalue.Check{
+								"key1": knownvalue.StringExact("value1"),
+							},
+						),
+					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
@@ -441,13 +448,6 @@ func TestSchemaEphemeralResource_MapAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("int64_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"),
-						knownvalue.MapExact(
-							map[string]knownvalue.Check{
-								"key1": knownvalue.StringExact("value1"),
-							},
-						),
-					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"), knownvalue.Null()),
@@ -480,6 +480,7 @@ func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
 					number_attribute = 1234.5
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.NumberExact(big.NewFloat(1234.5))),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
@@ -489,7 +490,6 @@ func TestSchemaEphemeralResource_NumberAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.NumberExact(big.NewFloat(1234.5))),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
@@ -523,6 +523,13 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 					}
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"object_attribute_attribute": knownvalue.StringExact("value1"),
+							},
+						),
+					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
@@ -533,13 +540,6 @@ func TestSchemaEphemeralResource_ObjectAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("list_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"),
-						knownvalue.ObjectExact(
-							map[string]knownvalue.Check{
-								"object_attribute_attribute": knownvalue.StringExact("value1"),
-							},
-						),
-					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("single_nested_block"), knownvalue.Null()),
@@ -570,6 +570,13 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 					set_attribute = ["value1"]
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"),
+						knownvalue.SetExact(
+							[]knownvalue.Check{
+								knownvalue.StringExact("value1"),
+							},
+						),
+					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
@@ -581,13 +588,6 @@ func TestSchemaEphemeralResource_SetAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("map_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"),
-						knownvalue.SetExact(
-							[]knownvalue.Check{
-								knownvalue.StringExact("value1"),
-							},
-						),
-					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("single_nested_block"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("string_attribute"), knownvalue.Null()),
@@ -619,6 +619,15 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 					}
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_nested_block"),
+						knownvalue.SetExact(
+							[]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"set_nested_block_attribute": knownvalue.StringExact("value1"),
+								}),
+							},
+						),
+					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
@@ -631,15 +640,6 @@ func TestSchemaEphemeralResource_SetNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("number_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_nested_block"),
-						knownvalue.SetExact(
-							[]knownvalue.Check{
-								knownvalue.ObjectExact(map[string]knownvalue.Check{
-									"set_nested_block_attribute": knownvalue.StringExact("value1"),
-								}),
-							},
-						),
-					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("single_nested_block"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("string_attribute"), knownvalue.Null()),
 				},
@@ -670,6 +670,13 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 					}
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("single_nested_block"),
+						knownvalue.ObjectExact(
+							map[string]knownvalue.Check{
+								"single_nested_block_attribute": knownvalue.StringExact("value1"),
+							},
+						),
+					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
@@ -683,13 +690,6 @@ func TestSchemaEphemeralResource_SingleNestedBlock(t *testing.T) {
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("object_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("single_nested_block"),
-						knownvalue.ObjectExact(
-							map[string]knownvalue.Check{
-								"single_nested_block_attribute": knownvalue.StringExact("value1"),
-							},
-						),
-					),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("string_attribute"), knownvalue.Null()),
 				},
 			},
@@ -717,6 +717,7 @@ func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
 					string_attribute = "value1"
 				}`),
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("string_attribute"), knownvalue.StringExact("value1")),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("bool_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("dynamic_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("float32_attribute"), knownvalue.Null()),
@@ -731,7 +732,6 @@ func TestSchemaEphemeralResource_StringAttribute(t *testing.T) {
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_attribute"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("set_nested_block"), knownvalue.ListSizeExact(0)),
 					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("single_nested_block"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("echo.schema_test", echoDataPath.AtMapKey("string_attribute"), knownvalue.StringExact("value1")),
 				},
 			},
 		},
