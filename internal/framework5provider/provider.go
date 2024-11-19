@@ -7,6 +7,7 @@ import (
 	"context"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
@@ -17,14 +18,25 @@ import (
 )
 
 var (
-	_ provider.ProviderWithFunctions = (*testProvider)(nil)
+	_ provider.ProviderWithFunctions          = (*testProvider)(nil)
+	_ provider.ProviderWithEphemeralResources = (*testProvider)(nil)
 )
 
 func New() provider.Provider {
-	return &testProvider{}
+	return &testProvider{
+		ephSpyClient: &EphemeralResourceSpyClient{},
+	}
 }
 
-type testProvider struct{}
+func NewWithEphemeralSpy(spy *EphemeralResourceSpyClient) provider.Provider {
+	return &testProvider{
+		ephSpyClient: spy,
+	}
+}
+
+type testProvider struct {
+	ephSpyClient *EphemeralResourceSpyClient
+}
 
 func (p *testProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
 	resp.TypeName = "framework"
@@ -61,6 +73,7 @@ func (p *testProvider) Configure(ctx context.Context, req provider.ConfigureRequ
 		}
 	}
 	resp.ResourceData = client
+	resp.EphemeralResourceData = p.ephSpyClient
 }
 
 func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
@@ -102,6 +115,13 @@ func (p *testProvider) Functions(ctx context.Context) []func() function.Function
 		NewStringFunction,
 		NewVariadicFunction,
 		NewDynamicVariadicFunction,
+	}
+}
+
+func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemeral.EphemeralResource {
+	return []func() ephemeral.EphemeralResource{
+		NewSchemaEphemeralResource,
+		NewEphemeralLifecycleResource,
 	}
 }
 
