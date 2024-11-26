@@ -95,7 +95,10 @@ func (s *server) StopProvider(ctx context.Context, req *tfprotov5.StopProviderRe
 func Server() tfprotov5.ProviderServer {
 	return &server{
 		providerSchema: &tfprotov5.Schema{
-			Block: &tfprotov5.SchemaBlock{},
+			Block: &tfprotov5.SchemaBlock{
+				Attributes: []*tfprotov5.SchemaAttribute{
+					{Name: "deferral", Type: tftypes.Bool, Optional: true}},
+			},
 		},
 		dataSourceSchemas: map[string]*tfprotov5.Schema{
 			"corner_time": {

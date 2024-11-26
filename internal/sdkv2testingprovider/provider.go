@@ -8,11 +8,18 @@ import (
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
 func New() *schema.Provider {
 	p := &schema.Provider{
+		Schema: map[string]*schema.Schema{
+			"deferral": {
+				Type:     schema.TypeBool,
+				Optional: true,
+			},
+		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"corner_regions":     dataSourceRegions(),
 			"corner_bigint":      dataSourceBigint(),

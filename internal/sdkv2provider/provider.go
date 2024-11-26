@@ -26,10 +26,11 @@ func New() *schema.Provider {
 			"corner_regions_cty": dataSourceRegionsCty(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"corner_user":            resourceUser(),
-			"corner_bigint":          resourceBigint(),
-			"corner_user_cty":        resourceUserCty(),
-			"corner_deferred_action": resourceDeferredAction(),
+			"corner_user":                              resourceUser(),
+			"corner_user_writeonly":                    resourceUserWriteOnly(),
+			"corner_bigint":                            resourceBigint(),
+			"corner_user_cty":                          resourceUserCty(),
+			"corner_deferred_action":                   resourceDeferredAction(),
 			"corner_deferred_action_plan_modification": resourceDeferredActionPlanModification(),
 		},
 	}
