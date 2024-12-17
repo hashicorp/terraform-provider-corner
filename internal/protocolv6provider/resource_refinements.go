@@ -131,7 +131,7 @@ func (r resourceRefinements) PlanResourceChange(ctx context.Context, req *tfprot
 	newStrValue := tftypes.NewValue(tftypes.String, tftypes.UnknownValue).
 		Refine(refinement.Refinements{
 			// str_value will never be null
-			refinement.KeyNullness: refinement.Nullness(false),
+			refinement.KeyNullness: refinement.NewNullness(false),
 		})
 
 	// If the value exists in config (unknown or known), keep it.
