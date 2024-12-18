@@ -33,16 +33,16 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"writeonly_custom_ipv6": schema.StringAttribute{
-				Optional:   true,
+				Required:   true,
 				WriteOnly:  true,
 				CustomType: iptypes.IPv6AddressType{},
 			},
 			"writeonly_string": schema.StringAttribute{
-				Optional:  true,
+				Required:  true,
 				WriteOnly: true,
 			},
 			"writeonly_set": schema.SetAttribute{
-				Optional:    true,
+				Required:    true,
 				WriteOnly:   true,
 				ElementType: types.StringType,
 			},
@@ -51,7 +51,7 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			//  - https://hashicorp.slack.com/archives/C071HC4JJCC/p1734465766242319?thread_ts=1734465749.748579&cid=C071HC4JJCC
 			//
 			// "nested_object": schema.SingleNestedAttribute{
-			// 	Optional: true,
+			// 	Required: true,
 			// 	Attributes: map[string]schema.Attribute{
 			// 		"string_attr": schema.StringAttribute{
 			// 			Required:  true,
@@ -63,7 +63,7 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 			// 	},
 			// },
 			"writeonly_nested_object": schema.SingleNestedAttribute{
-				Optional:  true,
+				Required:  true,
 				WriteOnly: true,
 				Attributes: map[string]schema.Attribute{
 					"writeonly_int64": schema.Int64Attribute{
@@ -177,30 +177,29 @@ type WriteOnlyResourceModel struct {
 }
 
 // VerifyWriteOnlyData compares the hardcoded test data for the write-only attributes in this resource, raising
-// error diagnostics if the data differs from expectations. Null write-only values will be ignored as all write-only
-// attributes are optional
+// error diagnostics if the data differs from expectations.
 func (m WriteOnlyResourceModel) VerifyWriteOnlyData() diag.Diagnostic {
 	// Primitive write-only attributes
 	expectedCustomIPv6 := "::"
 	expectedString := "fakepassword"
-	if !m.WriteOnlyCustomIPv6.IsNull() && m.WriteOnlyCustomIPv6.ValueString() != expectedCustomIPv6 {
+	if m.WriteOnlyCustomIPv6.ValueString() != expectedCustomIPv6 {
 		return diag.NewAttributeErrorDiagnostic(
 			path.Root("writeonly_custom_ipv6"),
 			"Unexpected WriteOnly Value",
-			fmt.Sprintf("wanted: %q, got: %q", expectedCustomIPv6, m.WriteOnlyCustomIPv6.ValueString()),
+			fmt.Sprintf("wanted: %q, got: %q", expectedCustomIPv6, m.WriteOnlyCustomIPv6),
 		)
 	}
-	if !m.WriteOnlyString.IsNull() && m.WriteOnlyString.ValueString() != expectedString {
+	if m.WriteOnlyString.ValueString() != expectedString {
 		return diag.NewAttributeErrorDiagnostic(
 			path.Root("writeonly_string"),
 			"Unexpected WriteOnly Value",
-			fmt.Sprintf("wanted: %q, got: %q", expectedString, m.WriteOnlyString.ValueString()),
+			fmt.Sprintf("wanted: %q, got: %q", expectedString, m.WriteOnlyString),
 		)
 	}
 
 	// Collection write-only attribute
 	expectedSet := types.SetValueMust(types.StringType, []attr.Value{types.StringValue("fake"), types.StringValue("password")})
-	if !m.WriteOnlySet.IsNull() && !m.WriteOnlySet.Equal(expectedSet) {
+	if !m.WriteOnlySet.Equal(expectedSet) {
 		return diag.NewAttributeErrorDiagnostic(
 			path.Root("writeonly_set"),
 			"Unexpected WriteOnly Value",
@@ -232,7 +231,7 @@ func (m WriteOnlyResourceModel) VerifyWriteOnlyData() diag.Diagnostic {
 		}),
 	})
 
-	if !m.WriteOnlyNestedObject.IsNull() && !m.WriteOnlyNestedObject.Equal(expectedObject) {
+	if !m.WriteOnlyNestedObject.Equal(expectedObject) {
 		return diag.NewAttributeErrorDiagnostic(
 			path.Root("writeonly_nested_object"),
 			"Unexpected WriteOnly Value",
@@ -273,7 +272,7 @@ func (m WriteOnlyResourceModel) VerifyWriteOnlyData() diag.Diagnostic {
 		}),
 	})
 
-	if len(m.NestedBlockList.Elements()) > 0 && !m.NestedBlockList.Equal(expectedListBlock) {
+	if !m.NestedBlockList.Equal(expectedListBlock) {
 		return diag.NewAttributeErrorDiagnostic(
 			path.Root("nested_block_list"),
 			"Unexpected WriteOnly Value",
