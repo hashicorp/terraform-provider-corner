@@ -132,7 +132,6 @@ func (r WriteOnlyResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	// If the write-only data exists in config, verify the data is what we hardcoded in the resource
 	resp.Diagnostics.Append(config.VerifyWriteOnlyData())
 	if resp.Diagnostics.HasError() {
 		return
