@@ -31,17 +31,17 @@ func resourceWriteOnly() *schema.Resource {
 			},
 			"writeonly_bool": {
 				Type:      schema.TypeBool,
-				Required:  true,
+				Optional:  true,
 				WriteOnly: true,
 			},
 			"writeonly_string": {
 				Type:      schema.TypeString,
-				Required:  true,
+				Optional:  true,
 				WriteOnly: true,
 			},
 			"writeonly_int": {
 				Type:      schema.TypeInt,
-				Required:  true,
+				Optional:  true,
 				WriteOnly: true,
 			},
 			"nested_list_block": {
@@ -63,7 +63,7 @@ func resourceWriteOnly() *schema.Resource {
 						},
 						"writeonly_string": {
 							Type:      schema.TypeString,
-							Required:  true,
+							Optional:  true,
 							WriteOnly: true,
 						},
 						"double_nested_set_block": {
@@ -85,7 +85,7 @@ func resourceWriteOnly() *schema.Resource {
 									},
 									"writeonly_string": {
 										Type:      schema.TypeString,
-										Required:  true,
+										Optional:  true,
 										WriteOnly: true,
 									},
 								},
@@ -126,18 +126,17 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	if diags.HasError() {
 		return diags
 	}
-	if strVal.IsNull() {
-		return diag.FromErr(errors.New("expected `writeonly_string` write-only attribute to be set, got: <null>"))
-	}
-	expectedString := "fakepassword"
-	if strVal.AsString() != expectedString {
-		return diag.Errorf("expected `writeonly_string` to be: %q, got: %q", expectedString, strVal.AsString())
-	}
-	// Setting shouldn't result in anything sent back to Terraform, but we want to test that
-	// our SDKv2 logic would revert these changes.
-	err := d.Set("writeonly_string", "different value")
-	if err != nil {
-		return diag.FromErr(err)
+	if !strVal.IsNull() {
+		expectedString := "fakepassword"
+		if strVal.AsString() != expectedString {
+			return diag.Errorf("expected `writeonly_string` to be: %q, got: %q", expectedString, strVal.AsString())
+		}
+		// Setting shouldn't result in anything sent back to Terraform, but we want to test that
+		// our SDKv2 logic would revert these changes.
+		err := d.Set("writeonly_string", "different value")
+		if err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	// Write-only bool assert
@@ -145,17 +144,16 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	if diags.HasError() {
 		return diags
 	}
-	if boolVal.IsNull() {
-		return diag.FromErr(errors.New("expected `writeonly_bool` write-only attribute to be set, got: <null>"))
-	}
-	if boolVal.False() {
-		return diag.FromErr(errors.New("expected `writeonly_bool` to be: true, got: false"))
-	}
-	// Setting shouldn't result in anything sent back to Terraform, but we want to test that
-	// our SDKv2 logic would revert these changes.
-	err = d.Set("writeonly_bool", false)
-	if err != nil {
-		return diag.FromErr(err)
+	if !boolVal.IsNull() {
+		if boolVal.False() {
+			return diag.FromErr(errors.New("expected `writeonly_bool` to be: true, got: false"))
+		}
+		// Setting shouldn't result in anything sent back to Terraform, but we want to test that
+		// our SDKv2 logic would revert these changes.
+		err := d.Set("writeonly_bool", false)
+		if err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	// Write-only int assert
@@ -163,19 +161,18 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	if diags.HasError() {
 		return diags
 	}
-	if intVal.IsNull() {
-		return diag.FromErr(errors.New("expected `writeonly_int` write-only attribute to be set, got: <null>"))
-	}
-	expectedInt := int64(1234)
-	gotInt, _ := intVal.AsBigFloat().Int64()
-	if gotInt != expectedInt {
-		return diag.Errorf("expected `writeonly_int` to be: %d, got: %d", expectedInt, gotInt)
-	}
-	// Setting shouldn't result in anything sent back to Terraform, but we want to test that
-	// our SDKv2 logic would revert these changes.
-	err = d.Set("writeonly_int", 999)
-	if err != nil {
-		return diag.FromErr(err)
+	if !intVal.IsNull() {
+		expectedInt := int64(1234)
+		gotInt, _ := intVal.AsBigFloat().Int64()
+		if gotInt != expectedInt {
+			return diag.Errorf("expected `writeonly_int` to be: %d, got: %d", expectedInt, gotInt)
+		}
+		// Setting shouldn't result in anything sent back to Terraform, but we want to test that
+		// our SDKv2 logic would revert these changes.
+		err := d.Set("writeonly_int", 999)
+		if err != nil {
+			return diag.FromErr(err)
+		}
 	}
 
 	// Nested list block with write-only attribute
@@ -193,9 +190,11 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	if diags.HasError() {
 		return diags
 	}
-	expectedNestedWriteOnlyStr := "fakepassword"
-	if nestedWriteOnlyStr.AsString() != expectedNestedWriteOnlyStr {
-		return diag.Errorf("expected `nested_list_block.0.writeonly_string` to be: %s, got: %s", expectedNestedWriteOnlyStr, nestedWriteOnlyStr.AsString())
+	if !nestedWriteOnlyStr.IsNull() {
+		expectedNestedWriteOnlyStr := "fakepassword"
+		if nestedWriteOnlyStr.AsString() != expectedNestedWriteOnlyStr {
+			return diag.Errorf("expected `nested_list_block.0.writeonly_string` to be: %s, got: %s", expectedNestedWriteOnlyStr, nestedWriteOnlyStr.AsString())
+		}
 	}
 
 	// Double nested set block with write-only attribute
@@ -212,16 +211,15 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	setSlice := setBlockVal.AsValueSlice()
 
 	doubleNestedWriteOnlyStr := setSlice[0].GetAttr("writeonly_string")
-	if diags.HasError() {
-		return diags
-	}
-	expecteDoubleNestedWriteOnlyStr := "fakepassword"
-	if doubleNestedWriteOnlyStr.AsString() != expecteDoubleNestedWriteOnlyStr {
-		return diag.Errorf("expected `nested_list_block.0.double_nested_set_block.0.writeonly_string` to be: %s, got: %s", expecteDoubleNestedWriteOnlyStr, doubleNestedWriteOnlyStr.AsString())
+	if !doubleNestedWriteOnlyStr.IsNull() {
+		expecteDoubleNestedWriteOnlyStr := "fakepassword"
+		if doubleNestedWriteOnlyStr.AsString() != expecteDoubleNestedWriteOnlyStr {
+			return diag.Errorf("expected `nested_list_block.0.double_nested_set_block.0.writeonly_string` to be: %s, got: %s", expecteDoubleNestedWriteOnlyStr, doubleNestedWriteOnlyStr.AsString())
+		}
 	}
 
 	// We can only set the root list, so this function also grabs data from ResourceData to ensure we use computed/default data as well
-	err = d.Set("nested_list_block", []map[string]any{
+	err := d.Set("nested_list_block", []map[string]any{
 		{
 			"string_attr":                 d.Get("nested_list_block.0.string_attr"),
 			"opt_or_computed_string_attr": d.Get("nested_list_block.0.opt_or_computed_string_attr"),

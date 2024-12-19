@@ -13,7 +13,7 @@ require (
 	github.com/hashicorp/terraform-plugin-framework-timetypes v0.5.0
 	github.com/hashicorp/terraform-plugin-go v0.25.1-0.20241217173851-dcf8f64dbfaa
 	github.com/hashicorp/terraform-plugin-mux v0.17.1-0.20241217174601-fdf2e5e009de
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.35.1-0.20241218185828-0816d60b3c19
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.35.1-0.20241219185136-ec6675f709c1
 	github.com/hashicorp/terraform-plugin-testing v1.11.0
 	github.com/zclconf/go-cty v1.15.1
 )

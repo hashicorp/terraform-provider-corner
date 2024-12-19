@@ -105,3 +105,5 @@ func TestWriteOnlyResource(t *testing.T) {
 		},
 	})
 }
+
+// TODO: add negative tests for old terraform versions

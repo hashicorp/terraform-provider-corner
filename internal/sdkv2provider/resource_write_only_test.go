@@ -1,6 +1,7 @@
 package sdkv2
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -205,6 +206,82 @@ func TestWriteOnlyResource(t *testing.T) {
 						knownvalue.Null(),
 					),
 				},
+			},
+		},
+	})
+}
+
+func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Run on all Terraform versions that don't support write-only attributes
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipAbove(version.Must(version.NewVersion("1.11.0"))),
+		},
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "corner_writeonly" "test" {
+				  string_attr = "hello!"
+				  writeonly_string = "fakepassword"
+				  nested_list_block {
+				  	string_attr = "hello!"
+					double_nested_set_block {
+						string_attr = "hello!"
+					}
+				  }
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "corner_writeonly" "test" {
+				  string_attr = "hello!"
+				  nested_list_block {
+				  	string_attr = "hello!"
+				  	writeonly_string = "fakepassword"
+					double_nested_set_block {
+						string_attr = "hello!"
+					}
+				  }
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "corner_writeonly" "test" {
+				  string_attr = "hello!"
+				  nested_list_block {
+				  	string_attr = "hello!"
+					double_nested_set_block {
+						string_attr = "hello!"
+						writeonly_string = "fakepassword"
+					}
+				  }
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+		},
+	})
+}
+
+func TestWriteOnlyResource_NoWriteOnlyValuesSet(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Since there are no write-only values set (despite the schema defining them), this test
+		// should pass on all Terraform versions.
+		Providers: testAccProviders,
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "corner_writeonly" "test" {
+				  string_attr = "hello!"
+				  nested_list_block {
+				  	string_attr = "hello!"
+					double_nested_set_block {
+						string_attr = "hello!"
+					}
+				  }
+				}`,
 			},
 		},
 	})
