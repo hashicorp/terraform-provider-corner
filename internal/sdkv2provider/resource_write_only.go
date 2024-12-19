@@ -15,6 +15,10 @@ import (
 
 func resourceWriteOnly() *schema.Resource {
 	return &schema.Resource{
+		// Prevent any accidental data inconsistencies
+		EnableLegacyTypeSystemPlanErrors:  true,
+		EnableLegacyTypeSystemApplyErrors: true,
+
 		CreateContext: resourceWriteOnlyCreate,
 		ReadContext:   resourceWriteOnlyRead,
 		UpdateContext: resourceWriteOnlyUpdate,
@@ -50,14 +54,42 @@ func resourceWriteOnly() *schema.Resource {
 							Required: true,
 						},
 						"opt_or_computed_string_attr": {
-							Type:     schema.TypeString,
-							Default:  "computed value!",
+							Type: schema.TypeString,
+							DefaultFunc: func() (interface{}, error) {
+								return "computed value!", nil
+							},
 							Optional: true,
+							Computed: true,
 						},
 						"writeonly_string": {
 							Type:      schema.TypeString,
 							Required:  true,
 							WriteOnly: true,
+						},
+						"double_nested_set_block": {
+							Type:     schema.TypeSet,
+							Required: true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"string_attr": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"opt_or_computed_string_attr": {
+										Type: schema.TypeString,
+										DefaultFunc: func() (interface{}, error) {
+											return "computed value!", nil
+										},
+										Optional: true,
+										Computed: true,
+									},
+									"writeonly_string": {
+										Type:      schema.TypeString,
+										Required:  true,
+										WriteOnly: true,
+									},
+								},
+							},
 						},
 					},
 				},
@@ -147,7 +179,8 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	}
 
 	// Nested list block with write-only attribute
-	listBlockVal, diags := d.GetRawConfigAt(cty.GetAttrPath("nested_list_block"))
+	listBlockPath := cty.GetAttrPath("nested_list_block")
+	listBlockVal, diags := d.GetRawConfigAt(listBlockPath)
 	if diags.HasError() {
 		return diags
 	}
@@ -156,7 +189,7 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 		return diag.Errorf("expected `nested_list_block` to have length of 1, got: %s", listBlockVal.GoString())
 	}
 
-	nestedWriteOnlyStr, diags := d.GetRawConfigAt(cty.GetAttrPath("nested_list_block").IndexInt(0).GetAttr("writeonly_string"))
+	nestedWriteOnlyStr, diags := d.GetRawConfigAt(listBlockPath.IndexInt(0).GetAttr("writeonly_string"))
 	if diags.HasError() {
 		return diags
 	}
@@ -164,6 +197,30 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	if nestedWriteOnlyStr.AsString() != expectedNestedWriteOnlyStr {
 		return diag.Errorf("expected `nested_list_block.0.writeonly_string` to be: %s, got: %s", expectedNestedWriteOnlyStr, nestedWriteOnlyStr.AsString())
 	}
+
+	// Double nested set block with write-only attribute
+	setBlockPath := cty.GetAttrPath("nested_list_block").IndexInt(0).GetAttr("double_nested_set_block")
+	setBlockVal, diags := d.GetRawConfigAt(setBlockPath)
+	if diags.HasError() {
+		return diags
+	}
+
+	if setBlockVal.IsNull() || setBlockVal.LengthInt() != 1 {
+		return diag.Errorf("expected `nested_list_block.0.double_nested_set_block` to have length of 1, got: %s", setBlockVal.GoString())
+	}
+
+	setSlice := setBlockVal.AsValueSlice()
+
+	doubleNestedWriteOnlyStr := setSlice[0].GetAttr("writeonly_string")
+	if diags.HasError() {
+		return diags
+	}
+	expecteDoubleNestedWriteOnlyStr := "fakepassword"
+	if doubleNestedWriteOnlyStr.AsString() != expecteDoubleNestedWriteOnlyStr {
+		return diag.Errorf("expected `nested_list_block.0.double_nested_set_block.0.writeonly_string` to be: %s, got: %s", expecteDoubleNestedWriteOnlyStr, doubleNestedWriteOnlyStr.AsString())
+	}
+
+	// We can only set the root list, so this function also grabs data from ResourceData to ensure we use computed/default data as well
 	err = d.Set("nested_list_block", []map[string]any{
 		{
 			"string_attr":                 d.Get("nested_list_block.0.string_attr"),
@@ -171,6 +228,15 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 			// Setting shouldn't result in anything sent back to Terraform, but we want to test that
 			// our SDKv2 logic would revert these changes.
 			"writeonly_string": "different value!",
+			"double_nested_set_block": []map[string]any{
+				{
+					"string_attr":                 d.Get("nested_list_block.0.double_nested_set_block").(*schema.Set).List()[0].(map[string]any)["string_attr"],
+					"opt_or_computed_string_attr": d.Get("nested_list_block.0.double_nested_set_block").(*schema.Set).List()[0].(map[string]any)["opt_or_computed_string_attr"],
+					// Setting shouldn't result in anything sent back to Terraform, but we want to test that
+					// our SDKv2 logic would revert these changes.
+					"writeonly_string": "different value!",
+				},
+			},
 		},
 	})
 	if err != nil {

@@ -33,6 +33,10 @@ func TestWriteOnlyResource(t *testing.T) {
 				  nested_list_block {
 				  	string_attr = "hello!"
 				  	writeonly_string = "fakepassword"
+					double_nested_set_block {
+						string_attr = "hello!"
+						writeonly_string = "fakepassword"
+					}
 				  }
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
@@ -54,6 +58,21 @@ func TestWriteOnlyResource(t *testing.T) {
 						plancheck.ExpectKnownValue(
 							"corner_writeonly.test",
 							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
+							knownvalue.Null(),
+						),
+						plancheck.ExpectKnownValue(
+							"corner_writeonly.test",
+							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
+							knownvalue.StringExact("hello!"),
+						),
+						plancheck.ExpectKnownValue(
+							"corner_writeonly.test",
+							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
+							knownvalue.StringExact("computed value!"),
+						),
+						plancheck.ExpectKnownValue(
+							"corner_writeonly.test",
+							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
 							knownvalue.Null(),
 						),
 					},
@@ -78,6 +97,21 @@ func TestWriteOnlyResource(t *testing.T) {
 						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
 						knownvalue.Null(),
 					),
+					statecheck.ExpectKnownValue(
+						"corner_writeonly.test",
+						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
+						knownvalue.StringExact("hello!"),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_writeonly.test",
+						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
+						knownvalue.StringExact("computed value!"),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_writeonly.test",
+						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
+						knownvalue.Null(),
+					),
 				},
 			},
 			{
@@ -90,6 +124,11 @@ func TestWriteOnlyResource(t *testing.T) {
 				  	string_attr = "world!"
 					opt_or_computed_string_attr = "config value!"
 				  	writeonly_string = "fakepassword"
+					double_nested_set_block {
+						string_attr = "world!"
+						opt_or_computed_string_attr = "config value!"
+						writeonly_string = "fakepassword"
+					}
 				  }
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
@@ -113,6 +152,21 @@ func TestWriteOnlyResource(t *testing.T) {
 							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
 							knownvalue.Null(),
 						),
+						plancheck.ExpectKnownValue(
+							"corner_writeonly.test",
+							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
+							knownvalue.StringExact("world!"),
+						),
+						plancheck.ExpectKnownValue(
+							"corner_writeonly.test",
+							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
+							knownvalue.StringExact("config value!"),
+						),
+						plancheck.ExpectKnownValue(
+							"corner_writeonly.test",
+							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
+							knownvalue.Null(),
+						),
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -133,6 +187,21 @@ func TestWriteOnlyResource(t *testing.T) {
 					statecheck.ExpectKnownValue(
 						"corner_writeonly.test",
 						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
+						knownvalue.Null(),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_writeonly.test",
+						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
+						knownvalue.StringExact("world!"),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_writeonly.test",
+						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
+						knownvalue.StringExact("config value!"),
+					),
+					statecheck.ExpectKnownValue(
+						"corner_writeonly.test",
+						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
 						knownvalue.Null(),
 					),
 				},
