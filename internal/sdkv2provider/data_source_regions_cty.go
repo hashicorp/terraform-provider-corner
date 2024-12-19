@@ -15,6 +15,9 @@ import (
 
 func dataSourceRegionsCty() *schema.Resource {
 	return &schema.Resource{
+		EnableLegacyTypeSystemPlanErrors:  true,
+		EnableLegacyTypeSystemApplyErrors: true,
+
 		ReadContext: dataSourceRegionsCtyRead,
 
 		Schema: map[string]*schema.Schema{

@@ -14,6 +14,10 @@ import (
 
 func resourceBigint() *schema.Resource {
 	return &schema.Resource{
+		// Prevent any accidental data inconsistencies
+		EnableLegacyTypeSystemPlanErrors:  true,
+		EnableLegacyTypeSystemApplyErrors: true,
+
 		CreateContext: resourceBigintCreate,
 		ReadContext:   resourceBigintRead,
 		UpdateContext: resourceBigintUpdate,
