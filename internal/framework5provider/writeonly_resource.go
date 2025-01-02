@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
@@ -33,16 +34,16 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"writeonly_custom_ipv6": schema.StringAttribute{
-				Required:   true,
+				Optional:   true,
 				WriteOnly:  true,
 				CustomType: iptypes.IPv6AddressType{},
 			},
 			"writeonly_string": schema.StringAttribute{
-				Required:  true,
+				Optional:  true,
 				WriteOnly: true,
 			},
 			"writeonly_set": schema.SetAttribute{
-				Required:    true,
+				Optional:    true,
 				WriteOnly:   true,
 				ElementType: types.StringType,
 			},
@@ -55,7 +56,7 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 							Required: true,
 						},
 						"writeonly_string": schema.StringAttribute{
-							Required:  true,
+							Optional:  true,
 							WriteOnly: true,
 						},
 					},
@@ -66,7 +67,7 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 									Required: true,
 								},
 								"writeonly_bool": schema.BoolAttribute{
-									Required:  true,
+									Optional:  true,
 									WriteOnly: true,
 								},
 							},
@@ -84,13 +85,8 @@ func (r WriteOnlyResource) Create(ctx context.Context, req resource.CreateReques
 	if resp.Diagnostics.HasError() {
 		return
 	}
-	var config WriteOnlyResourceModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
 
-	resp.Diagnostics.Append(config.VerifyWriteOnlyData())
+	resp.Diagnostics.Append(VerifyWriteOnlyData(ctx, req.Config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -118,13 +114,7 @@ func (r WriteOnlyResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	var config WriteOnlyResourceModel
-	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
-	if resp.Diagnostics.HasError() {
-		return
-	}
-
-	resp.Diagnostics.Append(config.VerifyWriteOnlyData())
+	resp.Diagnostics.Append(VerifyWriteOnlyData(ctx, req.Config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -144,74 +134,41 @@ type WriteOnlyResourceModel struct {
 
 // VerifyWriteOnlyData compares the hardcoded test data for the write-only attributes in this resource, raising
 // error diagnostics if the data differs from expectations.
-func (m WriteOnlyResourceModel) VerifyWriteOnlyData() diag.Diagnostic {
+func VerifyWriteOnlyData(ctx context.Context, cfg tfsdk.Config) diag.Diagnostics {
+	var diags diag.Diagnostics
 	// Primitive write-only attributes
-	expectedCustomIPv6 := "::"
-	expectedString := "fakepassword"
-	if m.WriteOnlyCustomIPv6.ValueString() != expectedCustomIPv6 {
-		return diag.NewAttributeErrorDiagnostic(
-			path.Root("writeonly_custom_ipv6"),
-			"Unexpected WriteOnly Value",
-			fmt.Sprintf("wanted: %q, got: %q", expectedCustomIPv6, m.WriteOnlyCustomIPv6),
-		)
-	}
-	if m.WriteOnlyString.ValueString() != expectedString {
-		return diag.NewAttributeErrorDiagnostic(
-			path.Root("writeonly_string"),
-			"Unexpected WriteOnly Value",
-			fmt.Sprintf("wanted: %q, got: %q", expectedString, m.WriteOnlyString),
-		)
-	}
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("writeonly_custom_ipv6"), iptypes.NewIPv6AddressValue("::"))...)
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("writeonly_string"), types.StringValue("fakepassword"))...)
 
 	// Collection write-only attribute
-	expectedSet := types.SetValueMust(types.StringType, []attr.Value{types.StringValue("fake"), types.StringValue("password")})
-	if !m.WriteOnlySet.Equal(expectedSet) {
-		return diag.NewAttributeErrorDiagnostic(
-			path.Root("writeonly_set"),
-			"Unexpected WriteOnly Value",
-			fmt.Sprintf("wanted: %s, got: %s", expectedSet, m.WriteOnlySet),
-		)
-	}
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("writeonly_set"), types.SetValueMust(types.StringType, []attr.Value{types.StringValue("fake"), types.StringValue("password")}))...)
 
 	// Nested block with write-only attributes
-	expectedBlockObjectType := types.ObjectType{
-		AttrTypes: map[string]attr.Type{
-			"bool_attr":      types.BoolType,
-			"writeonly_bool": types.BoolType,
-		},
-	}
-	expectedBlockListObjType := types.ObjectType{
-		AttrTypes: map[string]attr.Type{
-			"string_attr":          types.StringType,
-			"writeonly_string":     types.StringType,
-			"double_nested_object": expectedBlockObjectType,
-		},
-	}
-	expectedListBlock := types.ListValueMust(expectedBlockListObjType, []attr.Value{
-		types.ObjectValueMust(expectedBlockListObjType.AttributeTypes(), map[string]attr.Value{
-			"string_attr":      types.StringValue("hello"),
-			"writeonly_string": types.StringValue("fakepassword1"),
-			"double_nested_object": types.ObjectValueMust(expectedBlockObjectType.AttributeTypes(), map[string]attr.Value{
-				"bool_attr":      types.BoolValue(true),
-				"writeonly_bool": types.BoolValue(false),
-			}),
-		}),
-		types.ObjectValueMust(expectedBlockListObjType.AttributeTypes(), map[string]attr.Value{
-			"string_attr":      types.StringValue("world"),
-			"writeonly_string": types.StringValue("fakepassword2"),
-			"double_nested_object": types.ObjectValueMust(expectedBlockObjectType.AttributeTypes(), map[string]attr.Value{
-				"bool_attr":      types.BoolValue(false),
-				"writeonly_bool": types.BoolValue(true),
-			}),
-		}),
-	})
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("nested_block_list").AtListIndex(0).AtName("writeonly_string"), types.StringValue("fakepassword1"))...)
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("nested_block_list").AtListIndex(1).AtName("writeonly_string"), types.StringValue("fakepassword2"))...)
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("nested_block_list").AtListIndex(0).AtName("double_nested_object").AtName("writeonly_bool"), types.BoolValue(false))...)
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("nested_block_list").AtListIndex(1).AtName("double_nested_object").AtName("writeonly_bool"), types.BoolValue(true))...)
 
-	if !m.NestedBlockList.Equal(expectedListBlock) {
-		return diag.NewAttributeErrorDiagnostic(
-			path.Root("nested_block_list"),
-			"Unexpected WriteOnly Value",
-			fmt.Sprintf("wanted: %s, got: %s", expectedListBlock, m.NestedBlockList),
-		)
+	return diags
+}
+
+// Asserts a write-only value in configuration, if the value is null it will return without an error (allowing the attribute to be optional)
+func assertWriteOnlyVal[T attr.Value](ctx context.Context, cfg tfsdk.Config, p path.Path, expectedVal T) diag.Diagnostics {
+	var writeOnlyVal T
+	diags := cfg.GetAttribute(ctx, p, &writeOnlyVal)
+	if diags.HasError() {
+		// All the paths are hardcoded in the resource, so this scenario shouldn't occur unless there is a schema/path mismatch or addition
+		return diags
+	}
+
+	if !writeOnlyVal.IsNull() && !writeOnlyVal.Equal(expectedVal) {
+		return diag.Diagnostics{
+			diag.NewAttributeErrorDiagnostic(
+				p,
+				"Unexpected WriteOnly Value",
+				fmt.Sprintf("wanted: %s, got: %s", expectedVal, writeOnlyVal),
+			),
+		}
 	}
 
 	return nil

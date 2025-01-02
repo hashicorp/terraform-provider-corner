@@ -4,6 +4,7 @@
 package framework
 
 import (
+	"regexp"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -151,4 +152,255 @@ func TestWriteOnlyResource(t *testing.T) {
 	})
 }
 
-// TODO: add negative tests for old terraform versions
+func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Run on all Terraform versions that don't support write-only attributes
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipAbove(tfversion.Version1_10_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "framework_writeonly" "test" {
+					writeonly_custom_ipv6 = "::"
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+						}
+						"key2": {
+							string_attr = "world"
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+
+						double_nested_object {
+							bool_attr = true
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+
+						double_nested_object {
+							bool_attr = false
+						}
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "framework_writeonly" "test" {
+					writeonly_string = "fakepassword"
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+						}
+						"key2": {
+							string_attr = "world"
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						double_nested_object {
+							bool_attr = true
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						double_nested_object {
+							bool_attr = false
+						}
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "framework_writeonly" "test" {
+					writeonly_set = ["fake", "password"]
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+						}
+						"key2": {
+							string_attr = "world"
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						double_nested_object {
+							bool_attr = true
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						double_nested_object {
+							bool_attr = false
+						}
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "framework_writeonly" "test" {
+					writeonly_nested_object = {
+						writeonly_int64 = 1234
+						writeonly_bool = true
+
+						writeonly_nested_list = [
+							{
+								writeonly_string = "fakepassword1"
+							},
+							{
+								writeonly_string = "fakepassword2"
+							}
+						]
+					}
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+						}
+						"key2": {
+							string_attr = "world"
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						double_nested_object {
+							bool_attr = true
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						double_nested_object {
+							bool_attr = false
+						}
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "framework_writeonly" "test" {
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+							writeonly_float64 = 10
+						}
+						"key2": {
+							string_attr = "world"
+							writeonly_float64 = 20
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						double_nested_object {
+							bool_attr = true
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						double_nested_object {
+							bool_attr = false
+						}
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "framework_writeonly" "test" {
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+						}
+						"key2": {
+							string_attr = "world"
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						writeonly_string = "fakepassword1"
+						double_nested_object {
+							bool_attr = true
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						writeonly_string = "fakepassword2"
+						double_nested_object {
+							bool_attr = false
+						}
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+			{
+				Config: `resource "framework_writeonly" "test" {
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+						}
+						"key2": {
+							string_attr = "world"
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						double_nested_object {
+							bool_attr = true
+							writeonly_bool = false
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						double_nested_object {
+							bool_attr = false
+							writeonly_bool = true
+						}
+					}
+				}`,
+				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+			},
+		},
+	})
+}
+
+func TestWriteOnlyResource_NoWriteOnlyValuesSet(t *testing.T) {
+	t.Parallel()
+
+	resource.UnitTest(t, resource.TestCase{
+		// Since there are no write-only values set (despite the schema defining them), this test
+		// should pass on all Terraform versions.
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "framework_writeonly" "test" {
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+						}
+						"key2": {
+							string_attr = "world"
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						double_nested_object {
+							bool_attr = true
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						double_nested_object {
+							bool_attr = false
+						}
+					}
+				}`,
+			},
+		},
+	})
+}
