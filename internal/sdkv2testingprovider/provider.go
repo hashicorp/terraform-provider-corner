@@ -14,12 +14,6 @@ import (
 
 func New() *schema.Provider {
 	p := &schema.Provider{
-		Schema: map[string]*schema.Schema{
-			"deferral": {
-				Type:     schema.TypeBool,
-				Optional: true,
-			},
-		},
 		DataSourcesMap: map[string]*schema.Resource{
 			"corner_regions":     dataSourceRegions(),
 			"corner_bigint":      dataSourceBigint(),
