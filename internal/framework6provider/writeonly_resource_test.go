@@ -47,6 +47,16 @@ func TestWriteOnlyResource(t *testing.T) {
 							}
 						]
 					}
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+							writeonly_float64 = 10
+						}
+						"key2": {
+							string_attr = "world"
+							writeonly_float64 = 20
+						}
+					}
 					nested_block_list {
 						string_attr = "hello"
 						writeonly_string = "fakepassword1"
@@ -72,6 +82,16 @@ func TestWriteOnlyResource(t *testing.T) {
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_nested_object"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_map"), knownvalue.MapExact(map[string]knownvalue.Check{
+							"key1": knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":       knownvalue.StringExact("hello"),
+								"writeonly_float64": knownvalue.Null(),
+							}),
+							"key2": knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":       knownvalue.StringExact("world"),
+								"writeonly_float64": knownvalue.Null(),
+							}),
+						})),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
 							knownvalue.ObjectExact(map[string]knownvalue.Check{
 								"string_attr":      knownvalue.StringExact("hello"),
@@ -97,6 +117,16 @@ func TestWriteOnlyResource(t *testing.T) {
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_nested_object"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_map"), knownvalue.MapExact(map[string]knownvalue.Check{
+						"key1": knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":       knownvalue.StringExact("hello"),
+							"writeonly_float64": knownvalue.Null(),
+						}),
+						"key2": knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":       knownvalue.StringExact("world"),
+							"writeonly_float64": knownvalue.Null(),
+						}),
+					})),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
 						knownvalue.ObjectExact(map[string]knownvalue.Check{
 							"string_attr":      knownvalue.StringExact("hello"),

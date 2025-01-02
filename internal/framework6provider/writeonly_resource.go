@@ -46,22 +46,20 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 				WriteOnly:   true,
 				ElementType: types.StringType,
 			},
-			// TODO: At the moment, this raises an invalid plan error in Terraform core (Provider is successfully planning null, core
-			// is rejecting this null value, instead saying it should be the config value, which is a bug)
-			//  - https://hashicorp.slack.com/archives/C071HC4JJCC/p1734465766242319?thread_ts=1734465749.748579&cid=C071HC4JJCC
-			//
-			// "nested_object": schema.SingleNestedAttribute{
-			// 	Required: true,
-			// 	Attributes: map[string]schema.Attribute{
-			// 		"string_attr": schema.StringAttribute{
-			// 			Required:  true,
-			// 		},
-			// 		"writeonly_float64": schema.Float64Attribute{
-			// 			Required:  true,
-			// 			WriteOnly: true,
-			// 		},
-			// 	},
-			// },
+			"nested_map": schema.MapNestedAttribute{
+				Required: true,
+				NestedObject: schema.NestedAttributeObject{
+					Attributes: map[string]schema.Attribute{
+						"string_attr": schema.StringAttribute{
+							Required: true,
+						},
+						"writeonly_float64": schema.Float64Attribute{
+							Required:  true,
+							WriteOnly: true,
+						},
+					},
+				},
+			},
 			"writeonly_nested_object": schema.SingleNestedAttribute{
 				Required:  true,
 				WriteOnly: true,
@@ -182,6 +180,7 @@ type WriteOnlyResourceModel struct {
 	WriteOnlyString       types.String        `tfsdk:"writeonly_string"`
 	WriteOnlySet          types.Set           `tfsdk:"writeonly_set"`
 	WriteOnlyNestedObject types.Object        `tfsdk:"writeonly_nested_object"`
+	NestedMap             types.Map           `tfsdk:"nested_map"`
 	NestedBlockList       types.List          `tfsdk:"nested_block_list"`
 }
 
@@ -216,7 +215,32 @@ func (m WriteOnlyResourceModel) VerifyWriteOnlyData() diag.Diagnostic {
 		)
 	}
 
-	// Nested write-only attribute
+	// Nested map with write-only attribute
+	expectedMapObjType := types.ObjectType{
+		AttrTypes: map[string]attr.Type{
+			"string_attr":       types.StringType,
+			"writeonly_float64": types.Float64Type,
+		},
+	}
+	expectedMap := types.MapValueMust(expectedMapObjType, map[string]attr.Value{
+		"key1": types.ObjectValueMust(expectedMapObjType.AttributeTypes(), map[string]attr.Value{
+			"string_attr":       types.StringValue("hello"),
+			"writeonly_float64": types.Float64Value(10),
+		}),
+		"key2": types.ObjectValueMust(expectedMapObjType.AttributeTypes(), map[string]attr.Value{
+			"string_attr":       types.StringValue("world"),
+			"writeonly_float64": types.Float64Value(20),
+		}),
+	})
+	if !m.NestedMap.Equal(expectedMap) {
+		return diag.NewAttributeErrorDiagnostic(
+			path.Root("nested_map"),
+			"Unexpected WriteOnly Value",
+			fmt.Sprintf("wanted: %s, got: %s", expectedMap, m.NestedMap),
+		)
+	}
+
+	// Nested write-only object attribute
 	expectedListObjType := types.ObjectType{
 		AttrTypes: map[string]attr.Type{
 			"writeonly_string": types.StringType,
