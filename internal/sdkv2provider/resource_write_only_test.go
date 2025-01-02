@@ -46,36 +46,20 @@ func TestWriteOnlyResource(t *testing.T) {
 						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_bool"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_int"), knownvalue.Null()),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("string_attr"),
-							knownvalue.StringExact("hello!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-							knownvalue.StringExact("computed value!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-							knownvalue.Null(),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
-							knownvalue.StringExact("hello!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-							knownvalue.StringExact("computed value!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-							knownvalue.Null(),
-						),
+						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":                 knownvalue.StringExact("hello!"),
+								"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
+								"writeonly_string":            knownvalue.Null(),
+								"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+									knownvalue.ObjectExact(map[string]knownvalue.Check{
+										"string_attr":                 knownvalue.StringExact("hello!"),
+										"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
+										"writeonly_string":            knownvalue.Null(),
+									}),
+								}),
+							}),
+						})),
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -83,36 +67,20 @@ func TestWriteOnlyResource(t *testing.T) {
 					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_bool"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_int"), knownvalue.Null()),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("string_attr"),
-						knownvalue.StringExact("hello!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-						knownvalue.StringExact("computed value!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-						knownvalue.Null(),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
-						knownvalue.StringExact("hello!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-						knownvalue.StringExact("computed value!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-						knownvalue.Null(),
-					),
+					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+						knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":                 knownvalue.StringExact("hello!"),
+							"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
+							"writeonly_string":            knownvalue.Null(),
+							"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"string_attr":                 knownvalue.StringExact("hello!"),
+									"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
+									"writeonly_string":            knownvalue.Null(),
+								}),
+							}),
+						}),
+					})),
 				},
 			},
 			{
@@ -138,36 +106,20 @@ func TestWriteOnlyResource(t *testing.T) {
 						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_bool"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_int"), knownvalue.Null()),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("string_attr"),
-							knownvalue.StringExact("world!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-							knownvalue.StringExact("config value!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-							knownvalue.Null(),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
-							knownvalue.StringExact("world!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-							knownvalue.StringExact("config value!"),
-						),
-						plancheck.ExpectKnownValue(
-							"corner_writeonly.test",
-							tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-							knownvalue.Null(),
-						),
+						plancheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":                 knownvalue.StringExact("world!"),
+								"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
+								"writeonly_string":            knownvalue.Null(),
+								"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+									knownvalue.ObjectExact(map[string]knownvalue.Check{
+										"string_attr":                 knownvalue.StringExact("world!"),
+										"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
+										"writeonly_string":            knownvalue.Null(),
+									}),
+								}),
+							}),
+						})),
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
@@ -175,36 +127,20 @@ func TestWriteOnlyResource(t *testing.T) {
 					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_bool"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("writeonly_int"), knownvalue.Null()),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("string_attr"),
-						knownvalue.StringExact("world!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-						knownvalue.StringExact("config value!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-						knownvalue.Null(),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("string_attr"),
-						knownvalue.StringExact("world!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("opt_or_computed_string_attr"),
-						knownvalue.StringExact("config value!"),
-					),
-					statecheck.ExpectKnownValue(
-						"corner_writeonly.test",
-						tfjsonpath.New("nested_list_block").AtSliceIndex(0).AtMapKey("double_nested_set_block").AtSliceIndex(0).AtMapKey("writeonly_string"),
-						knownvalue.Null(),
-					),
+					statecheck.ExpectKnownValue("corner_writeonly.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+						knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":                 knownvalue.StringExact("world!"),
+							"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
+							"writeonly_string":            knownvalue.Null(),
+							"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"string_attr":                 knownvalue.StringExact("world!"),
+									"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
+									"writeonly_string":            knownvalue.Null(),
+								}),
+							}),
+						}),
+					})),
 				},
 			},
 		},
@@ -217,7 +153,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		// Run on all Terraform versions that don't support write-only attributes
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipAbove(version.Must(version.NewVersion("1.11.0"))),
+			tfversion.SkipAbove(tfversion.Version1_10_0),
 		},
 		Providers: testAccProviders,
 		Steps: []resource.TestStep{
