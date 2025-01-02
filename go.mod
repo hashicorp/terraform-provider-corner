@@ -5,7 +5,6 @@ go 1.22.7
 require (
 	github.com/hashicorp/go-cty v1.4.1-0.20200414143053-d3edf31b6320
 	github.com/hashicorp/go-memdb v1.3.4
-	github.com/hashicorp/go-version v1.7.0
 	github.com/hashicorp/terraform-json v0.24.0
 	github.com/hashicorp/terraform-plugin-framework v1.13.1-0.20250102211725-428efefe5acc
 	github.com/hashicorp/terraform-plugin-framework-nettypes v0.2.0
@@ -14,7 +13,7 @@ require (
 	github.com/hashicorp/terraform-plugin-go v0.25.1-0.20241217173851-dcf8f64dbfaa
 	github.com/hashicorp/terraform-plugin-mux v0.17.1-0.20241217174601-fdf2e5e009de
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.35.1-0.20241219185136-ec6675f709c1
-	github.com/hashicorp/terraform-plugin-testing v1.11.0
+	github.com/hashicorp/terraform-plugin-testing v1.11.1-0.20250102212914-99297ce85154
 	github.com/zclconf/go-cty v1.15.1
 )
 
@@ -35,6 +34,7 @@ require (
 	github.com/hashicorp/go-plugin v1.6.2 // indirect
 	github.com/hashicorp/go-retryablehttp v0.7.7 // indirect
 	github.com/hashicorp/go-uuid v1.0.3 // indirect
+	github.com/hashicorp/go-version v1.7.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hc-install v0.9.0 // indirect
 	github.com/hashicorp/hcl/v2 v2.23.0 // indirect
