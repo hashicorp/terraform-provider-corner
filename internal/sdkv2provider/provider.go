@@ -28,6 +28,7 @@ func New() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"corner_user":                              resourceUser(),
 			"corner_writeonly":                         resourceWriteOnly(),
+			"corner_writeonce":                         resourceWriteOnce(),
 			"corner_bigint":                            resourceBigint(),
 			"corner_user_cty":                          resourceUserCty(),
 			"corner_deferred_action":                   resourceDeferredAction(),
