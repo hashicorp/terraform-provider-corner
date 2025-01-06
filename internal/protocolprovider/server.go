@@ -145,5 +145,42 @@ func Server() tfprotov5.ProviderServer {
 		functionRouter: functionRouter{
 			"bool": functionBool{},
 		},
+		resourceSchemas: map[string]*tfprotov5.Schema{
+			"corner_writeonly_datacheck":                   resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_datacheck_planerror":         resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_datacheck_applyerror":        resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_datacheck_readerror":         resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_datacheck_importerror":       resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_legacy_datacheck":            resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_legacy_datacheck_planerror":  resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_legacy_datacheck_applyerror": resourceWriteOnlyDataCheck{}.schema(),
+		},
+		resourceRouter: resourceRouter{
+			"corner_writeonly_datacheck": resourceWriteOnlyDataCheck{},
+			"corner_writeonly_datacheck_planerror": resourceWriteOnlyDataCheck{
+				planDataError: true,
+			},
+			"corner_writeonly_datacheck_applyerror": resourceWriteOnlyDataCheck{
+				applyDataError: true,
+			},
+			"corner_writeonly_datacheck_readerror": resourceWriteOnlyDataCheck{
+				readDataError: true,
+			},
+			"corner_writeonly_datacheck_importerror": resourceWriteOnlyDataCheck{
+				importDataError: true,
+			},
+			"corner_writeonly_legacy_datacheck": resourceWriteOnlyDataCheck{
+				enableLegacyTypeSystem: true,
+			},
+			// MAINTAINER NOTE: The only RPCs that have legacy type system flags are plan/apply
+			"corner_writeonly_legacy_datacheck_planerror": resourceWriteOnlyDataCheck{
+				enableLegacyTypeSystem: true,
+				planDataError:          true,
+			},
+			"corner_writeonly_legacy_datacheck_applyerror": resourceWriteOnlyDataCheck{
+				enableLegacyTypeSystem: true,
+				applyDataError:         true,
+			},
+		},
 	}
 }
