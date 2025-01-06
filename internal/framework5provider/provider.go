@@ -93,6 +93,7 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewSetNestedBlockWithDefaultsResource,
 		NewWriteOnlyResource,
 		NewWriteOnceResource,
+		NewWriteOnlyValidationsResource,
 	}
 }
 
