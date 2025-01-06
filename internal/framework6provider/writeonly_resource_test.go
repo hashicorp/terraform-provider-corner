@@ -147,6 +147,124 @@ func TestWriteOnlyResource(t *testing.T) {
 					})),
 				},
 			},
+			{
+				Config: `resource "framework_writeonly" "test" {
+					writeonly_custom_ipv6 = "::"
+					writeonly_string = "fakepassword"
+					writeonly_set = ["fake", "password"]
+					writeonly_nested_object = {
+						writeonly_int64 = 1234
+						writeonly_bool = true
+
+						writeonly_nested_list = [
+							{
+								writeonly_string = "fakepassword1"
+							},
+							{
+								writeonly_string = "fakepassword2"
+							}
+						]
+					}
+					nested_map = {
+						"key1": {
+							string_attr = "hello"
+							writeonly_float64 = 10
+						}
+						"key2": {
+							string_attr = "world"
+							writeonly_float64 = 20
+						}
+					}
+					nested_block_list {
+						string_attr = "world"
+						writeonly_string = "fakepassword1"
+
+						double_nested_object {
+							bool_attr = true
+							writeonly_bool = false
+						}
+					}
+					nested_block_list {
+						string_attr = "hello"
+						writeonly_string = "fakepassword2"
+
+						double_nested_object {
+							bool_attr = false
+							writeonly_bool = true
+						}
+					}
+				}`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_nested_object"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_map"), knownvalue.MapExact(map[string]knownvalue.Check{
+							"key1": knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":       knownvalue.StringExact("hello"),
+								"writeonly_float64": knownvalue.Null(),
+							}),
+							"key2": knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":       knownvalue.StringExact("world"),
+								"writeonly_float64": knownvalue.Null(),
+							}),
+						})),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":      knownvalue.StringExact("world"),
+								"writeonly_string": knownvalue.Null(),
+								"double_nested_object": knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"bool_attr":      knownvalue.Bool(true),
+									"writeonly_bool": knownvalue.Null(),
+								}),
+							}),
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":      knownvalue.StringExact("hello"),
+								"writeonly_string": knownvalue.Null(),
+								"double_nested_object": knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"bool_attr":      knownvalue.Bool(false),
+									"writeonly_bool": knownvalue.Null(),
+								}),
+							}),
+						})),
+					},
+				},
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_nested_object"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_map"), knownvalue.MapExact(map[string]knownvalue.Check{
+						"key1": knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":       knownvalue.StringExact("hello"),
+							"writeonly_float64": knownvalue.Null(),
+						}),
+						"key2": knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":       knownvalue.StringExact("world"),
+							"writeonly_float64": knownvalue.Null(),
+						}),
+					})),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
+						knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":      knownvalue.StringExact("world"),
+							"writeonly_string": knownvalue.Null(),
+							"double_nested_object": knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"bool_attr":      knownvalue.Bool(true),
+								"writeonly_bool": knownvalue.Null(),
+							}),
+						}),
+						knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":      knownvalue.StringExact("hello"),
+							"writeonly_string": knownvalue.Null(),
+							"double_nested_object": knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"bool_attr":      knownvalue.Bool(false),
+								"writeonly_bool": knownvalue.Null(),
+							}),
+						}),
+					})),
+				},
+			},
 		},
 	})
 }

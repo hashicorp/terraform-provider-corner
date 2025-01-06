@@ -80,8 +80,8 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 }
 
 func (r WriteOnlyResource) Create(ctx context.Context, req resource.CreateRequest, resp *resource.CreateResponse) {
-	var plan WriteOnlyResourceModel
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	var config WriteOnlyResourceModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -91,7 +91,9 @@ func (r WriteOnlyResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	// Since all attributes are in configuration, we write it back directly to test that the write-only attributes
+	// are nulled out before sending back to TF Core.
+	resp.Diagnostics.Append(resp.State.Set(ctx, &config)...)
 }
 
 func (r WriteOnlyResource) Read(ctx context.Context, req resource.ReadRequest, resp *resource.ReadResponse) {
@@ -107,9 +109,8 @@ func (r WriteOnlyResource) Read(ctx context.Context, req resource.ReadRequest, r
 }
 
 func (r WriteOnlyResource) Update(ctx context.Context, req resource.UpdateRequest, resp *resource.UpdateResponse) {
-	var plan WriteOnlyResourceModel
-
-	resp.Diagnostics.Append(req.Plan.Get(ctx, &plan)...)
+	var config WriteOnlyResourceModel
+	resp.Diagnostics.Append(req.Config.Get(ctx, &config)...)
 	if resp.Diagnostics.HasError() {
 		return
 	}
@@ -119,7 +120,9 @@ func (r WriteOnlyResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
-	resp.Diagnostics.Append(resp.State.Set(ctx, &plan)...)
+	// Since all attributes are in configuration, we write it back directly to test that the write-only attributes
+	// are nulled out before sending back to TF Core.
+	resp.Diagnostics.Append(resp.State.Set(ctx, &config)...)
 }
 
 func (r WriteOnlyResource) Delete(ctx context.Context, req resource.DeleteRequest, resp *resource.DeleteResponse) {
