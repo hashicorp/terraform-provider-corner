@@ -189,6 +189,7 @@ func TestAccResourceWriteOnlyDataCheck_moveresource_error(t *testing.T) {
 					from = terraform_data.test
 					to   = corner_writeonly_datacheck_moveresourceerror.test
 				}`,
+				// TODO: This error message will likely be changed to be more specific before 1.11 GA
 				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
 			},
 			// Back to the original config to avoid a destroy clean-up error.
