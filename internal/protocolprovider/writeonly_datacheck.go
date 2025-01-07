@@ -17,6 +17,7 @@ type resourceWriteOnlyDataCheck struct {
 	planDataError          bool
 	readDataError          bool
 	importDataError        bool
+	moveResourceDataError  bool
 }
 
 func (r resourceWriteOnlyDataCheck) schema() *tfprotov5.Schema {
@@ -256,14 +257,40 @@ func (r resourceWriteOnlyDataCheck) UpgradeResourceState(ctx context.Context, re
 }
 
 func (r resourceWriteOnlyDataCheck) MoveResourceState(ctx context.Context, req *tfprotov5.MoveResourceStateRequest) (*tfprotov5.MoveResourceStateResponse, error) {
-	return &tfprotov5.MoveResourceStateResponse{
-		Diagnostics: []*tfprotov5.Diagnostic{
-			{
-				Severity: tfprotov5.DiagnosticSeverityError,
-				Summary:  "Unsupported Resource Operation",
-				Detail:   "MoveResourceState is not supported by this resource.",
+	if req.SourceProviderAddress != "terraform.io/builtin/terraform" || req.SourceTypeName != "terraform_data" {
+		return &tfprotov5.MoveResourceStateResponse{
+			Diagnostics: []*tfprotov5.Diagnostic{
+				{
+					Severity: tfprotov5.DiagnosticSeverityError,
+					Summary:  "Unsupported MoveResourceState Operation",
+					Detail:   `Move operations for this resource are only supported from the "terraform.io/builtin/terraform" provider and the "terraform_data" resource type.`,
+				},
 			},
-		},
+		}, nil
+	}
+
+	var moveResourceState tfprotov5.DynamicValue
+	var err error
+	if r.moveResourceDataError {
+		moveResourceState, err = r.nonNullWriteOnlyData()
+	} else {
+		moveResourceState, err = r.nullWriteOnlyData()
+	}
+
+	if err != nil {
+		return &tfprotov5.MoveResourceStateResponse{
+			Diagnostics: []*tfprotov5.Diagnostic{
+				{
+					Severity: tfprotov5.DiagnosticSeverityError,
+					Summary:  "Error encoding moved state",
+					Detail:   fmt.Sprintf("Error encoding moved state: %s", err.Error()),
+				},
+			},
+		}, nil
+	}
+
+	return &tfprotov5.MoveResourceStateResponse{
+		TargetState: &moveResourceState,
 	}, nil
 }
 

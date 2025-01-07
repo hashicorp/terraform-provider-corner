@@ -30,6 +30,7 @@ type server struct {
 func (s *server) serverCapabilities() *tfprotov5.ServerCapabilities {
 	return &tfprotov5.ServerCapabilities{
 		GetProviderSchemaOptional: true,
+		MoveResourceState:         true,
 	}
 }
 
@@ -151,6 +152,7 @@ func Server() tfprotov5.ProviderServer {
 			"corner_writeonly_datacheck_applyerror":        resourceWriteOnlyDataCheck{}.schema(),
 			"corner_writeonly_datacheck_readerror":         resourceWriteOnlyDataCheck{}.schema(),
 			"corner_writeonly_datacheck_importerror":       resourceWriteOnlyDataCheck{}.schema(),
+			"corner_writeonly_datacheck_moveresourceerror": resourceWriteOnlyDataCheck{}.schema(),
 			"corner_writeonly_legacy_datacheck":            resourceWriteOnlyDataCheck{}.schema(),
 			"corner_writeonly_legacy_datacheck_planerror":  resourceWriteOnlyDataCheck{}.schema(),
 			"corner_writeonly_legacy_datacheck_applyerror": resourceWriteOnlyDataCheck{}.schema(),
@@ -168,6 +170,9 @@ func Server() tfprotov5.ProviderServer {
 			},
 			"corner_writeonly_datacheck_importerror": resourceWriteOnlyDataCheck{
 				importDataError: true,
+			},
+			"corner_writeonly_datacheck_moveresourceerror": resourceWriteOnlyDataCheck{
+				moveResourceDataError: true,
 			},
 			"corner_writeonly_legacy_datacheck": resourceWriteOnlyDataCheck{
 				enableLegacyTypeSystem: true,
