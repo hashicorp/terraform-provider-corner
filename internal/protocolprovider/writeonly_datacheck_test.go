@@ -162,6 +162,32 @@ func TestAccResourceWriteOnlyDataCheck_import_error(t *testing.T) {
 	})
 }
 
+func TestAccResourceWriteOnlyDataCheck_upgraderesource_error(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		// Write-only attributes are only available in 1.11.0+
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			tfversion.SkipBelow(tfversion.Version1_11_0),
+		},
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			//nolint:unparam // False positive in unparam related to map: https://github.com/mvdan/unparam/issues/40
+			"corner": func() (tfprotov5.ProviderServer, error) {
+				return Server(), nil
+			},
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "corner_writeonly_datacheck_upgraderesourceerror" "test" {
+					writeonly_attr = "hello world!"
+				}`,
+				// TODO: This test is currently bugged because UpgradeResourceState TF core is not returning errors for non-null W/O values.
+				// This should be uncommented when fixed.
+				// ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`After applying this test step, the non-refresh plan was not empty.`),
+			},
+		},
+	})
+}
+
 func TestAccResourceWriteOnlyDataCheck_moveresource_error(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		// Write-only attributes are only available in 1.11.0+

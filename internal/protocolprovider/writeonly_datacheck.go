@@ -12,12 +12,13 @@ import (
 )
 
 type resourceWriteOnlyDataCheck struct {
-	enableLegacyTypeSystem bool
-	applyDataError         bool
-	planDataError          bool
-	readDataError          bool
-	importDataError        bool
-	moveResourceDataError  bool
+	enableLegacyTypeSystem   bool
+	applyDataError           bool
+	planDataError            bool
+	readDataError            bool
+	importDataError          bool
+	moveResourceDataError    bool
+	upgradeResourceDataError bool
 }
 
 func (r resourceWriteOnlyDataCheck) schema() *tfprotov5.Schema {
@@ -214,46 +215,41 @@ func (r resourceWriteOnlyDataCheck) ImportResourceState(ctx context.Context, req
 }
 
 func (r resourceWriteOnlyDataCheck) UpgradeResourceState(ctx context.Context, req *tfprotov5.UpgradeResourceStateRequest) (*tfprotov5.UpgradeResourceStateResponse, error) {
-	resp := &tfprotov5.UpgradeResourceStateResponse{}
-	// Define options to be used when unmarshalling raw state.
-	// IgnoreUndefinedAttributes will silently skip over fields in the JSON
-	// that do not have a matching entry in the schema.
-	unmarshalOpts := tfprotov5.UnmarshalOpts{
-		ValueFromJSONOpts: tftypes.ValueFromJSONOpts{
-			IgnoreUndefinedAttributes: true,
-		},
+	if req.Version != 0 {
+		return &tfprotov5.UpgradeResourceStateResponse{
+			Diagnostics: []*tfprotov5.Diagnostic{
+				{
+					Severity: tfprotov5.DiagnosticSeverityError,
+					Summary:  "Unsupported UpgradeResourceState Operation",
+					Detail:   fmt.Sprintf(`Unexpected version upgrade, there is only version 0 of the resource. Received upgrade request with version %d`, req.Version),
+				},
+			},
+		}, nil
 	}
 
-	// Terraform CLI can call UpgradeResourceState even if the stored state
-	// version matches the current schema. Presumably this is to account for
-	// the previous terraform-plugin-sdk implementation, which handled some
-	// state fixups on behalf of Terraform CLI. This will attempt to roundtrip
-	// the prior RawState to a state matching the current schema.
-	rawStateValue, err := req.RawState.UnmarshalWithOpts(r.schema().ValueType(), unmarshalOpts)
+	var upgradeResourceState tfprotov5.DynamicValue
+	var err error
+	if r.upgradeResourceDataError {
+		upgradeResourceState, err = r.nonNullWriteOnlyData()
+	} else {
+		upgradeResourceState, err = r.nullWriteOnlyData()
+	}
 
 	if err != nil {
-		diag := &tfprotov5.Diagnostic{
-			Severity: tfprotov5.DiagnosticSeverityError,
-			Summary:  "Unable to Read Previously Saved State for UpgradeResourceState",
-			Detail:   "There was an error reading the saved resource state using the current resource schema: " + err.Error(),
-		}
-
-		resp.Diagnostics = append(resp.Diagnostics, diag)
-
-		return resp, nil //nolint:nilerr // error via diagnostic, not gRPC
+		return &tfprotov5.UpgradeResourceStateResponse{
+			Diagnostics: []*tfprotov5.Diagnostic{
+				{
+					Severity: tfprotov5.DiagnosticSeverityError,
+					Summary:  "Error encoding upgraded state",
+					Detail:   fmt.Sprintf("Error encoding upgraded state: %s", err.Error()),
+				},
+			},
+		}, nil
 	}
 
-	upgradedState, diag := valuetoDynamicValue(r.schema(), rawStateValue)
-
-	if diag != nil {
-		resp.Diagnostics = append(resp.Diagnostics, diag)
-
-		return resp, nil
-	}
-
-	resp.UpgradedState = upgradedState
-
-	return resp, nil
+	return &tfprotov5.UpgradeResourceStateResponse{
+		UpgradedState: &upgradeResourceState,
+	}, nil
 }
 
 func (r resourceWriteOnlyDataCheck) MoveResourceState(ctx context.Context, req *tfprotov5.MoveResourceStateRequest) (*tfprotov5.MoveResourceStateResponse, error) {
@@ -292,31 +288,6 @@ func (r resourceWriteOnlyDataCheck) MoveResourceState(ctx context.Context, req *
 	return &tfprotov5.MoveResourceStateResponse{
 		TargetState: &moveResourceState,
 	}, nil
-}
-
-func valuetoDynamicValue(schema *tfprotov5.Schema, value tftypes.Value) (*tfprotov5.DynamicValue, *tfprotov5.Diagnostic) {
-	if schema == nil {
-		diag := &tfprotov5.Diagnostic{
-			Severity: tfprotov5.DiagnosticSeverityError,
-			Summary:  "Unable to Convert Value",
-			Detail:   "Converting the Value to DynamicValue returned an unexpected error: missing schema",
-		}
-
-		return nil, diag
-	}
-
-	dynamicValue, err := tfprotov5.NewDynamicValue(schema.ValueType(), value)
-	if err != nil {
-		diag := &tfprotov5.Diagnostic{
-			Severity: tfprotov5.DiagnosticSeverityError,
-			Summary:  "Unable to Convert Value",
-			Detail:   "Converting the Value to DynamicValue returned an unexpected error: " + err.Error(),
-		}
-
-		return &dynamicValue, diag
-	}
-
-	return &dynamicValue, nil
 }
 
 func dynamicValueToValue(schema *tfprotov5.Schema, dynamicValue *tfprotov5.DynamicValue) (tftypes.Value, *tfprotov5.Diagnostic) {
