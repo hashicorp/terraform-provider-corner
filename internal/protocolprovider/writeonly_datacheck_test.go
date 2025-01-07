@@ -180,7 +180,7 @@ func TestAccResourceWriteOnlyDataCheck_upgraderesource_error(t *testing.T) {
 					writeonly_attr = "hello world!"
 				}`,
 				// TODO: This test is currently bugged because UpgradeResourceState TF core is not returning errors for non-null W/O values.
-				// This should be uncommented when fixed.
+				// This should be uncommented when fixed: https://hashicorp.slack.com/archives/C071HC4JJCC/p1736289662267609
 				// ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
 				ExpectError: regexp.MustCompile(`After applying this test step, the non-refresh plan was not empty.`),
 			},
