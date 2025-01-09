@@ -34,8 +34,16 @@ func NewWithEphemeralSpy(spy *EphemeralResourceSpyClient) provider.Provider {
 	}
 }
 
+func NewWithUpgradeVersion(version int64) provider.Provider {
+	return &testProvider{
+		ephSpyClient:   &EphemeralResourceSpyClient{},
+		upgradeVersion: version,
+	}
+}
+
 type testProvider struct {
-	ephSpyClient *EphemeralResourceSpyClient
+	ephSpyClient   *EphemeralResourceSpyClient
+	upgradeVersion int64
 }
 
 func (p *testProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -96,6 +104,9 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewWriteOnlyValidationsResource,
 		NewWriteOnlyImportResource,
 		NewWriteOnlyMoveResource,
+		func() resource.Resource {
+			return NewWriteOnlyUpgradeResource(p.upgradeVersion)
+		},
 	}
 }
 
