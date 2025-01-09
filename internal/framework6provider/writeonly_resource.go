@@ -145,6 +145,9 @@ func (r WriteOnlyResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
+	// TODO: uncomment this once framework starts null-ing out write-only data in ReadResource.
+	// data.WriteOnlyString = types.StringValue("this shouldn't cause an error!")
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
