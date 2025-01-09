@@ -29,6 +29,7 @@ func New() *schema.Provider {
 			"corner_user":                              resourceUser(),
 			"corner_writeonly":                         resourceWriteOnly(),
 			"corner_writeonly_import":                  resourceWriteOnlyImport(),
+			"corner_writeonly_upgrade":                 resourceWriteOnlyUpgrade(0),
 			"corner_writeonce":                         resourceWriteOnce(),
 			"corner_writeonly_validations":             resourceWriteOnlyValidations(),
 			"corner_bigint":                            resourceBigint(),
@@ -51,6 +52,13 @@ func New() *schema.Provider {
 		}
 		resp.Meta = client
 	}
+
+	return p
+}
+
+func NewWithUpgradeVersion(version int) *schema.Provider {
+	p := New()
+	p.ResourcesMap["corner_writeonly_upgrade"] = resourceWriteOnlyUpgrade(version)
 
 	return p
 }
