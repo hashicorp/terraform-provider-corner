@@ -59,6 +59,7 @@ func (r CustomTypeResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
+	data.CustomIPv6Attribute = iptypes.NewIPv6AddressValue("ff06::c3")
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
