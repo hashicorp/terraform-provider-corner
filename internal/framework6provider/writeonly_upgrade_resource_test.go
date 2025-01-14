@@ -38,7 +38,7 @@ func TestWriteOnlyUpgradeResource(t *testing.T) {
 					writeonly_string = "fakepassword"
 				}`,
 				// TODO: Remove this expect error once Framework is updated to null out write-only attributes.
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Provider produced invalid object`),
 			},
 			// TODO: Remove this additional step once Framework is updated to null out write-only attributes.
 			// Back to the original config to avoid a destroy clean-up error.

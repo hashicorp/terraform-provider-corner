@@ -32,7 +32,7 @@ func TestWriteOnlyImportResource(t *testing.T) {
 				ImportState:       true,
 				ImportStateVerify: true,
 				// TODO: Remove this expect error once SDKv2 is updated to null out write-only attributes.
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Import returned a non-null value for a write-only attribute`),
 			},
 		},
 	})

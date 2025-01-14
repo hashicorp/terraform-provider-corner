@@ -69,8 +69,7 @@ func TestAccResourceWriteOnlyLegacyDataCheck_plan_error(t *testing.T) {
 				Config: `resource "corner_writeonly_legacy_datacheck_planerror" "test" {
 					writeonly_attr = "hello world!"
 				}`,
-				// TODO: This error message will likely be changed to be more specific before 1.11 GA
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Provider produced invalid plan`),
 			},
 		},
 	})
@@ -93,8 +92,7 @@ func TestAccResourceWriteOnlyLegacyDataCheck_apply_error(t *testing.T) {
 				Config: `resource "corner_writeonly_legacy_datacheck_applyerror" "test" {
 					writeonly_attr = "hello world!"
 				}`,
-				// TODO: This error message will likely be changed to be more specific before 1.11 GA
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Provider produced invalid object`),
 			},
 		},
 	})

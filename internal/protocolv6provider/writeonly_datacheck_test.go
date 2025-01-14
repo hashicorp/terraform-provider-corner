@@ -69,8 +69,7 @@ func TestAccResourceWriteOnlyDataCheck_plan_error(t *testing.T) {
 				Config: `resource "corner_v6_writeonly_datacheck_planerror" "test" {
 					writeonly_attr = "hello world!"
 				}`,
-				// TODO: This error message will likely be changed to be more specific before 1.11 GA
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Provider produced invalid plan`),
 			},
 		},
 	})
@@ -93,8 +92,7 @@ func TestAccResourceWriteOnlyDataCheck_apply_error(t *testing.T) {
 				Config: `resource "corner_v6_writeonly_datacheck_applyerror" "test" {
 					writeonly_attr = "hello world!"
 				}`,
-				// TODO: This error message will likely be changed to be more specific before 1.11 GA
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Provider produced invalid object`),
 			},
 		},
 	})
@@ -117,8 +115,7 @@ func TestAccResourceWriteOnlyDataCheck_read_error(t *testing.T) {
 				Config: `resource "corner_v6_writeonly_datacheck_readerror" "test" {
 					writeonly_attr = "hello world!"
 				}`,
-				// TODO: This error message will likely be changed to be more specific before 1.11 GA
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Provider produced invalid object`),
 			},
 		},
 	})
@@ -155,8 +152,7 @@ func TestAccResourceWriteOnlyDataCheck_import_error(t *testing.T) {
 				ResourceName:      "corner_v6_writeonly_datacheck_importerror.test",
 				ImportState:       true,
 				ImportStateVerify: true,
-				// TODO: This error message will likely be changed to be more specific before 1.11 GA
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError:       regexp.MustCompile(`Error: Import returned a non-null value for a write-only attribute`),
 			},
 		},
 	})
@@ -215,8 +211,7 @@ func TestAccResourceWriteOnlyDataCheck_moveresource_error(t *testing.T) {
 					from = terraform_data.test
 					to   = corner_v6_writeonly_datacheck_moveresourceerror.test
 				}`,
-				// TODO: This error message will likely be changed to be more specific before 1.11 GA
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError: regexp.MustCompile(`Error: Provider returned invalid value`),
 			},
 			// Back to the original config to avoid a destroy clean-up error.
 			{

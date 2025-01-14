@@ -33,8 +33,7 @@ func TestWriteOnlyImportResource(t *testing.T) {
 				ResourceName:      "framework_writeonly_import.test",
 				ImportState:       true,
 				ImportStateVerify: true,
-				// TODO: Remove this expect error once Framework is updated to null out write-only attributes.
-				ExpectError: regexp.MustCompile(`Error: Write-only attribute set`),
+				ExpectError:       regexp.MustCompile(`Error: Import returned a non-null value for a write-only attribute`),
 			},
 		},
 	})
