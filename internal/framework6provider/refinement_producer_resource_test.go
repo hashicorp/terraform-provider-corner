@@ -16,9 +16,57 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
+func TestRefinementProducerResource_basic_pre_1_3(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		// This test runs against earlier Terraform versions to ensure provider-returned refinements don't cause unexpected issues (core should ignore them)
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// Terraform 1.2 and older treat the entire output value as unknown
+			tfversion.SkipAbove(tfversion.Version1_2_0),
+		},
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `
+					resource "framework_refinement_producer" "test" {}
+
+					output "test_out" {
+						value = framework_refinement_producer.test
+					}
+				`,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectUnknownOutputValue("test_out"),
+					},
+				},
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownOutputValue("test_out", knownvalue.ObjectExact(
+						map[string]knownvalue.Check{
+							"bool_with_not_null":  knownvalue.Bool(true),
+							"int64_with_bounds":   knownvalue.Int64Exact(15),
+							"float64_with_bounds": knownvalue.Float64Exact(12.102),
+							"list_with_length_bounds": knownvalue.ListExact([]knownvalue.Check{
+								knownvalue.StringExact("hello"),
+								knownvalue.StringExact("there"),
+								knownvalue.StringExact("world!"),
+							}),
+							"string_with_prefix": knownvalue.StringExact("prefix://hello-world"),
+						},
+					)),
+				},
+			},
+		},
+	})
+}
+
 func TestRefinementProducerResource_basic(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		// This test runs against all Terraform versions to ensure provider-returned refinements don't cause unexpected issues (earlier versions of core should ignore them)
+		// This test runs against earlier Terraform versions to ensure provider-returned refinements don't cause unexpected issues (core should ignore them)
+		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
+			// Terraform 1.3+ have more fine-grained unknown output values to assert during plan
+			tfversion.SkipBelow(tfversion.Version1_3_0),
+		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
 		},
