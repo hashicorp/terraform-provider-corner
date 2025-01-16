@@ -16,7 +16,7 @@ func testAccResourceDeferredAction(t *testing.T) resource.TestCase {
 	return resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_9_0),
-			tfversion.SkipIfNotPrerelease(),
+			tfversion.SkipIfNotAlpha(),
 		},
 		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
 			Apply: resource.ApplyOptions{AllowDeferral: true},
@@ -64,7 +64,7 @@ func testAccResourceDeferredActionPlanModification(t *testing.T) resource.TestCa
 	return resource.TestCase{
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(tfversion.Version1_9_0),
-			tfversion.SkipIfNotPrerelease(),
+			tfversion.SkipIfNotAlpha(),
 		},
 		AdditionalCLIOptions: &resource.AdditionalCLIOptions{
 			Apply: resource.ApplyOptions{AllowDeferral: true},
