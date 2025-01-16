@@ -91,6 +91,9 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewMoveStateResource,
 		NewSetNestedBlockWithDefaultsResource,
 		NewSetNestedAttributeWithDefaultsResource,
+		NewRefinementProducer,
+		NewRefinementConsumer,
+		NewInvalidRefinement,
 	}
 }
 
