@@ -129,25 +129,6 @@ func Server() tfprotov6.ProviderServer {
 			"corner_v6_time":            dataSourceTime{},
 			"corner_v6_deferred_action": dataSourceDeferredAction{},
 		},
-		resourceSchemas: map[string]*tfprotov6.Schema{
-			"corner_v6_refinements": {
-				Block: &tfprotov6.SchemaBlock{
-					Attributes: []*tfprotov6.SchemaAttribute{
-						{
-							Name:            "str_value",
-							Type:            tftypes.String,
-							Description:     "Computed string value that will definitely not be null.",
-							DescriptionKind: tfprotov6.StringKindPlain,
-							Optional:        true,
-							Computed:        true,
-						},
-					},
-				},
-			},
-		},
-		resourceRouter: resourceRouter{
-			"corner_v6_refinements": resourceRefinements{},
-		},
 		functions: map[string]*tfprotov6.Function{
 			"bool": {
 				Parameters: []*tfprotov6.FunctionParameter{
