@@ -18,7 +18,8 @@ import (
 
 func TestRefinementProducerResource_basic_pre_1_3(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		// This test runs against earlier Terraform versions to ensure provider-returned refinements don't cause unexpected issues (core should ignore them)
+		// This test runs against earlier Terraform versions to ensure provider-returned refinements
+		// don't cause unexpected issues (core should ignore them)
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			// Terraform 1.2 and older treat the entire output value as unknown
 			tfversion.SkipAbove(tfversion.Version1_2_0),
