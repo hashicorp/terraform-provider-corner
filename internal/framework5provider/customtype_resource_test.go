@@ -18,6 +18,59 @@ import (
 // Not error test and check state for the address
 // Semantic equality later, probably with Austin, read documentation on it
 // Need to use custom type like IPv6 or NormalizeJSON
+func TestSchemaResource_CustomTypeJSONNormalizedAttribute(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "framework_customtype" "test" {
+					json_normalized_attribute = "test value"
+				}`,
+				ExpectError: regexp.MustCompile("Invalid JSON String Value"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("json_normalized_attribute"), knownvalue.StringExact("test value")),
+				},
+			},
+			{
+				Config: `resource "framework_customtype" "test" {
+					json_normalized_attribute = "{\n\t\t\t\t\t\t\t\t\t\t\t\t  \"version\": 0,\n\t\t\t\t\t\t\t\t\t\t\t\t  \"block\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t  \"bool_attribute\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"type\": \"bool\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description\": \"example bool attribute\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description_kind\": \"markdown\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"optional\": true\n\t\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t"
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("json_normalized_attribute"), knownvalue.StringExact("{\n\t\t\t\t\t\t\t\t\t\t\t\t  \"version\": 0,\n\t\t\t\t\t\t\t\t\t\t\t\t  \"block\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t  \"bool_attribute\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"type\": \"bool\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description\": \"example bool attribute\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description_kind\": \"markdown\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"optional\": true\n\t\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t")),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaResource_CustomTypeJSONExact(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "framework_customtype" "test" {
+					json_exact_attribute = "test value"
+				}`,
+				ExpectError: regexp.MustCompile("Invalid JSON String Value"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("json_exact_attribute"), knownvalue.StringExact("test value")),
+				},
+			},
+			{
+				Config: `resource "framework_customtype" "test" {
+					json_exact_attribute = "{\n\t\t\t\t\t\t\t\t\t\t\t\t  \"version\": 0,\n\t\t\t\t\t\t\t\t\t\t\t\t  \"block\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t  \"bool_attribute\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"type\": \"bool\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description\": \"example bool attribute\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description_kind\": \"markdown\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"optional\": true\n\t\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t"
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("json_exact_attribute"), knownvalue.StringExact("{\n\t\t\t\t\t\t\t\t\t\t\t\t  \"version\": 0,\n\t\t\t\t\t\t\t\t\t\t\t\t  \"block\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\"attributes\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t  \"bool_attribute\": {\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"type\": \"bool\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description\": \"example bool attribute\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"description_kind\": \"markdown\",\n\t\t\t\t\t\t\t\t\t\t\t\t\t\t\"optional\": true\n\t\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t\t\t\t\t  }\n\t\t\t\t\t\t\t\t\t\t\t\t}\n\t\t\t\t")),
+				},
+			},
+		},
+	})
+}
 
 func TestSchemaResource_CustomTypeIPv4Attribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
@@ -27,19 +80,19 @@ func TestSchemaResource_CustomTypeIPv4Attribute(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `resource "framework_customtype" "test" {
-					ipv4test_attribute = "test value"
+					ip_v4_attribute = "test value"
 				}`,
 				ExpectError: regexp.MustCompile("Invalid IPv4 Address String Value"),
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ipv4test_attribute"), knownvalue.StringExact("test value")),
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v4_attribute"), knownvalue.StringExact("test value")),
 				},
 			},
 			{
 				Config: `resource "framework_customtype" "test" {
-					ipv4test_attribute = "192.0.2.146"
+					ip_v4_attribute = "192.0.2.146"
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ipv4test_attribute"), knownvalue.StringExact("192.0.2.146")),
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v4_attribute"), knownvalue.StringExact("192.0.2.146")),
 				},
 			},
 		},
@@ -52,51 +105,115 @@ func TestSchemaResource_CustomTypeIPv6Attribute(t *testing.T) {
 			"framework": providerserver.NewProtocol5WithError(New()),
 		},
 		Steps: []resource.TestStep{
-			/*			{
-							Config: `resource "framework_customtype" "test" {
-								ipv6test_attribute = "test value"
-							}`,
-							ExpectError: regexp.MustCompile("Invalid IPv6 Address String Value"),
-							ConfigStateChecks: []statecheck.StateCheck{
-								statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ipv6test_attribute"), knownvalue.StringExact("test value")),
-							},
-						},
-						{
-							Config: `resource "framework_customtype" "test" {
-								ipv6test_attribute = "2001:db8:3333:4444:5555:6666:7777:8888"
-							}`,
-							ConfigStateChecks: []statecheck.StateCheck{
-								statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ipv6test_attribute"), knownvalue.StringExact("2001:db8:3333:4444:5555:6666:7777:8888")),
-							},
-						},
-						{
-							Config: `resource "framework_customtype" "test" {
-								ipv6test_attribute = "1050:0000:0000:0000:0005:0600:300c:326b"
-							}`,
-							ConfigStateChecks: []statecheck.StateCheck{
-								statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ipv6test_attribute"), knownvalue.StringExact("1050:0000:0000:0000:0005:0600:300c:326b")),
-							},
-						},*/
 			{
 				Config: `resource "framework_customtype" "test" {
-					ipv6test_attribute = "ff06:0:0:0:0:0:0:c3" 
+								ip_v6_attribute = "test value"
+							}`,
+				ExpectError: regexp.MustCompile("Invalid IPv6 Address String Value"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v6_attribute"), knownvalue.StringExact("test value")),
+				},
+			},
+			{
+				Config: `resource "framework_customtype" "test" {
+								ip_v6_attribute = "1050:0000:0000:0000:0005:0600:300c:326b"
+							}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v6_attribute"), knownvalue.StringExact("1050:0000:0000:0000:0005:0600:300c:326b")),
+				},
+			},
+			{
+				Config: `resource "framework_customtype" "test" {
+					ip_v6_attribute = "ff06:0:0:0:0:0:0:c3" 
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ipv6test_attribute"), knownvalue.StringExact("ff06:0:0:0:0:0:0:c3")),
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v6_attribute"), knownvalue.StringExact("ff06:0:0:0:0:0:0:c3")),
 				},
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("framework_customtype.test", "ipv6test_attribute", "ff06:0:0:0:0:0:0:c3"),
+					resource.TestCheckResourceAttr("framework_customtype.test", "ip_v6_attribute", "ff06:0:0:0:0:0:0:c3"),
 				),
 			},
-			/*{ // ff06:0:0:0:0:0:0:c3 is ff06::c3, does sematic equality work in this case?
+		},
+	})
+}
+
+func TestSchemaResource_CustomTypeIPv4CIDRAttribute(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
 				Config: `resource "framework_customtype" "test" {
-					ipv6test_attribute = "ff06::c3"
+					ip_v4_cidr_attribute = "test value"
 				}`,
-				ExpectError: regexp.MustCompile("Attribute 'ipv6test_attribute' expected \"ff06:0:0:0:0:0:0:c3\", got \"ff06::c3\""),
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("framework_customtype.test", "ipv6test_attribute", "ff06:0:0:0:0:0:0:c3"),
-				),
-			},*/
+				ExpectError: regexp.MustCompile("Invalid IPv4 CIDR String Value"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v4_cidr_attribute"), knownvalue.StringExact("test value")),
+				},
+			},
+			{
+				Config: `resource "framework_customtype" "test" {
+					ip_v4_cidr_attribute = "192.0.2.146/24"
+				}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v4_cidr_attribute"), knownvalue.StringExact("192.0.2.146/24")),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaResource_CustomTypeIPv6CIDRAttribute(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "framework_customtype" "test" {
+								ip_v6_cidr_attribute = "test value"
+							}`,
+				ExpectError: regexp.MustCompile("Invalid IPv6 CIDR String Value"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v6_cidr_attribute"), knownvalue.StringExact("test value")),
+				},
+			},
+			{
+				Config: `resource "framework_customtype" "test" {
+								ip_v6_cidr_attribute = "1050:0000:0000:0000:0005:0600:300c:326b/64"
+							}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v6_cidr_attribute"), knownvalue.StringExact("1050:0000:0000:0000:0005:0600:300c:326b/64")),
+				},
+			},
+		},
+	})
+}
+
+func TestSchemaResource_CustomTypeTimeRFC3339Attribute(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: `resource "framework_customtype" "test" {
+								time_rfc3339_attribute = "test value"
+							}`,
+				ExpectError: regexp.MustCompile("Invalid RFC3339 String Value"),
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("time_rfc3339_attribute"), knownvalue.StringExact("test value")),
+				},
+			},
+			{
+				Config: `resource "framework_customtype" "test" {
+								time_rfc3339_attribute = "1985-04-12T23:20:50.52Z"
+							}`,
+				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("time_rfc3339_attribute"), knownvalue.StringExact("1985-04-12T23:20:50.52Z")),
+				},
+			},
 		},
 	})
 }
