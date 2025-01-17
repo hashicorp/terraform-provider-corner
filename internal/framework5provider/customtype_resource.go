@@ -83,11 +83,13 @@ func (r CustomTypeResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	// Testing IPv6 Semantic Equality
-	tempIpAddr := data.CustomIPv6Attribute.ValueString()
-	currentIpAddr, _ := netip.ParseAddr(tempIpAddr)
-	expandedIpAddr := currentIpAddr.StringExpanded()
-	newIpAddr := iptypes.NewIPv6AddressValue(expandedIpAddr)
-	data.CustomIPv6Attribute = newIpAddr
+	if !data.CustomIPv6Attribute.IsNull() && !data.CustomIPv6Attribute.IsUnknown() {
+		tempIpAddr := data.CustomIPv6Attribute.ValueString()
+		currentIpAddr, _ := netip.ParseAddr(tempIpAddr)
+		expandedIpAddr := currentIpAddr.StringExpanded()
+		newIpAddr := iptypes.NewIPv6AddressValue(expandedIpAddr)
+		data.CustomIPv6Attribute = newIpAddr
+	}
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
