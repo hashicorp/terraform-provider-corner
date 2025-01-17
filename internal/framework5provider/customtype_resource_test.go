@@ -15,9 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
-// Not error test and check state for the address
-// Semantic equality later, probably with Austin, read documentation on it
-// Need to use custom type like IPv6 or NormalizeJSON
 func TestSchemaResource_CustomTypeJSONNormalizedAttribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
@@ -124,14 +121,12 @@ func TestSchemaResource_CustomTypeIPv6Attribute(t *testing.T) {
 			},
 			{
 				Config: `resource "framework_customtype" "test" {
-					ip_v6_attribute = "ff06:0:0:0:0:0:0:c3" 
+					ip_v6_attribute = "ff06::c3" 
 				}`,
+
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v6_attribute"), knownvalue.StringExact("ff06:0:0:0:0:0:0:c3")),
+					statecheck.ExpectKnownValue("framework_customtype.test", tfjsonpath.New("ip_v6_attribute"), knownvalue.StringExact("ff06::c3")),
 				},
-				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("framework_customtype.test", "ip_v6_attribute", "ff06:0:0:0:0:0:0:c3"),
-				),
 			},
 		},
 	})

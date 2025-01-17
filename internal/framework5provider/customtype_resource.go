@@ -11,6 +11,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework-timetypes/timetypes"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
+	"net/netip"
 )
 
 var _ resource.Resource = CustomTypeResource{}
@@ -82,7 +83,13 @@ func (r CustomTypeResource) Read(ctx context.Context, req resource.ReadRequest, 
 		return
 	}
 
-	// data.CustomIPv6Attribute = iptypes.NewIPv6AddressValue("ff06::c3")
+	// Testing IPv6 Semantic Equality
+	tempIpAddr := data.CustomIPv6Attribute.ValueString()
+	currentIpAddr, _ := netip.ParseAddr(tempIpAddr)
+	expandedIpAddr := currentIpAddr.StringExpanded()
+	newIpAddr := iptypes.NewIPv6AddressValue(expandedIpAddr)
+	data.CustomIPv6Attribute = newIpAddr
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
