@@ -20,7 +20,6 @@ func NewCustomTypeResource() resource.Resource {
 	return &CustomTypeResource{}
 }
 
-// SchemaResource is for testing all schema types, excluding dynamic schema types. (see `DynamicSchemaResource`)
 type CustomTypeResource struct{}
 
 func (r CustomTypeResource) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {
