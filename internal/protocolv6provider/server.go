@@ -92,6 +92,54 @@ func (s *server) StopProvider(ctx context.Context, req *tfprotov6.StopProviderRe
 	return &tfprotov6.StopProviderResponse{}, nil
 }
 
+func (s *server) ValidateEphemeralResourceConfig(context.Context, *tfprotov6.ValidateEphemeralResourceConfigRequest) (*tfprotov6.ValidateEphemeralResourceConfigResponse, error) {
+	return &tfprotov6.ValidateEphemeralResourceConfigResponse{
+		Diagnostics: []*tfprotov6.Diagnostic{
+			{
+				Severity: tfprotov6.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Validate Config Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
+func (s *server) OpenEphemeralResource(context.Context, *tfprotov6.OpenEphemeralResourceRequest) (*tfprotov6.OpenEphemeralResourceResponse, error) {
+	return &tfprotov6.OpenEphemeralResourceResponse{
+		Diagnostics: []*tfprotov6.Diagnostic{
+			{
+				Severity: tfprotov6.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Open Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
+func (s *server) RenewEphemeralResource(context.Context, *tfprotov6.RenewEphemeralResourceRequest) (*tfprotov6.RenewEphemeralResourceResponse, error) {
+	return &tfprotov6.RenewEphemeralResourceResponse{
+		Diagnostics: []*tfprotov6.Diagnostic{
+			{
+				Severity: tfprotov6.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Renew Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
+func (s *server) CloseEphemeralResource(context.Context, *tfprotov6.CloseEphemeralResourceRequest) (*tfprotov6.CloseEphemeralResourceResponse, error) {
+	return &tfprotov6.CloseEphemeralResourceResponse{
+		Diagnostics: []*tfprotov6.Diagnostic{
+			{
+				Severity: tfprotov6.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Close Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
 func Server() tfprotov6.ProviderServer {
 	return &server{
 		providerSchema: &tfprotov6.Schema{

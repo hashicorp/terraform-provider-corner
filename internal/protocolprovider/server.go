@@ -92,6 +92,54 @@ func (s *server) StopProvider(ctx context.Context, req *tfprotov5.StopProviderRe
 	return &tfprotov5.StopProviderResponse{}, nil
 }
 
+func (s *server) ValidateEphemeralResourceConfig(context.Context, *tfprotov5.ValidateEphemeralResourceConfigRequest) (*tfprotov5.ValidateEphemeralResourceConfigResponse, error) {
+	return &tfprotov5.ValidateEphemeralResourceConfigResponse{
+		Diagnostics: []*tfprotov5.Diagnostic{
+			{
+				Severity: tfprotov5.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Validate Config Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
+func (s *server) OpenEphemeralResource(context.Context, *tfprotov5.OpenEphemeralResourceRequest) (*tfprotov5.OpenEphemeralResourceResponse, error) {
+	return &tfprotov5.OpenEphemeralResourceResponse{
+		Diagnostics: []*tfprotov5.Diagnostic{
+			{
+				Severity: tfprotov5.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Open Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
+func (s *server) RenewEphemeralResource(context.Context, *tfprotov5.RenewEphemeralResourceRequest) (*tfprotov5.RenewEphemeralResourceResponse, error) {
+	return &tfprotov5.RenewEphemeralResourceResponse{
+		Diagnostics: []*tfprotov5.Diagnostic{
+			{
+				Severity: tfprotov5.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Renew Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
+func (s *server) CloseEphemeralResource(context.Context, *tfprotov5.CloseEphemeralResourceRequest) (*tfprotov5.CloseEphemeralResourceResponse, error) {
+	return &tfprotov5.CloseEphemeralResourceResponse{
+		Diagnostics: []*tfprotov5.Diagnostic{
+			{
+				Severity: tfprotov5.DiagnosticSeverityError,
+				Summary:  "Unsupported Ephemeral Resource Close Operation",
+				Detail:   "Ephemeral resources are not supported by this provider.",
+			},
+		},
+	}, nil
+}
+
 func Server() tfprotov5.ProviderServer {
 	return &server{
 		providerSchema: &tfprotov5.Schema{
