@@ -83,7 +83,7 @@ func (r CustomTypeResource) Read(ctx context.Context, req resource.ReadRequest, 
 	}
 
 	// Testing IPv6 Semantic Equality
-	if !data.CustomIPv6Attribute.IsNull() && !data.CustomIPv6Attribute.IsUnknown() {
+	if !data.CustomIPv6Attribute.IsNull() {
 		tempIpAddr := data.CustomIPv6Attribute.ValueString()
 		currentIpAddr, _ := netip.ParseAddr(tempIpAddr)
 		expandedIpAddr := currentIpAddr.StringExpanded()
