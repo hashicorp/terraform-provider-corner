@@ -6,7 +6,6 @@ package framework
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -69,10 +68,13 @@ func (r WriteOnlyImportResource) Delete(ctx context.Context, req resource.Delete
 }
 
 func (r WriteOnlyImportResource) ImportState(ctx context.Context, req resource.ImportStateRequest, resp *resource.ImportStateResponse) {
-	resp.Diagnostics.Append(resp.State.SetAttribute(
+
+	resp.Diagnostics.Append(resp.State.Set(
 		ctx,
-		path.Root("writeonly_string"),
-		types.StringValue("this shouldn't cause an error!"),
+		WriteOnlyUpgradeResourceModel{
+			StringAttr:      types.StringValue("hello world!"),
+			WriteOnlyString: types.StringValue("this shouldn't cause an error"),
+		},
 	)...)
 }
 

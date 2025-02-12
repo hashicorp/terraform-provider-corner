@@ -4,7 +4,6 @@
 package framework
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -37,15 +36,6 @@ func TestWriteOnlyMoveResource(t *testing.T) {
 				moved {
 					from = terraform_data.test
 					to   = framework_writeonly_move.test
-				}`,
-				// TODO: Remove this expect error once Framework is updated to null out write-only attributes.
-				ExpectError: regexp.MustCompile(`Error: Provider returned invalid value`),
-			},
-			// TODO: Remove this additional step once Framework is updated to null out write-only attributes.
-			// Back to the original config to avoid a destroy clean-up error.
-			{
-				Config: `resource "terraform_data" "test" {
-					input = "hello world!"
 				}`,
 			},
 		},

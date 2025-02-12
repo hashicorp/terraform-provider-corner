@@ -25,7 +25,9 @@ func main() {
 	flag.Parse()
 
 	providers := []func() tfprotov5.ProviderServer{
-		protocol.Server,
+		func() tfprotov5.ProviderServer {
+			return protocol.Server(true)
+		},
 		sdkv2.New().GRPCProvider,
 	}
 

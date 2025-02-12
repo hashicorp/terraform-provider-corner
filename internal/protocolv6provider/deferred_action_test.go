@@ -21,7 +21,7 @@ func TestAccDataSourceDeferredAction_InvalidDeferredResponse(t *testing.T) {
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			//nolint:unparam // False positive in unparam related to map: https://github.com/mvdan/unparam/issues/40
 			"corner": func() (tfprotov6.ProviderServer, error) {
-				return Server(), nil
+				return Server(false), nil
 			},
 		},
 		// Test that terraform-plugin-go throws an error diagnostic when a

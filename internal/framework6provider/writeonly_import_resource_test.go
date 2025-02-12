@@ -4,7 +4,6 @@
 package framework
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -30,10 +29,10 @@ func TestWriteOnlyImportResource(t *testing.T) {
 				}`,
 			},
 			{
-				ResourceName:      "framework_writeonly_import.test",
-				ImportState:       true,
-				ImportStateVerify: true,
-				ExpectError:       regexp.MustCompile(`Error: Import returned a non-null value for a write-only attribute`),
+				ResourceName:                         "framework_writeonly_import.test",
+				ImportState:                          true,
+				ImportStateVerify:                    true,
+				ImportStateVerifyIdentifierAttribute: "string_attr",
 			},
 		},
 	})

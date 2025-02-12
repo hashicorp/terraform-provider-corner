@@ -47,8 +47,6 @@ func TestWriteOnlyUpgradeResource(t *testing.T) {
 					string_attr = "world!"
 					writeonly_string = "fakepassword"
 				}`,
-				// TODO: This test will start erroring when core fixes the state upgrade bug (currently not checking write-only data sent back)
-				// TODO: This test will then pass once SDKv2 fixes the bug of UpgradeResourceState not nulling out write-only data
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("corner_writeonly_upgrade.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 				},

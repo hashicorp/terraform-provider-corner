@@ -4,7 +4,6 @@
 package sdkv2
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -31,8 +30,6 @@ func TestWriteOnlyImportResource(t *testing.T) {
 				ResourceName:      "corner_writeonly_import.test",
 				ImportState:       true,
 				ImportStateVerify: true,
-				// TODO: Remove this expect error once SDKv2 is updated to null out write-only attributes.
-				ExpectError: regexp.MustCompile(`Error: Import returned a non-null value for a write-only attribute`),
 			},
 		},
 	})

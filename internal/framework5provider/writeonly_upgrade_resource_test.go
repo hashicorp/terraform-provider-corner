@@ -4,7 +4,6 @@
 package framework
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
@@ -35,19 +34,6 @@ func TestWriteOnlyUpgradeResource(t *testing.T) {
 				},
 				Config: `resource "framework_writeonly_upgrade" "test" {
 					string_attr = "world!"
-					writeonly_string = "fakepassword"
-				}`,
-				// TODO: Remove this expect error once Framework is updated to null out write-only attributes.
-				ExpectError: regexp.MustCompile(`Error: Provider produced invalid object`),
-			},
-			// TODO: Remove this additional step once Framework is updated to null out write-only attributes.
-			// Back to the original config to avoid a destroy clean-up error.
-			{
-				ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-					"framework": providerserver.NewProtocol5WithError(NewWithUpgradeVersion(0)),
-				},
-				Config: `resource "framework_writeonly_upgrade" "test" {
-					string_attr = "hello!"
 					writeonly_string = "fakepassword"
 				}`,
 			},

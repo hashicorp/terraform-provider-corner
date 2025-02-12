@@ -33,7 +33,7 @@ func (r WriteOnlyUpgradeResource) UpgradeState(context.Context) map[int64]resour
 				resp.Diagnostics.Append(resp.State.Set(
 					ctx,
 					WriteOnlyUpgradeResourceModel{
-						StringAttr:      types.StringValue("hello world!"),
+						StringAttr:      types.StringValue("world!"),
 						WriteOnlyString: types.StringValue("this shouldn't cause an error"),
 					},
 				)...)

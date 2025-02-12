@@ -141,7 +141,7 @@ func (s *server) CloseEphemeralResource(context.Context, *tfprotov5.CloseEphemer
 	}, nil
 }
 
-func Server() tfprotov5.ProviderServer {
+func Server(upgradeResourceDataError bool) tfprotov5.ProviderServer {
 	return &server{
 		providerSchema: &tfprotov5.Schema{
 			Block: &tfprotov5.SchemaBlock{},
@@ -224,7 +224,7 @@ func Server() tfprotov5.ProviderServer {
 				moveResourceDataError: true,
 			},
 			"corner_writeonly_datacheck_upgraderesourceerror": resourceWriteOnlyDataCheck{
-				upgradeResourceDataError: true,
+				upgradeResourceDataError: upgradeResourceDataError,
 			},
 			"corner_writeonly_legacy_datacheck": resourceWriteOnlyDataCheck{
 				enableLegacyTypeSystem: true,
