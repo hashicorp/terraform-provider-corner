@@ -8,7 +8,7 @@ import (
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
@@ -17,8 +17,8 @@ import (
 
 func TestSchemaResource_CustomTypeJSONNormalizedAttribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -44,8 +44,8 @@ func TestSchemaResource_CustomTypeJSONNormalizedAttribute(t *testing.T) {
 
 func TestSchemaResource_CustomTypeJSONExact(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -71,8 +71,8 @@ func TestSchemaResource_CustomTypeJSONExact(t *testing.T) {
 
 func TestSchemaResource_CustomTypeIPv4Attribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -98,8 +98,8 @@ func TestSchemaResource_CustomTypeIPv4Attribute(t *testing.T) {
 
 func TestSchemaResource_CustomTypeIPv6Attribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -134,8 +134,8 @@ func TestSchemaResource_CustomTypeIPv6Attribute(t *testing.T) {
 
 func TestSchemaResource_CustomTypeIPv4CIDRAttribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -161,8 +161,8 @@ func TestSchemaResource_CustomTypeIPv4CIDRAttribute(t *testing.T) {
 
 func TestSchemaResource_CustomTypeIPv6CIDRAttribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -188,8 +188,8 @@ func TestSchemaResource_CustomTypeIPv6CIDRAttribute(t *testing.T) {
 
 func TestSchemaResource_CustomTypeTimeRFC3339Attribute(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
