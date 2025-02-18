@@ -36,7 +36,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				  nested_list_block {
 				  	string_attr = "hello!"
 				  	writeonly_string = "fakepassword"
-					double_nested_set_block {
+					double_nested_list_block {
 						string_attr = "hello!"
 						writeonly_string = "fakepassword"
 					}
@@ -53,7 +53,7 @@ func TestWriteOnlyResource(t *testing.T) {
 								"string_attr":                 knownvalue.StringExact("hello!"),
 								"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
 								"writeonly_string":            knownvalue.Null(),
-								"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+								"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
 									knownvalue.ObjectExact(map[string]knownvalue.Check{
 										"string_attr":                 knownvalue.StringExact("hello!"),
 										"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
@@ -74,7 +74,7 @@ func TestWriteOnlyResource(t *testing.T) {
 							"string_attr":                 knownvalue.StringExact("hello!"),
 							"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
 							"writeonly_string":            knownvalue.Null(),
-							"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+							"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"string_attr":                 knownvalue.StringExact("hello!"),
 									"opt_or_computed_string_attr": knownvalue.StringExact("computed value!"),
@@ -95,7 +95,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				  	string_attr = "world!"
 					opt_or_computed_string_attr = "config value!"
 				  	writeonly_string = "fakepassword"
-					double_nested_set_block {
+					double_nested_list_block {
 						string_attr = "world!"
 						opt_or_computed_string_attr = "config value!"
 						writeonly_string = "fakepassword"
@@ -113,7 +113,7 @@ func TestWriteOnlyResource(t *testing.T) {
 								"string_attr":                 knownvalue.StringExact("world!"),
 								"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
 								"writeonly_string":            knownvalue.Null(),
-								"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+								"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
 									knownvalue.ObjectExact(map[string]knownvalue.Check{
 										"string_attr":                 knownvalue.StringExact("world!"),
 										"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
@@ -134,7 +134,7 @@ func TestWriteOnlyResource(t *testing.T) {
 							"string_attr":                 knownvalue.StringExact("world!"),
 							"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
 							"writeonly_string":            knownvalue.Null(),
-							"double_nested_set_block": knownvalue.SetExact([]knownvalue.Check{
+							"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
 								knownvalue.ObjectExact(map[string]knownvalue.Check{
 									"string_attr":                 knownvalue.StringExact("world!"),
 									"opt_or_computed_string_attr": knownvalue.StringExact("config value!"),
@@ -165,7 +165,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 				  writeonly_string = "fakepassword"
 				  nested_list_block {
 				  	string_attr = "hello!"
-					double_nested_set_block {
+					double_nested_list_block {
 						string_attr = "hello!"
 					}
 				  }
@@ -178,7 +178,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 				  nested_list_block {
 				  	string_attr = "hello!"
 				  	writeonly_string = "fakepassword"
-					double_nested_set_block {
+					double_nested_list_block {
 						string_attr = "hello!"
 					}
 				  }
@@ -190,7 +190,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 				  string_attr = "hello!"
 				  nested_list_block {
 				  	string_attr = "hello!"
-					double_nested_set_block {
+					double_nested_list_block {
 						string_attr = "hello!"
 						writeonly_string = "fakepassword"
 					}
@@ -215,7 +215,7 @@ func TestWriteOnlyResource_NoWriteOnlyValuesSet(t *testing.T) {
 				  string_attr = "hello!"
 				  nested_list_block {
 				  	string_attr = "hello!"
-					double_nested_set_block {
+					double_nested_list_block {
 						string_attr = "hello!"
 					}
 				  }

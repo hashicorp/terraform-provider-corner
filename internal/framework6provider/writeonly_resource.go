@@ -42,7 +42,7 @@ func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 				Optional:  true,
 				WriteOnly: true,
 			},
-			"writeonly_set": schema.SetAttribute{
+			"writeonly_list": schema.ListAttribute{
 				Optional:    true,
 				WriteOnly:   true,
 				ElementType: types.StringType,
@@ -173,7 +173,7 @@ func (r WriteOnlyResource) Delete(ctx context.Context, req resource.DeleteReques
 type WriteOnlyResourceModel struct {
 	WriteOnlyCustomIPv6   iptypes.IPv6Address `tfsdk:"writeonly_custom_ipv6"`
 	WriteOnlyString       types.String        `tfsdk:"writeonly_string"`
-	WriteOnlySet          types.Set           `tfsdk:"writeonly_set"`
+	WriteOnlyList         types.List          `tfsdk:"writeonly_list"`
 	WriteOnlyNestedObject types.Object        `tfsdk:"writeonly_nested_object"`
 	NestedMap             types.Map           `tfsdk:"nested_map"`
 	NestedBlockList       types.List          `tfsdk:"nested_block_list"`
@@ -188,7 +188,7 @@ func VerifyWriteOnlyData(ctx context.Context, cfg tfsdk.Config) diag.Diagnostics
 	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("writeonly_string"), types.StringValue("fakepassword"))...)
 
 	// Collection write-only attribute
-	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("writeonly_set"), types.SetValueMust(types.StringType, []attr.Value{types.StringValue("fake"), types.StringValue("password")}))...)
+	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("writeonly_list"), types.ListValueMust(types.StringType, []attr.Value{types.StringValue("fake"), types.StringValue("password")}))...)
 
 	// Nested map with write-only attribute
 	diags.Append(assertWriteOnlyVal(ctx, cfg, path.Root("nested_map").AtMapKey("key1").AtName("writeonly_float64"), types.Float64Value(10))...)

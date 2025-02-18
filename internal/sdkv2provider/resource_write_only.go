@@ -66,8 +66,8 @@ func resourceWriteOnly() *schema.Resource {
 							Optional:  true,
 							WriteOnly: true,
 						},
-						"double_nested_set_block": {
-							Type:     schema.TypeSet,
+						"double_nested_list_block": {
+							Type:     schema.TypeList,
 							Required: true,
 							Elem: &schema.Resource{
 								Schema: map[string]*schema.Schema{
@@ -198,14 +198,14 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	}
 
 	// Double nested set block with write-only attribute
-	setBlockPath := cty.GetAttrPath("nested_list_block").IndexInt(0).GetAttr("double_nested_set_block")
+	setBlockPath := cty.GetAttrPath("nested_list_block").IndexInt(0).GetAttr("double_nested_list_block")
 	setBlockVal, diags := d.GetRawConfigAt(setBlockPath)
 	if diags.HasError() {
 		return diags
 	}
 
 	if setBlockVal.IsNull() || setBlockVal.LengthInt() != 1 {
-		return diag.Errorf("expected `nested_list_block.0.double_nested_set_block` to have length of 1, got: %s", setBlockVal.GoString())
+		return diag.Errorf("expected `nested_list_block.0.double_nested_list_block` to have length of 1, got: %s", setBlockVal.GoString())
 	}
 
 	setSlice := setBlockVal.AsValueSlice()
@@ -214,7 +214,7 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 	if !doubleNestedWriteOnlyStr.IsNull() {
 		expecteDoubleNestedWriteOnlyStr := "fakepassword"
 		if doubleNestedWriteOnlyStr.AsString() != expecteDoubleNestedWriteOnlyStr {
-			return diag.Errorf("expected `nested_list_block.0.double_nested_set_block.0.writeonly_string` to be: %s, got: %s", expecteDoubleNestedWriteOnlyStr, doubleNestedWriteOnlyStr.AsString())
+			return diag.Errorf("expected `nested_list_block.0.double_nested_list_block.0.writeonly_string` to be: %s, got: %s", expecteDoubleNestedWriteOnlyStr, doubleNestedWriteOnlyStr.AsString())
 		}
 	}
 
@@ -226,10 +226,10 @@ func verifyWriteOnlyData(d *schema.ResourceData) diag.Diagnostics {
 			// Setting shouldn't result in anything sent back to Terraform, but we want to test that
 			// our SDKv2 logic would revert these changes.
 			"writeonly_string": "different value!",
-			"double_nested_set_block": []map[string]any{
+			"double_nested_list_block": []map[string]any{
 				{
-					"string_attr":                 d.Get("nested_list_block.0.double_nested_set_block").(*schema.Set).List()[0].(map[string]any)["string_attr"],
-					"opt_or_computed_string_attr": d.Get("nested_list_block.0.double_nested_set_block").(*schema.Set).List()[0].(map[string]any)["opt_or_computed_string_attr"],
+					"string_attr":                 d.Get("nested_list_block.0.double_nested_list_block.0.string_attr"),
+					"opt_or_computed_string_attr": d.Get("nested_list_block.0.double_nested_list_block.0.opt_or_computed_string_attr"),
 					// Setting shouldn't result in anything sent back to Terraform, but we want to test that
 					// our SDKv2 logic would revert these changes.
 					"writeonly_string": "different value!",

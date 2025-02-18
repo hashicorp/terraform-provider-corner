@@ -33,7 +33,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				Config: `resource "framework_writeonly" "test" {
 					writeonly_custom_ipv6 = "::"
 					writeonly_string = "fakepassword"
-					writeonly_set = ["fake", "password"]
+					writeonly_list = ["fake", "password"]
 					nested_block_list {
 						string_attr = "hello"
 						writeonly_string = "fakepassword1"
@@ -57,7 +57,7 @@ func TestWriteOnlyResource(t *testing.T) {
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
-						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
 							knownvalue.ObjectExact(map[string]knownvalue.Check{
 								"string_attr":      knownvalue.StringExact("hello"),
@@ -81,7 +81,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
 						knownvalue.ObjectExact(map[string]knownvalue.Check{
 							"string_attr":      knownvalue.StringExact("hello"),
@@ -106,7 +106,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				Config: `resource "framework_writeonly" "test" {
 					writeonly_custom_ipv6 = "::"
 					writeonly_string = "fakepassword"
-					writeonly_set = ["fake", "password"]
+					writeonly_list = ["fake", "password"]
 					nested_block_list {
 						string_attr = "world"
 						writeonly_string = "fakepassword1"
@@ -130,7 +130,7 @@ func TestWriteOnlyResource(t *testing.T) {
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
-						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
 							knownvalue.ObjectExact(map[string]knownvalue.Check{
 								"string_attr":      knownvalue.StringExact("world"),
@@ -154,7 +154,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
-					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_set"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("nested_block_list"), knownvalue.ListExact([]knownvalue.Check{
 						knownvalue.ObjectExact(map[string]knownvalue.Check{
 							"string_attr":      knownvalue.StringExact("world"),
@@ -211,7 +211,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 			},
 			{
 				Config: `resource "framework_writeonly" "test" {
-					writeonly_set = ["fake", "password"]
+					writeonly_list = ["fake", "password"]
 					nested_block_list {
 						string_attr = "hello"
 						double_nested_object {
