@@ -78,6 +78,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectUnknownValue("framework_writeonly.test", tfjsonpath.New("computed_attr")),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),
@@ -113,6 +114,7 @@ func TestWriteOnlyResource(t *testing.T) {
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("computed_attr"), knownvalue.StringExact("computed_val")),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),
@@ -196,6 +198,7 @@ func TestWriteOnlyResource(t *testing.T) {
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectUnknownValue("framework_writeonly.test", tfjsonpath.New("computed_attr")),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 						plancheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),
@@ -231,6 +234,7 @@ func TestWriteOnlyResource(t *testing.T) {
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
+					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("computed_attr"), knownvalue.StringExact("computed_val")),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_custom_ipv6"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_string"), knownvalue.Null()),
 					statecheck.ExpectKnownValue("framework_writeonly.test", tfjsonpath.New("writeonly_list"), knownvalue.Null()),

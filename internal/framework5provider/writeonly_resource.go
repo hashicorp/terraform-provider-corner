@@ -33,6 +33,9 @@ func (r WriteOnlyResource) Metadata(_ context.Context, req resource.MetadataRequ
 func (r WriteOnlyResource) Schema(_ context.Context, _ resource.SchemaRequest, resp *resource.SchemaResponse) {
 	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
+			"computed_attr": schema.StringAttribute{
+				Computed: true,
+			},
 			"writeonly_custom_ipv6": schema.StringAttribute{
 				Optional:   true,
 				WriteOnly:  true,
@@ -91,6 +94,8 @@ func (r WriteOnlyResource) Create(ctx context.Context, req resource.CreateReques
 		return
 	}
 
+	config.ComputedAttribute = types.StringValue("computed_val")
+
 	// Since all attributes are in configuration, we write it back directly to test that the write-only attributes
 	// are nulled out before sending back to TF Core.
 	resp.Diagnostics.Append(resp.State.Set(ctx, &config)...)
@@ -106,6 +111,7 @@ func (r WriteOnlyResource) Read(ctx context.Context, req resource.ReadRequest, r
 	}
 
 	data.WriteOnlyString = types.StringValue("this shouldn't cause an error!")
+	data.ComputedAttribute = types.StringValue("computed_val")
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
@@ -122,6 +128,8 @@ func (r WriteOnlyResource) Update(ctx context.Context, req resource.UpdateReques
 		return
 	}
 
+	config.ComputedAttribute = types.StringValue("computed_val")
+
 	// Since all attributes are in configuration, we write it back directly to test that the write-only attributes
 	// are nulled out before sending back to TF Core.
 	resp.Diagnostics.Append(resp.State.Set(ctx, &config)...)
@@ -131,6 +139,7 @@ func (r WriteOnlyResource) Delete(ctx context.Context, req resource.DeleteReques
 }
 
 type WriteOnlyResourceModel struct {
+	ComputedAttribute   types.String        `tfsdk:"computed_attr"`
 	WriteOnlyCustomIPv6 iptypes.IPv6Address `tfsdk:"writeonly_custom_ipv6"`
 	WriteOnlyString     types.String        `tfsdk:"writeonly_string"`
 	WriteOnlyList       types.List          `tfsdk:"writeonly_list"`
