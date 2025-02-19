@@ -17,6 +17,10 @@ import (
 
 func resourceDeferredAction() *schema.Resource {
 	return &schema.Resource{
+		// Prevent any accidental data inconsistencies
+		EnableLegacyTypeSystemPlanErrors:  true,
+		EnableLegacyTypeSystemApplyErrors: true,
+
 		CreateContext: resourceDeferredActionCreate,
 		ReadContext:   resourceDeferredActionRead,
 		UpdateContext: resourceDeferredActionUpdate,
