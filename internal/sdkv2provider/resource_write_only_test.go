@@ -170,7 +170,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 					}
 				  }
 				}`,
-				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+				ExpectError: regexp.MustCompile(`Write-only Attribute Not Allowed`),
 			},
 			{
 				Config: `resource "corner_writeonly" "test" {
@@ -183,7 +183,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 					}
 				  }
 				}`,
-				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+				ExpectError: regexp.MustCompile(`Write-only Attribute Not Allowed`),
 			},
 			{
 				Config: `resource "corner_writeonly" "test" {
@@ -196,7 +196,7 @@ func TestWriteOnlyResource_OldTerraformVersion_Error(t *testing.T) {
 					}
 				  }
 				}`,
-				ExpectError: regexp.MustCompile(`WriteOnly Attribute Not Allowed`),
+				ExpectError: regexp.MustCompile(`Write-only Attribute Not Allowed`),
 			},
 		},
 	})
