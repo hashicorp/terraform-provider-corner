@@ -39,6 +39,7 @@ func main() {
 	}
 
 	err = tf5server.Serve("registry.terraform.io/hashicorp/corner", muxServer.ProviderServer)
+
 	if err != nil {
 		log.Fatalf("unable to serve provider: %s", err)
 	}
