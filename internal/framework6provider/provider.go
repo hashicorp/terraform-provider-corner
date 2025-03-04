@@ -99,6 +99,8 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewMoveStateResource,
 		NewSetNestedBlockWithDefaultsResource,
 		NewSetNestedAttributeWithDefaultsResource,
+		NewSetSemanticEqualityResource,
+		NewCustomTypeResource,
 		NewWriteOnlyResource,
 		NewWriteOnceResource,
 		NewWriteOnlyValidationsResource,
