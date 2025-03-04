@@ -10,7 +10,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5/tf5server"
 	"github.com/hashicorp/terraform-plugin-mux/tf5muxserver"
-
 	protocol "github.com/hashicorp/terraform-provider-corner/internal/protocolprovider"
 	sdkv2 "github.com/hashicorp/terraform-provider-corner/internal/sdkv2provider"
 )
