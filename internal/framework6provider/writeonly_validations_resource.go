@@ -16,7 +16,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-provider-corner/internal/cornertesting"
 )
 
 var _ resource.Resource = WriteOnlyValidationsResource{}
@@ -34,8 +33,7 @@ func (r WriteOnlyValidationsResource) Metadata(_ context.Context, req resource.M
 
 func (r WriteOnlyValidationsResource) ConfigValidators(ctx context.Context) []resource.ConfigValidator {
 	return []resource.ConfigValidator{
-		// TODO: Eventually, this should be replaced when we create a similar validator in terraform-plugin-framework-validators
-		cornertesting.PreferWriteOnlyAttribute(
+		resourcevalidator.PreferWriteOnlyAttribute(
 			path.MatchRoot("old_password_attr"),
 			path.MatchRoot("writeonly_password"),
 		),
