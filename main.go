@@ -5,6 +5,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
@@ -15,6 +16,10 @@ import (
 )
 
 func main() {
+	debugFlag := flag.Bool("debug", false, "Start provider in debug mode.")
+	debugEnvFilePath := flag.String("debug-env-file", "", "Path to the debug environment file to which reattach config gets written.")
+	flag.Parse()
+
 	ctx := context.Background()
 	providers := []func() tfprotov5.ProviderServer{
 		protocol.Server,
@@ -27,7 +32,30 @@ func main() {
 		log.Fatalf("unable to create provider: %s", err)
 	}
 
-	err = tf5server.Serve("registry.terraform.io/hashicorp/corner", muxServer.ProviderServer)
+	var serveOpts []tf5server.ServeOpt
+
+	if *debugFlag {
+		serveOpts = append(
+			serveOpts,
+			tf5server.WithManagedDebug(),
+		)
+	}
+
+	if *debugEnvFilePath != "" {
+		if !*debugFlag {
+			log.Fatalf("debug environment file path provided without debug flag, please also set -debug")
+		}
+
+		serveOpts = append(
+			serveOpts,
+			tf5server.WithManagedDebugEnvFilePath(*debugEnvFilePath),
+		)
+	}
+
+	err = tf5server.Serve("registry.terraform.io/hashicorp/corner",
+		muxServer.ProviderServer,
+		serveOpts...,
+	)
 
 	if err != nil {
 		log.Fatalf("unable to serve provider: %s", err)
