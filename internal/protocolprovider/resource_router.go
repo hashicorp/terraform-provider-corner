@@ -66,19 +66,10 @@ func (r resourceRouter) ImportResourceState(ctx context.Context, req *tfprotov5.
 }
 
 func (r resourceRouter) MoveResourceState(ctx context.Context, req *tfprotov5.MoveResourceStateRequest) (*tfprotov5.MoveResourceStateResponse, error) {
-	_, ok := r[req.TargetTypeName]
+	res, ok := r[req.TargetTypeName]
 	if !ok {
 		return nil, errUnsupportedResource(req.TargetTypeName)
 	}
-	// If this support ever needs to be added, this can follow the existing
-	// pattern of calling res.MoveResourceState(ctx, req).
-	return &tfprotov5.MoveResourceStateResponse{
-		Diagnostics: []*tfprotov5.Diagnostic{
-			{
-				Severity: tfprotov5.DiagnosticSeverityError,
-				Summary:  "Unsupported Resource Operation",
-				Detail:   "MoveResourceState is not supported by this provider.",
-			},
-		},
-	}, nil
+
+	return res.MoveResourceState(ctx, req)
 }
