@@ -26,10 +26,15 @@ func New() *schema.Provider {
 			"corner_regions_cty": dataSourceRegionsCty(),
 		},
 		ResourcesMap: map[string]*schema.Resource{
-			"corner_user":            resourceUser(),
-			"corner_bigint":          resourceBigint(),
-			"corner_user_cty":        resourceUserCty(),
-			"corner_deferred_action": resourceDeferredAction(),
+			"corner_user":                              resourceUser(),
+			"corner_writeonly":                         resourceWriteOnly(),
+			"corner_writeonly_import":                  resourceWriteOnlyImport(),
+			"corner_writeonly_upgrade":                 resourceWriteOnlyUpgrade(0),
+			"corner_writeonce":                         resourceWriteOnce(),
+			"corner_writeonly_validations":             resourceWriteOnlyValidations(),
+			"corner_bigint":                            resourceBigint(),
+			"corner_user_cty":                          resourceUserCty(),
+			"corner_deferred_action":                   resourceDeferredAction(),
 			"corner_deferred_action_plan_modification": resourceDeferredActionPlanModification(),
 		},
 	}
@@ -47,6 +52,13 @@ func New() *schema.Provider {
 		}
 		resp.Meta = client
 	}
+
+	return p
+}
+
+func NewWithUpgradeVersion(version int) *schema.Provider {
+	p := New()
+	p.ResourcesMap["corner_writeonly_upgrade"] = resourceWriteOnlyUpgrade(version)
 
 	return p
 }

@@ -12,6 +12,9 @@ import (
 
 func dataSourceBigint() *schema.Resource {
 	return &schema.Resource{
+		EnableLegacyTypeSystemPlanErrors:  true,
+		EnableLegacyTypeSystemApplyErrors: true,
+
 		ReadContext: dataSourceBigintRead,
 
 		Schema: map[string]*schema.Schema{

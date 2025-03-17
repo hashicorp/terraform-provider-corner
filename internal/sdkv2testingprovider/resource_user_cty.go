@@ -16,6 +16,10 @@ import (
 
 func resourceUserCty() *schema.Resource {
 	return &schema.Resource{
+		// Prevent any accidental data inconsistencies
+		EnableLegacyTypeSystemPlanErrors:  true,
+		EnableLegacyTypeSystemApplyErrors: true,
+
 		CreateContext: resourceUserCtyCreate,
 		ReadContext:   resourceUserCtyRead,
 		UpdateContext: resourceUserCtyUpdate,

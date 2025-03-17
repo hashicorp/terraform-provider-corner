@@ -30,6 +30,7 @@ type server struct {
 func (s *server) serverCapabilities() *tfprotov6.ServerCapabilities {
 	return &tfprotov6.ServerCapabilities{
 		GetProviderSchemaOptional: true,
+		MoveResourceState:         true,
 	}
 }
 
@@ -140,7 +141,7 @@ func (s *server) CloseEphemeralResource(context.Context, *tfprotov6.CloseEphemer
 	}, nil
 }
 
-func Server() tfprotov6.ProviderServer {
+func Server(upgradeResourceDataError bool) tfprotov6.ProviderServer {
 	return &server{
 		providerSchema: &tfprotov6.Schema{
 			Block: &tfprotov6.SchemaBlock{},
@@ -192,6 +193,51 @@ func Server() tfprotov6.ProviderServer {
 		},
 		functionRouter: functionRouter{
 			"bool": functionBool{},
+		},
+		resourceSchemas: map[string]*tfprotov6.Schema{
+			"corner_v6_writeonly_datacheck":                      resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_datacheck_planerror":            resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_datacheck_applyerror":           resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_datacheck_readerror":            resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_datacheck_importerror":          resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_datacheck_moveresourceerror":    resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_datacheck_upgraderesourceerror": resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_legacy_datacheck":               resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_legacy_datacheck_planerror":     resourceWriteOnlyDataCheck{}.schema(),
+			"corner_v6_writeonly_legacy_datacheck_applyerror":    resourceWriteOnlyDataCheck{}.schema(),
+		},
+		resourceRouter: resourceRouter{
+			"corner_v6_writeonly_datacheck": resourceWriteOnlyDataCheck{},
+			"corner_v6_writeonly_datacheck_planerror": resourceWriteOnlyDataCheck{
+				planDataError: true,
+			},
+			"corner_v6_writeonly_datacheck_applyerror": resourceWriteOnlyDataCheck{
+				applyDataError: true,
+			},
+			"corner_v6_writeonly_datacheck_readerror": resourceWriteOnlyDataCheck{
+				readDataError: true,
+			},
+			"corner_v6_writeonly_datacheck_importerror": resourceWriteOnlyDataCheck{
+				importDataError: true,
+			},
+			"corner_v6_writeonly_datacheck_moveresourceerror": resourceWriteOnlyDataCheck{
+				moveResourceDataError: true,
+			},
+			"corner_v6_writeonly_datacheck_upgraderesourceerror": resourceWriteOnlyDataCheck{
+				upgradeResourceDataError: upgradeResourceDataError,
+			},
+			"corner_v6_writeonly_legacy_datacheck": resourceWriteOnlyDataCheck{
+				enableLegacyTypeSystem: true,
+			},
+			// MAINTAINER NOTE: The only RPCs that have legacy type system flags are plan/apply
+			"corner_v6_writeonly_legacy_datacheck_planerror": resourceWriteOnlyDataCheck{
+				enableLegacyTypeSystem: true,
+				planDataError:          true,
+			},
+			"corner_v6_writeonly_legacy_datacheck_applyerror": resourceWriteOnlyDataCheck{
+				enableLegacyTypeSystem: true,
+				applyDataError:         true,
+			},
 		},
 	}
 }

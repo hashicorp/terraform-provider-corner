@@ -21,7 +21,7 @@ func TestAccV5FunctionBool(t *testing.T) {
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
 			//nolint:unparam // False positive in unparam related to map: https://github.com/mvdan/unparam/issues/40
 			"corner": func() (tfprotov5.ProviderServer, error) {
-				return Server(), nil
+				return Server(false), nil
 			},
 		},
 		Steps: []resource.TestStep{
