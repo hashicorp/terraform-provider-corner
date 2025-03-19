@@ -19,10 +19,12 @@ type server struct {
 	resourceSchemas    map[string]*tfprotov6.Schema
 	dataSourceSchemas  map[string]*tfprotov6.Schema
 	functions          map[string]*tfprotov6.Function
+	actionSchemas      map[string]*tfprotov6.ActionSchema
 
 	resourceRouter
 	dataSourceRouter
 	functionRouter
+	actionRouter
 
 	client *backend.Client
 }
@@ -64,6 +66,7 @@ func (s *server) GetProviderSchema(ctx context.Context, req *tfprotov6.GetProvid
 		DataSourceSchemas:  s.dataSourceSchemas,
 		ServerCapabilities: s.serverCapabilities(),
 		Functions:          s.functions,
+		ActionSchemas:      s.actionSchemas,
 	}, nil
 }
 
@@ -194,7 +197,14 @@ func Server(upgradeResourceDataError bool) tfprotov6.ProviderServer {
 		functionRouter: functionRouter{
 			"bool": functionBool{},
 		},
+		actionRouter: actionRouter{
+			"corner_v6_append_file": actionFile{},
+		},
+		actionSchemas: map[string]*tfprotov6.ActionSchema{
+			"corner_v6_append_file": actionFile{}.schema(),
+		},
 		resourceSchemas: map[string]*tfprotov6.Schema{
+			"corner_v6_file":                                     resourceFile{}.schema(),
 			"corner_v6_writeonly_datacheck":                      resourceWriteOnlyDataCheck{}.schema(),
 			"corner_v6_writeonly_datacheck_planerror":            resourceWriteOnlyDataCheck{}.schema(),
 			"corner_v6_writeonly_datacheck_applyerror":           resourceWriteOnlyDataCheck{}.schema(),
@@ -207,6 +217,7 @@ func Server(upgradeResourceDataError bool) tfprotov6.ProviderServer {
 			"corner_v6_writeonly_legacy_datacheck_applyerror":    resourceWriteOnlyDataCheck{}.schema(),
 		},
 		resourceRouter: resourceRouter{
+			"corner_v6_file":                resourceFile{},
 			"corner_v6_writeonly_datacheck": resourceWriteOnlyDataCheck{},
 			"corner_v6_writeonly_datacheck_planerror": resourceWriteOnlyDataCheck{
 				planDataError: true,

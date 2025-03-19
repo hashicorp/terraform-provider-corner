@@ -9,6 +9,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
+	"github.com/hashicorp/terraform-plugin-testing/plancheck"
 )
 
 func TestAccFrameworkResourceUser(t *testing.T) {
@@ -19,6 +20,24 @@ func TestAccFrameworkResourceUser(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: configResourceUserBasic,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "name", "Ford Prefect"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "email", "ford@prefect.co"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "age", "200"),
+					resource.TestCheckResourceAttr(
+						"framework_user.foo", "language", "en"),
+				),
+			},
+			{
+				Config: configResourceUserBasicCapitalized,
+				ConfigPlanChecks: resource.ConfigPlanChecks{
+					PreApply: []plancheck.PlanCheck{
+						plancheck.ExpectResourceAction("framework_user.foo", plancheck.ResourceActionNoop),
+					},
+				},
 				Check: resource.ComposeTestCheckFunc(
 					resource.TestCheckResourceAttr(
 						"framework_user.foo", "name", "Ford Prefect"),
@@ -133,6 +152,14 @@ const configResourceUserBasic = `
 resource "framework_user" "foo" {
   email = "ford@prefect.co"
   name = "Ford Prefect"
+  age = 200
+}
+`
+
+const configResourceUserBasicCapitalized = `
+resource "framework_user" "foo" {
+  email = "ford@prefect.co"
+  name = "FORD PREFECT"
   age = 200
 }
 `

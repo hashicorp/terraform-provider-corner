@@ -5,6 +5,7 @@ package framework
 
 import (
 	"context"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -12,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/planmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema/stringplanmodifier"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
 
@@ -19,6 +21,7 @@ var (
 	_ resource.Resource                = &resourceUser{}
 	_ resource.ResourceWithConfigure   = &resourceUser{}
 	_ resource.ResourceWithImportState = &resourceUser{}
+	_ resource.ResourceWithModifyPlan  = &resourceUser{}
 )
 
 func NewUserResource() resource.Resource {
@@ -27,6 +30,25 @@ func NewUserResource() resource.Resource {
 
 type resourceUser struct {
 	client *backend.Client
+}
+
+func (r *resourceUser) ModifyPlan(ctx context.Context, req resource.ModifyPlanRequest, resp *resource.ModifyPlanResponse) {
+	if req.Plan.Raw.IsNull() || req.State.Raw.IsNull() {
+		return
+	}
+	var plan user
+	diags := req.Plan.Get(ctx, &plan)
+	resp.Diagnostics.Append(diags...)
+
+	var state user
+	diags = req.State.Get(ctx, &state)
+	resp.Diagnostics.Append(diags...)
+	// Ignore inconsequential casing diffs for Name attr
+	// This should also check that none of the other
+	// config values have a diff.
+	if strings.ToUpper(plan.Name) == strings.ToUpper(state.Name) {
+		resp.Plan.Set(ctx, state)
+	}
 }
 
 func (r *resourceUser) Metadata(_ context.Context, req resource.MetadataRequest, resp *resource.MetadataResponse) {

@@ -4,15 +4,13 @@
 package main
 
 import (
-	"context"
 	"flag"
 	"log"
 
-	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov5/tf5server"
-	"github.com/hashicorp/terraform-plugin-mux/tf5muxserver"
-	protocol "github.com/hashicorp/terraform-provider-corner/internal/protocolprovider"
-	sdkv2 "github.com/hashicorp/terraform-provider-corner/internal/sdkv2provider"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6/tf6server"
+
+	protocolv6 "github.com/hashicorp/terraform-provider-corner/internal/protocolv6provider"
 )
 
 // MAINTAINER NOTE: The current main function does not include all of the available corner resource types
@@ -25,30 +23,17 @@ import (
 // internal provider packages and resource type names to avoid conflicts, as well as allow the provider binary to be built
 // with protocol v5 or v6 conditionally.
 func main() {
+
 	debugFlag := flag.Bool("debug", false, "Start provider in debug mode.")
 	debugEnvFilePath := flag.String("debug-env-file", "", "Path to the debug environment file to which reattach config gets written.")
 	flag.Parse()
 
-	ctx := context.Background()
-	providers := []func() tfprotov5.ProviderServer{
-		func() tfprotov5.ProviderServer {
-			return protocol.Server(false)
-		},
-		sdkv2.New().GRPCProvider,
-	}
-
-	muxServer, err := tf5muxserver.NewMuxServer(ctx, providers...)
-
-	if err != nil {
-		log.Fatalf("unable to create provider: %s", err)
-	}
-
-	var serveOpts []tf5server.ServeOpt
+	var serveOpts []tf6server.ServeOpt
 
 	if *debugFlag {
 		serveOpts = append(
 			serveOpts,
-			tf5server.WithManagedDebug(),
+			tf6server.WithManagedDebug(),
 		)
 	}
 
@@ -59,12 +44,14 @@ func main() {
 
 		serveOpts = append(
 			serveOpts,
-			tf5server.WithManagedDebugEnvFilePath(*debugEnvFilePath),
+			tf6server.WithManagedDebugEnvFilePath(*debugEnvFilePath),
 		)
 	}
 
-	err = tf5server.Serve("registry.terraform.io/hashicorp/corner",
-		muxServer.ProviderServer,
+	err := tf6server.Serve("registry.terraform.io/hashicorp/corner",
+		func() tfprotov6.ProviderServer {
+			return protocolv6.Server(false)
+		},
 		serveOpts...,
 	)
 
