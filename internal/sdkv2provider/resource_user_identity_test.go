@@ -21,7 +21,6 @@ func testAccResourceUserIdentity(t *testing.T) resource.TestCase {
 					resource.TestMatchResourceAttr(
 						"corner_user_identity.foo", "name", regexp.MustCompile("^For")),
 				),
-				PlanOnly:           true, // Should have a plan with something in there and not error
 				ExpectNonEmptyPlan: true,
 			},
 		},
