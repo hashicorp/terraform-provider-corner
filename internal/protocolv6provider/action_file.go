@@ -48,6 +48,7 @@ func (a actionFile) PlanAction(ctx context.Context, req *tfprotov6.PlanActionReq
 }
 
 func (a actionFile) InvokeAction(ctx context.Context, req *tfprotov6.InvokeActionRequest, resp *tfprotov6.InvokeActionResponse) error {
+	defer close(resp.Events)
 	config, diag := actionDynamicValueToValue(a.schema(), req.Config)
 	if diag != nil {
 		resp.Diagnostics = []*tfprotov6.Diagnostic{diag}

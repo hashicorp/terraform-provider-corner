@@ -198,7 +198,10 @@ func Server(upgradeResourceDataError bool) tfprotov6.ProviderServer {
 			"bool": functionBool{},
 		},
 		actionRouter: actionRouter{
-			"corner_v6_append_file": actionFile{},
+			ActionRoutes: map[string]tfprotov6.ActionServer{
+				"corner_v6_append_file": actionFile{},
+			},
+			contextCancels: make(map[string]context.CancelFunc),
 		},
 		actionSchemas: map[string]*tfprotov6.ActionSchema{
 			"corner_v6_append_file": actionFile{}.schema(),
