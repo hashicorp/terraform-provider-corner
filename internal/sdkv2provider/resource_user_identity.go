@@ -37,11 +37,13 @@ func resourceUserIdentity() *schema.Resource {
 
 		Identity: &schema.ResourceIdentity{
 			Version: 1,
-			Schema: map[string]*schema.Schema{
-				"email": {
-					Type:              schema.TypeString,
-					RequiredForImport: true,
-				},
+			SchemaFunc: func() map[string]*schema.Schema {
+				return map[string]*schema.Schema{
+					"email": {
+						Type:              schema.TypeString,
+						RequiredForImport: true,
+					},
+				}
 			},
 		},
 	}
