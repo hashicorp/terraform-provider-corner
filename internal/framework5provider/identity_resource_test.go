@@ -12,7 +12,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
-	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
@@ -32,12 +31,10 @@ func TestIdentityResource(t *testing.T) {
 					name = "john"
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
-					// Resource state data checks
-					statecheck.ExpectKnownValue("framework_identity.test", tfjsonpath.New("name"), knownvalue.StringExact("john")),
-
-					// New identity state data checks
-					statecheck.ExpectIdentityValue("framework_identity.test", tfjsonpath.New("id"), knownvalue.StringExact("id-123")),
-					statecheck.ExpectIdentityValue("framework_identity.test", tfjsonpath.New("name"), knownvalue.StringExact("my name is john")),
+					statecheck.ExpectIdentity("framework_identity.test", map[string]knownvalue.Check{
+						"id":   knownvalue.StringExact("id-123"),
+						"name": knownvalue.StringExact("my name is john"),
+					}),
 				},
 			},
 		},
