@@ -4,13 +4,11 @@
 package sdkv2
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/statecheck"
-	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 )
 
 func testAccResourceUserIdentity(t *testing.T) resource.TestCase {
@@ -21,7 +19,9 @@ func testAccResourceUserIdentity(t *testing.T) resource.TestCase {
 			{
 				Config: configResourceBasicIdentity,
 				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("corner_user_identity.foo", tfjsonpath.New("name"), knownvalue.StringRegexp(regexp.MustCompile(`^For`))),
+					statecheck.ExpectIdentity("corner_user_identity.foo", map[string]knownvalue.Check{
+						"email": knownvalue.StringExact("ford@prefect.co"),
+					}),
 				},
 			},
 		},
