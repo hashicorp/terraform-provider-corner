@@ -7,7 +7,6 @@ import (
 	"regexp"
 	"testing"
 
-	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
@@ -24,9 +23,7 @@ func TestWriteOnlyValidationsResource(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
 		// Write-only attributes are only available in 1.11.0+
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			// TODO: Swap version check with below line once terraform-plugin-testing@v1.12.0 is released
-			// tfversion.SkipBelow(tfversion.Version1_11_0),
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.11.0"))),
+			tfversion.SkipBelow(tfversion.Version1_11_0),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
