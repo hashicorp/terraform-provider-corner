@@ -48,7 +48,6 @@ func (a actionFile) PlanAction(ctx context.Context, req *tfprotov6.PlanActionReq
 }
 
 func (a actionFile) InvokeAction(ctx context.Context, req *tfprotov6.InvokeActionRequest, resp *tfprotov6.InvokeActionResponse) error {
-	defer close(resp.Events)
 	config, diag := actionDynamicValueToValue(a.schema(), req.Config)
 	if diag != nil {
 		resp.Diagnostics = []*tfprotov6.Diagnostic{diag}
@@ -116,9 +115,12 @@ func (a actionFile) InvokeAction(ctx context.Context, req *tfprotov6.InvokeActio
 	var content string
 	contentAttr.As(&content)
 
-	resp.Events <- &tfprotov6.ProgressActionEvent{
+	err = resp.CallbackServer.Send(ctx, &tfprotov6.ProgressActionEvent{
 		StdOut: []string{"Wohooo, we got an update"},
 		StdErr: []string{"And an error"},
+	})
+	if err != nil {
+		return err
 	}
 
 	filenameAttr := object["name"]
@@ -140,7 +142,7 @@ func (a actionFile) InvokeAction(ctx context.Context, req *tfprotov6.InvokeActio
 
 	fileContent, err := os.ReadFile(filename)
 	if err != nil {
-		resp.Events <- &tfprotov6.DiagnosticsActionEvent{
+		err = resp.CallbackServer.Send(ctx, &tfprotov6.DiagnosticsActionEvent{
 			Diagnostics: []*tfprotov6.Diagnostic{
 				{
 					Severity: tfprotov6.DiagnosticSeverityError,
@@ -148,8 +150,10 @@ func (a actionFile) InvokeAction(ctx context.Context, req *tfprotov6.InvokeActio
 					Detail:   "filename is in fact required",
 				},
 			},
+		})
+		if err != nil {
+			return err
 		}
-
 		return nil
 	}
 
@@ -158,7 +162,7 @@ func (a actionFile) InvokeAction(ctx context.Context, req *tfprotov6.InvokeActio
 	err = os.WriteFile(filename, []byte(newFileContent), 0644)
 	if err != nil {
 
-		resp.Events <- &tfprotov6.DiagnosticsActionEvent{
+		err = resp.CallbackServer.Send(ctx, &tfprotov6.DiagnosticsActionEvent{
 			Diagnostics: []*tfprotov6.Diagnostic{
 				{
 					Severity: tfprotov6.DiagnosticSeverityError,
@@ -166,20 +170,33 @@ func (a actionFile) InvokeAction(ctx context.Context, req *tfprotov6.InvokeActio
 					Detail:   fmt.Sprintf("Could not write file '%s': %s", filename, err),
 				},
 			},
+		})
+		if err != nil {
+			return err
 		}
 
 		return nil
 	}
 
-	resp.Events <- &tfprotov6.ProgressActionEvent{
+	err = resp.CallbackServer.Send(ctx, &tfprotov6.ProgressActionEvent{
 		StdOut: []string{"Sleeping for 2 minutes..."},
-	}
-	time.Sleep(2 * time.Minute)
-	resp.Events <- &tfprotov6.ProgressActionEvent{
-		StdOut: []string{"Aaaaaand done"},
+	})
+	if err != nil {
+		return err
 	}
 
-	resp.Events <- &tfprotov6.FinishedActionEvent{}
+	time.Sleep(2 * time.Minute)
+	err = resp.CallbackServer.Send(ctx, &tfprotov6.ProgressActionEvent{
+		StdOut: []string{"Aaaaaand done"},
+	})
+	if err != nil {
+		return err
+	}
+
+	err = resp.CallbackServer.Send(ctx, &tfprotov6.FinishedActionEvent{})
+	if err != nil {
+		return err
+	}
 
 	return nil
 }

@@ -201,7 +201,8 @@ func Server(upgradeResourceDataError bool) tfprotov6.ProviderServer {
 			ActionRoutes: map[string]tfprotov6.ActionServer{
 				"corner_v6_append_file": actionFile{},
 			},
-			contextCancels: make(map[string]context.CancelFunc),
+			contextCancels:  make(map[string]context.CancelFunc),
+			CallbackServers: make(map[string]tfprotov6.InvokeActionCallBackServer),
 		},
 		actionSchemas: map[string]*tfprotov6.ActionSchema{
 			"corner_v6_append_file": actionFile{}.schema(),
