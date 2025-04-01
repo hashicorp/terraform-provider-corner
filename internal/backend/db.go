@@ -100,11 +100,11 @@ func (c *Client) CreateUser(user *User) error {
 	// uniqueness: error if email already exists in db
 	existingUser, err := c.ReadUser(user.Email)
 	if err != nil {
-		return fmt.Errorf("Error determining if user with email %s already exists in db: %s", user.Email, err)
+		return fmt.Errorf("error determining if user with email %s already exists in db: %s", user.Email, err)
 	}
 
 	if existingUser != nil {
-		return fmt.Errorf("Cannot create user: user already exists with email %s", user.Email)
+		return fmt.Errorf("cannot create user: user already exists with email %s", user.Email)
 	}
 
 	user.DateJoined = time.Now().Format(time.RFC3339)
@@ -179,11 +179,11 @@ func (c *Client) DeleteUser(user *User) error {
 
 	existingUser, err := c.ReadUser(user.Email)
 	if err != nil {
-		return fmt.Errorf("Error determining if user with email %s exists in db: %s", user.Email, err)
+		return fmt.Errorf("error determining if user with email %s exists in db: %s", user.Email, err)
 	}
 
 	if existingUser == nil {
-		return fmt.Errorf("Cannot delete user with email %s: email not in db", user.Email)
+		return fmt.Errorf("cannot delete user with email %s: email not in db", user.Email)
 	}
 
 	err = txn.Delete("users", user)

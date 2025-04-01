@@ -55,7 +55,7 @@ func resourceWriteOnce() *schema.Resource {
 
 			// We are creating, but the write-once attribute value is not present in config, return an error.
 			if configVal.IsNull() {
-				return errors.New(`"writeonce_string" is required when creating the resource, but no definition was found.`)
+				return errors.New(`"writeonce_string" is required when creating the resource, but no definition was found`)
 			}
 
 			return nil
