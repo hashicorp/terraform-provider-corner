@@ -4,7 +4,6 @@
 package framework
 
 import (
-	"regexp"
 	"testing"
 
 	"github.com/hashicorp/go-version"
@@ -19,10 +18,8 @@ import (
 
 func TestIdentityResource(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		// Latest alpha version that this JSON data is available in
-		// https://github.com/hashicorp/terraform/releases/tag/v1.12.0-alpha20250319
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.12.0-alpha20250319"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.12.0-beta1"))),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
 			"framework": providerserver.NewProtocol6WithError(New()),
@@ -38,11 +35,6 @@ func TestIdentityResource(t *testing.T) {
 						"name": knownvalue.StringExact("my name is john"),
 					}),
 				},
-				// TODO: This is definitely not the expected behavior, so this line should be removed once the next alpha of
-				// Terraform core is released with this bug fix: https://github.com/hashicorp/terraform/pull/36756
-				//
-				// (╯°□°)╯︵ ┻━┻ => ┬─┬ノ( º _ ºノ)
-				ExpectError: regexp.MustCompile(`!!!!!!!!!!!!!!!!!!!!!!!!!!! TERRAFORM CRASH !!!!!!!!!!!!!!!!!!!!!!!!!!!!`),
 			},
 			{
 				Config: `resource "framework_identity" "test" {
@@ -59,11 +51,6 @@ func TestIdentityResource(t *testing.T) {
 						"name": knownvalue.StringExact("my name is john"), // doesn't get updated, since identity should not change.
 					}),
 				},
-				// TODO: This is definitely not the expected behavior, so this line should be removed once the next alpha of
-				// Terraform core is released with this bug fix: https://github.com/hashicorp/terraform/pull/36756
-				//
-				// (╯°□°)╯︵ ┻━┻ => ┬─┬ノ( º _ ºノ)
-				ExpectError: regexp.MustCompile(`!!!!!!!!!!!!!!!!!!!!!!!!!!! TERRAFORM CRASH !!!!!!!!!!!!!!!!!!!!!!!!!!!!`),
 			},
 		},
 	})
