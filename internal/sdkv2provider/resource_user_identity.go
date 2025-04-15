@@ -6,6 +6,7 @@ package sdkv2
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -44,6 +45,41 @@ func resourceUserIdentity() *schema.Resource {
 						RequiredForImport: true,
 					},
 				}
+			},
+		},
+
+		Importer: &schema.ResourceImporter{
+			StateContext: func(ctx context.Context, rd *schema.ResourceData, i interface{}) ([]*schema.ResourceData, error) {
+				if rd.Id() != "" {
+					return []*schema.ResourceData{rd}, nil // just return the resource data, since the string id is used
+				}
+
+				identity, err := rd.Identity()
+				if err != nil {
+					return nil, err
+				}
+
+				emailRaw, ok := identity.GetOk("email")
+				if !ok {
+					return nil, fmt.Errorf("error getting email from identity: %w", err)
+				}
+
+				email, ok := emailRaw.(string)
+				if !ok {
+					return nil, fmt.Errorf("error converting email to string")
+				}
+
+				if email == "" {
+					return nil, fmt.Errorf("email cannot be empty")
+				}
+
+				err = rd.Set("email", email)
+				rd.SetId(email) // TODO: document that this is still require with resource identity
+				if err != nil {
+					return nil, fmt.Errorf("error setting email: %w", err)
+				}
+
+				return []*schema.ResourceData{rd}, nil
 			},
 		},
 	}
