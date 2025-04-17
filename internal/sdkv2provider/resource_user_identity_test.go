@@ -31,6 +31,14 @@ func testAccResourceUserIdentity(t *testing.T) resource.TestCase {
 					}),
 				},
 			},
+			{
+				RefreshState: true,
+			},
+			{
+				ResourceName:    "corner_user_identity.foo",
+				ImportState:     true,
+				ImportStateKind: resource.ImportBlockWithResourceIdentity,
+			},
 		},
 	}
 }
