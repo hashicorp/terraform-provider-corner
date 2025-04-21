@@ -18,10 +18,8 @@ import (
 
 func TestIdentityResource(t *testing.T) {
 	resource.UnitTest(t, resource.TestCase{
-		// Latest alpha version that this JSON data is available in
-		// https://github.com/hashicorp/terraform/releases/tag/v1.12.0-alpha20250319
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
-			tfversion.SkipBelow(version.Must(version.NewVersion("1.12.0-alpha20250319"))),
+			tfversion.SkipBelow(version.Must(version.NewVersion("1.12.0-beta1"))),
 		},
 		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
 			"framework": providerserver.NewProtocol5WithError(New()),
