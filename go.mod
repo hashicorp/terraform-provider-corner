@@ -15,8 +15,8 @@ require (
 	github.com/hashicorp/terraform-plugin-framework-validators v0.17.0
 	github.com/hashicorp/terraform-plugin-go v0.27.0-alpha.1.0.20250325210248-fa8d1fe4306b
 	github.com/hashicorp/terraform-plugin-mux v0.19.0-alpha.1
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0-alpha.1.0.20250327143321-dee0dd622735
-	github.com/hashicorp/terraform-plugin-testing v1.13.0-alpha.1.0.20250416175553-b5a1d3cc2887
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0-beta.1
+	github.com/hashicorp/terraform-plugin-testing v1.13.0-beta.1
 	github.com/zclconf/go-cty v1.16.2
 )
 
@@ -59,7 +59,7 @@ require (
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	golang.org/x/crypto v0.37.0 // indirect
 	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.13.0 // indirect
 	golang.org/x/sys v0.32.0 // indirect
 	golang.org/x/text v0.24.0 // indirect
