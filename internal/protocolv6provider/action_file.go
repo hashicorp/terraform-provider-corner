@@ -17,9 +17,11 @@ type actionFile struct {
 
 func (a actionFile) schema() *tfprotov6.ActionSchema {
 	return &tfprotov6.ActionSchema{
-		LinkedResources: map[string]*tfprotov6.LinkedResource{
-			"cty.GetAttrPath(\"object\")": {
+		LinkedResources: []*tfprotov6.LinkedResource{
+			{
 				TypeName: "corner_v6_file",
+				Attribute: tftypes.NewAttributePath().
+					WithAttributeName("object"),
 			},
 		},
 		Block: &tfprotov6.SchemaBlock{

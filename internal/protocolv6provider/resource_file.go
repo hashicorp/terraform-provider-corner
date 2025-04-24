@@ -27,7 +27,6 @@ func (r resourceFile) schema() *tfprotov6.Schema {
 		Block: &tfprotov6.SchemaBlock{
 			Attributes: []*tfprotov6.SchemaAttribute{
 				{
-					// Only used for import testing
 					Name:     "name",
 					Type:     tftypes.String,
 					Required: true,
