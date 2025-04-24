@@ -2,6 +2,8 @@ module github.com/hashicorp/terraform-provider-corner
 
 go 1.23.7
 
+replace github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0-beta.1 => github.com/BBBmau/terraform-plugin-sdk/v2 v2.24.1-0.20250421144349-aa2d9d850504
+
 require (
 	github.com/hashicorp/go-cty v1.5.0
 	github.com/hashicorp/go-memdb v1.3.5
