@@ -31,25 +31,77 @@ func TestWriteOnceResource(t *testing.T) {
 				Config: `resource "corner_writeonce" "test" {
 					trigger_attr = "1"
 					writeonce_string = "fakepassword"
+ 					nested_list_block {
+						string_attr = "world!"
+						writeonly_string = "fakepassword"
+						double_nested_list_block {
+							string_attr = "world!"
+							writeonly_string = "fakepassword"
+						}
+				  	}
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("writeonce_string"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":      knownvalue.StringExact("world!"),
+								"writeonly_string": knownvalue.Null(),
+								"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
+									knownvalue.ObjectExact(map[string]knownvalue.Check{
+										"string_attr":      knownvalue.StringExact("world!"),
+										"writeonly_string": knownvalue.Null(),
+									}),
+								}),
+							}),
+						})),
 						plancheck.ExpectResourceAction("corner_writeonce.test", plancheck.ResourceActionCreate),
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("writeonce_string"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+						knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":      knownvalue.StringExact("world!"),
+							"writeonly_string": knownvalue.Null(),
+							"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"string_attr":      knownvalue.StringExact("world!"),
+									"writeonly_string": knownvalue.Null(),
+								}),
+							}),
+						}),
+					})),
 				},
 			},
 			{
 				// Now that the resource is created, we can remove the attribute with no planned changes
 				Config: `resource "corner_writeonce" "test" {
 					trigger_attr = "1"
+					nested_list_block {
+						string_attr = "world!"
+						writeonly_string = "fakepassword"
+						double_nested_list_block {
+							string_attr = "world!"
+							writeonly_string = "fakepassword"
+						}
+				  	}
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("writeonce_string"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":      knownvalue.StringExact("world!"),
+								"writeonly_string": knownvalue.Null(),
+								"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
+									knownvalue.ObjectExact(map[string]knownvalue.Check{
+										"string_attr":      knownvalue.StringExact("world!"),
+										"writeonly_string": knownvalue.Null(),
+									}),
+								}),
+							}),
+						})),
 						plancheck.ExpectResourceAction("corner_writeonce.test", plancheck.ResourceActionNoop),
 					},
 				},
@@ -59,10 +111,30 @@ func TestWriteOnceResource(t *testing.T) {
 				Config: `resource "corner_writeonce" "test" {
 					trigger_attr = "1"
 					writeonce_string = "this value cannot prompt a change on it's own"
+					nested_list_block {
+						string_attr = "world!"
+						writeonly_string = "this value cannot prompt a change on it's own"
+						double_nested_list_block {
+							string_attr = "world!"
+							writeonly_string = "this value cannot prompt a change on it's own"
+						}
+				  	}
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("writeonce_string"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":      knownvalue.StringExact("world!"),
+								"writeonly_string": knownvalue.Null(),
+								"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
+									knownvalue.ObjectExact(map[string]knownvalue.Check{
+										"string_attr":      knownvalue.StringExact("world!"),
+										"writeonly_string": knownvalue.Null(),
+									}),
+								}),
+							}),
+						})),
 						plancheck.ExpectResourceAction("corner_writeonce.test", plancheck.ResourceActionNoop),
 					},
 				},
@@ -72,15 +144,47 @@ func TestWriteOnceResource(t *testing.T) {
 				Config: `resource "corner_writeonce" "test" {
 					trigger_attr = "2"
 					writeonce_string = "fakepassword"
+					nested_list_block {
+						string_attr = "world!"
+						writeonly_string = "fakepassword"
+						double_nested_list_block {
+							string_attr = "world!"
+							writeonly_string = "fakepassword"
+						}
+				  	}
 				}`,
 				ConfigPlanChecks: resource.ConfigPlanChecks{
 					PreApply: []plancheck.PlanCheck{
 						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("writeonce_string"), knownvalue.Null()),
+						plancheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+							knownvalue.ObjectExact(map[string]knownvalue.Check{
+								"string_attr":      knownvalue.StringExact("world!"),
+								"writeonly_string": knownvalue.Null(),
+								"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
+									knownvalue.ObjectExact(map[string]knownvalue.Check{
+										"string_attr":      knownvalue.StringExact("world!"),
+										"writeonly_string": knownvalue.Null(),
+									}),
+								}),
+							}),
+						})),
 						plancheck.ExpectResourceAction("corner_writeonce.test", plancheck.ResourceActionReplace),
 					},
 				},
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("writeonce_string"), knownvalue.Null()),
+					statecheck.ExpectKnownValue("corner_writeonce.test", tfjsonpath.New("nested_list_block"), knownvalue.ListExact([]knownvalue.Check{
+						knownvalue.ObjectExact(map[string]knownvalue.Check{
+							"string_attr":      knownvalue.StringExact("world!"),
+							"writeonly_string": knownvalue.Null(),
+							"double_nested_list_block": knownvalue.ListExact([]knownvalue.Check{
+								knownvalue.ObjectExact(map[string]knownvalue.Check{
+									"string_attr":      knownvalue.StringExact("world!"),
+									"writeonly_string": knownvalue.Null(),
+								}),
+							}),
+						}),
+					})),
 				},
 			},
 		},

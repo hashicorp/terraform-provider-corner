@@ -19,9 +19,12 @@ func resourceWriteOnce() *schema.Resource {
 		EnableLegacyTypeSystemPlanErrors:  true,
 		EnableLegacyTypeSystemApplyErrors: true,
 
+		// This resource intentionally omits the update function
+		// to test that write-only attributes bypass the SDKv2's internal
+		// validation for non-ForceNew configured attributes
+		// Ref: https://github.com/hashicorp/terraform-plugin-sdk/issues/1471
 		CreateContext: resourceWriteOnceCreate,
 		ReadContext:   resourceWriteOnceRead,
-		UpdateContext: resourceWriteOnceUpdate,
 		DeleteContext: resourceWriteOnceDelete,
 
 		Schema: map[string]*schema.Schema{
@@ -37,6 +40,42 @@ func resourceWriteOnce() *schema.Resource {
 				Type:      schema.TypeString,
 				Optional:  true,
 				WriteOnly: true,
+			},
+			"nested_list_block": {
+				Type:     schema.TypeList,
+				Optional: true,
+				// Block must be set to force new since there is no update method
+				ForceNew: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+						"string_attr": {
+							Type:     schema.TypeString,
+							Required: true,
+						},
+						"writeonly_string": {
+							Type:      schema.TypeString,
+							Optional:  true,
+							WriteOnly: true,
+						},
+						"double_nested_list_block": {
+							Type:     schema.TypeList,
+							Required: true,
+							Elem: &schema.Resource{
+								Schema: map[string]*schema.Schema{
+									"string_attr": {
+										Type:     schema.TypeString,
+										Required: true,
+									},
+									"writeonly_string": {
+										Type:      schema.TypeString,
+										Optional:  true,
+										WriteOnly: true,
+									},
+								},
+							},
+						},
+					},
+				},
 			},
 		},
 		CustomizeDiff: func(ctx context.Context, rd *schema.ResourceDiff, _ interface{}) error {
@@ -89,11 +128,6 @@ func resourceWriteOnceCreate(ctx context.Context, d *schema.ResourceData, meta i
 
 func resourceWriteOnceRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	// Config isn't set for Read, so can't verify write-only data
-	return nil
-}
-
-func resourceWriteOnceUpdate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
-	// Once created, the only operation that can occur is replacement (delete/create)
 	return nil
 }
 
