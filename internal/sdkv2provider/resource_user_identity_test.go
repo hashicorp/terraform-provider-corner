@@ -24,7 +24,8 @@ func testAccResourceUserIdentity(t *testing.T) resource.TestCase {
 				Config: configResourceBasicIdentity,
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectIdentity("corner_user_identity.foo", map[string]knownvalue.Check{
-						"email": knownvalue.StringExact("ford@prefect.co"),
+						"local_part": knownvalue.StringExact("ford"),
+						"domain":     knownvalue.StringExact("prefect.co"),
 					}),
 				},
 			},

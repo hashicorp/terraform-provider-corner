@@ -7,7 +7,9 @@ package sdkv2
 import (
 	"context"
 	"fmt"
+	"strings"
 
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
@@ -37,18 +39,52 @@ func resourceUserIdentity() *schema.Resource {
 		},
 
 		Identity: &schema.ResourceIdentity{
-			Version: 1,
+			Version: 2,
 			SchemaFunc: func() map[string]*schema.Schema {
 				return map[string]*schema.Schema{
-					"email": {
+					// previous version of the identity (version 1)
+					// "email": {
+					// 	Type:              schema.TypeString,
+					// 	RequiredForImport: true,
+					// },
+					// The second version of the identity splits the email into local part and domain
+					// (for no good reason, just for one of testing of upgraders)
+					"local_part": {
+						Type:              schema.TypeString,
+						RequiredForImport: true,
+					},
+					"domain": {
 						Type:              schema.TypeString,
 						RequiredForImport: true,
 					},
 				}
 			},
+			IdentityUpgraders: []schema.IdentityUpgrader{
+				{
+					Version: 1,
+					Type: tftypes.Object{
+						AttributeTypes: map[string]tftypes.Type{
+							"email": tftypes.String,
+						},
+					},
+					Upgrade: func(ctx context.Context, rawState map[string]interface{}, meta interface{}) (map[string]interface{}, error) {
+						email := rawState["email"].(string)
+						parts := strings.Split(email, "@")
+						if len(parts) != 2 {
+							return nil, fmt.Errorf("invalid email format: %s", email)
+						}
+						return map[string]interface{}{
+							"local_part": parts[0],
+							"domain":     parts[1],
+						}, nil
+					},
+				},
+			},
 		},
 
 		Importer: &schema.ResourceImporter{
+			// for state version 1, this could have been used:
+			// StateContext: schema.ImportStatePassthroughWithIdentity("email"),
 			StateContext: func(ctx context.Context, rd *schema.ResourceData, i interface{}) ([]*schema.ResourceData, error) {
 				if rd.Id() != "" {
 					return []*schema.ResourceData{rd}, nil // just return the resource data, since the string id is used
@@ -59,24 +95,38 @@ func resourceUserIdentity() *schema.Resource {
 					return nil, err
 				}
 
-				emailRaw, ok := identity.GetOk("email")
+				localPartRaw, ok := identity.GetOk("local_part")
 				if !ok {
-					return nil, fmt.Errorf("error getting email from identity: %w", err)
+					return nil, fmt.Errorf("error getting local_part from identity: %w", err)
 				}
 
-				email, ok := emailRaw.(string)
+				localPart, ok := localPartRaw.(string)
 				if !ok {
-					return nil, fmt.Errorf("error converting email to string")
+					return nil, fmt.Errorf("error converting local_part to string")
 				}
 
-				if email == "" {
-					return nil, fmt.Errorf("email cannot be empty")
+				if localPart == "" {
+					return nil, fmt.Errorf("local_part cannot be empty")
 				}
 
-				err = rd.Set("email", email)
-				rd.SetId(email) // TODO: document that this is still require with resource identity
+				domainRaw, ok := identity.GetOk("domain")
+				if !ok {
+					return nil, fmt.Errorf("error getting domain from identity: %w", err)
+				}
+				domain, ok := domainRaw.(string)
+				if !ok {
+					return nil, fmt.Errorf("error converting domain to string")
+				}
+				if domain == "" {
+					return nil, fmt.Errorf("domain cannot be empty")
+				}
+
+				email := fmt.Sprintf("%s@%s", localPart, domain)
+
+				rd.SetId(email)
+				err = rd.Set("email", email) // required for import because else it requires a replace
 				if err != nil {
-					return nil, fmt.Errorf("error setting email: %w", err)
+					return nil, fmt.Errorf("error setting email in resource data: %w", err)
 				}
 
 				return []*schema.ResourceData{rd}, nil
@@ -130,7 +180,16 @@ func resourceUserIdentityRead(ctx context.Context, d *schema.ResourceData, meta 
 	if err != nil {
 		return diag.FromErr(err)
 	}
-	err = identity.Set("email", email)
+	parts := strings.Split(email, "@")
+	if len(parts) != 2 {
+		return diag.FromErr(fmt.Errorf("invalid email format: %s", email))
+	}
+
+	err = identity.Set("local_part", parts[0])
+	if err != nil {
+		return diag.FromErr(err)
+	}
+	err = identity.Set("domain", parts[1])
 	if err != nil {
 		return diag.FromErr(err)
 	}
