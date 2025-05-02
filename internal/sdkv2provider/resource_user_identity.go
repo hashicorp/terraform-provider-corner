@@ -97,7 +97,7 @@ func resourceUserIdentity() *schema.Resource {
 
 				localPartRaw, ok := identity.GetOk("local_part")
 				if !ok {
-					return nil, fmt.Errorf("error getting local_part from identity: %w", err)
+					return nil, fmt.Errorf("error getting local_part from identity")
 				}
 
 				localPart, ok := localPartRaw.(string)
@@ -111,7 +111,7 @@ func resourceUserIdentity() *schema.Resource {
 
 				domainRaw, ok := identity.GetOk("domain")
 				if !ok {
-					return nil, fmt.Errorf("error getting domain from identity: %w", err)
+					return nil, fmt.Errorf("error getting domain from identity: domain value is missing or invalid")
 				}
 				domain, ok := domainRaw.(string)
 				if !ok {
