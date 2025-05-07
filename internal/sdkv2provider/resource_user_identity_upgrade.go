@@ -65,7 +65,7 @@ func resourceUserIdentityUpgrade(version int) *schema.Resource {
 			},
 			IdentityUpgraders: []schema.IdentityUpgrader{
 				{
-					Version: 1,
+					Version: 0,
 					Type: tftypes.Object{
 						AttributeTypes: map[string]tftypes.Type{
 							"email": tftypes.String,
