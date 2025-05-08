@@ -137,12 +137,13 @@ func resourceUserIdentityUpgradeRead(version int) schema.ReadContextFunc {
 			return diag.FromErr(err)
 		}
 
-		if version == 0 {
+		switch version {
+		case 0:
 			err = identity.Set("email", email)
 			if err != nil {
 				return diag.FromErr(err)
 			}
-		} else if version == 1 {
+		case 1:
 			parts := strings.Split(email, "@")
 			if len(parts) != 2 {
 				return diag.FromErr(fmt.Errorf("invalid email format: %s", email))
@@ -156,6 +157,8 @@ func resourceUserIdentityUpgradeRead(version int) schema.ReadContextFunc {
 			if err != nil {
 				return diag.FromErr(err)
 			}
+		default:
+			return diag.FromErr(fmt.Errorf("unknown version: %d", version))
 		}
 
 		return nil
