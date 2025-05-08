@@ -46,13 +46,18 @@ func resourceUserIdentity() *schema.Resource {
 				}
 			},
 		},
+
+		Importer: &schema.ResourceImporter{
+			StateContext: schema.ImportStatePassthroughWithIdentity("email"),
+		},
 	}
 }
 
 func resourceUserIdentityCreate(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*backend.Client)
+	email := d.Get("email").(string)
 	newUser := &backend.User{
-		Email: d.Get("email").(string),
+		Email: email,
 		Name:  d.Get("name").(string),
 		Age:   d.Get("age").(int),
 	}
@@ -61,6 +66,7 @@ func resourceUserIdentityCreate(ctx context.Context, d *schema.ResourceData, met
 	if err != nil {
 		return diag.FromErr(err)
 	}
+	d.SetId(email)
 
 	return resourceUserIdentityRead(ctx, d, meta)
 }
@@ -68,7 +74,7 @@ func resourceUserIdentityCreate(ctx context.Context, d *schema.ResourceData, met
 func resourceUserIdentityRead(ctx context.Context, d *schema.ResourceData, meta interface{}) diag.Diagnostics {
 	client := meta.(*backend.Client)
 
-	email := d.Get("email").(string)
+	email := d.Id()
 
 	p, err := client.ReadUser(email)
 	if err != nil {
@@ -79,8 +85,10 @@ func resourceUserIdentityRead(ctx context.Context, d *schema.ResourceData, meta 
 		return nil
 	}
 
-	d.SetId(email)
-
+	err = d.Set("email", email)
+	if err != nil {
+		return diag.FromErr(err)
+	}
 	err = d.Set("name", p.Name)
 	if err != nil {
 		return diag.FromErr(err)
