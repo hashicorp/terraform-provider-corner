@@ -7,7 +7,6 @@ package sdkv2
 import (
 	"context"
 
-	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
@@ -45,16 +44,6 @@ func resourceUserIdentity() *schema.Resource {
 						RequiredForImport: true,
 					},
 				}
-			},
-			IdentityUpgraders: []schema.IdentityUpgrader{
-				{
-					Version: 1,
-					Type: tftypes.Object{
-						AttributeTypes: map[string]tftypes.Type{
-							"email": tftypes.String,
-						},
-					},
-				},
 			},
 		},
 
