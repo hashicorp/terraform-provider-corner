@@ -73,9 +73,9 @@ func TestIdentityResource_identity_changes(t *testing.T) {
 					name = "jerry"
 				}`,
 				// The resource is hardcoded to refresh with the same identity, based off the name attribute during create.
-				// Resources are currently not allowed to change identities at any time, so core will return an error message
+				// Resources are currently not allowed to change identities at any time, so framework will return an error message
 				// after the post-apply refresh.
-				ExpectError: regexp.MustCompile(`Error: Provider produced different identity`),
+				ExpectError: regexp.MustCompile(`Error: Unexpected Identity Change`),
 			},
 		},
 	})
