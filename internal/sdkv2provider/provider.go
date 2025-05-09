@@ -28,6 +28,7 @@ func New() *schema.Provider {
 		ResourcesMap: map[string]*schema.Resource{
 			"corner_user":                              resourceUser(),
 			"corner_user_identity":                     resourceUserIdentity(),
+			"corner_user_identity_upgrade":             resourceUserIdentityUpgrade(0),
 			"corner_writeonly":                         resourceWriteOnly(),
 			"corner_writeonly_import":                  resourceWriteOnlyImport(),
 			"corner_writeonly_upgrade":                 resourceWriteOnlyUpgrade(0),
@@ -60,6 +61,13 @@ func New() *schema.Provider {
 func NewWithUpgradeVersion(version int) *schema.Provider {
 	p := New()
 	p.ResourcesMap["corner_writeonly_upgrade"] = resourceWriteOnlyUpgrade(version)
+
+	return p
+}
+
+func NewWithIdentityUpgradeVersion(version int) *schema.Provider {
+	p := New()
+	p.ResourcesMap["corner_user_identity_upgrade"] = resourceUserIdentityUpgrade(version)
 
 	return p
 }
