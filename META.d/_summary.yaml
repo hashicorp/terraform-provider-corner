@@ -1,0 +1,10 @@
+---
+schema: 1.1
+
+partition: tf-ecosystem
+
+summary:
+  owner: team-tf-core-plugins
+  description: |
+    A Terraform provider of corner cases, used for testing Terraform and its SDK.
+  visibility: public
