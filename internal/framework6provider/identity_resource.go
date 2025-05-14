@@ -97,10 +97,10 @@ func (r IdentityResource) Read(ctx context.Context, req resource.ReadRequest, re
 		return
 	}
 
-	data.Name = types.StringValue("john")
+	data.Name = types.StringValue("tom")
 	resp.Diagnostics.Append(resp.Identity.Set(ctx, IdentityResourceIdentityModel{
 		ID:   types.StringValue("id-123"),
-		Name: types.StringValue("john"),
+		Name: types.StringValue("tom"),
 	})...)
 
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)

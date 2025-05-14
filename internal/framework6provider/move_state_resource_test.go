@@ -79,12 +79,12 @@ func TestMoveStateResource_identity(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `resource "framework_identity" "old" {
-					name = "john"
+					name = "tom"
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectIdentity("framework_identity.old", map[string]knownvalue.Check{
 						"id":   knownvalue.StringExact("id-123"),
-						"name": knownvalue.StringExact("john"),
+						"name": knownvalue.StringExact("tom"),
 					}),
 				},
 			},
@@ -106,7 +106,7 @@ func TestMoveStateResource_identity(t *testing.T) {
 					statecheck.ExpectIdentity("framework_move_state.new", map[string]knownvalue.Check{
 						"id": knownvalue.StringExact("id-123"),
 					}),
-					statecheck.ExpectKnownValue("framework_move_state.new", tfjsonpath.New("moved_random_string"), knownvalue.StringExact("john")),
+					statecheck.ExpectKnownValue("framework_move_state.new", tfjsonpath.New("moved_random_string"), knownvalue.StringExact("tom")),
 				},
 			},
 		},

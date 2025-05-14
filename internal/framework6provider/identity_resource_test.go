@@ -27,15 +27,15 @@ func TestIdentityResource(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: `resource "framework_identity" "test" {
-					name = "john"
+					name = "tom"
 				}`,
 				ConfigStateChecks: []statecheck.StateCheck{
 					statecheck.ExpectIdentity("framework_identity.test", map[string]knownvalue.Check{
 						"id":   knownvalue.StringExact("id-123"),
-						"name": knownvalue.StringExact("john"),
+						"name": knownvalue.StringExact("tom"),
 					}),
 					statecheck.ExpectKnownValue("framework_identity.test", tfjsonpath.New("id"), knownvalue.StringExact("id-123")),
-					statecheck.ExpectKnownValue("framework_identity.test", tfjsonpath.New("name"), knownvalue.StringExact("john")),
+					statecheck.ExpectKnownValue("framework_identity.test", tfjsonpath.New("name"), knownvalue.StringExact("tom")),
 				},
 			},
 			// Typically you don't need to test all of these different import methods,

@@ -104,7 +104,7 @@ func (r MoveStateResource) MoveState(ctx context.Context) []resource.StateMover 
 					if req.SourceTypeName != "random_string" {
 						resp.Diagnostics.AddError(
 							"Invalid Move State Request",
-							fmt.Sprintf("This test can only migrate resource state from the \"random_string\" managed resource from the \"hashicorp/random\" provider:\n\n"+
+							fmt.Sprintf("The \"framework_move_state\" resource can only be sourced from the \"random_string\" or \"framework_identity\" managed resources:\n\n"+
 								"req.SourceProviderAddress: %q\n"+
 								"req.SourceTypeName: %q\n",
 								req.SourceProviderAddress,
@@ -125,7 +125,7 @@ func (r MoveStateResource) MoveState(ctx context.Context) []resource.StateMover 
 					if req.SourceTypeName != "framework_identity" {
 						resp.Diagnostics.AddError(
 							"Invalid Move State Request",
-							fmt.Sprintf("This test can only migrate resource state from the \"framework_identity\" managed resource from the \"hashicorp/framework\" provider:\n\n"+
+							fmt.Sprintf("The \"framework_move_state\" resource can only be sourced from the \"random_string\" or \"framework_identity\" managed resources:\n\n"+
 								"req.SourceProviderAddress: %q\n"+
 								"req.SourceTypeName: %q\n",
 								req.SourceProviderAddress,
