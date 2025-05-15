@@ -5,7 +5,7 @@ go 1.23.7
 require (
 	github.com/hashicorp/go-cty v1.5.0
 	github.com/hashicorp/go-memdb v1.3.5
-	github.com/hashicorp/terraform-json v0.24.1-0.20250314103308-f86d5e36f4ab
+	github.com/hashicorp/terraform-json v0.25.0
 	github.com/hashicorp/terraform-plugin-framework v1.15.0-beta.1.0.20250512133431-c61b1b9a48d4
 	github.com/hashicorp/terraform-plugin-framework-jsontypes v0.2.0
 	github.com/hashicorp/terraform-plugin-framework-nettypes v0.2.0
