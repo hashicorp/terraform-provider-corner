@@ -6,15 +6,17 @@ package framework
 import (
 	"context"
 	"fmt"
-	"strings"
 
 	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/identityschema"
 	"github.com/hashicorp/terraform-plugin-framework/resource/schema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
+	"github.com/hashicorp/terraform-plugin-go/tftypes"
 )
 
 var _ resource.Resource = MoveStateResource{}
+var _ resource.ResourceWithIdentity = MoveStateResource{}
 var _ resource.ResourceWithMoveState = MoveStateResource{}
 
 func NewMoveStateResource() resource.Resource {
@@ -34,6 +36,16 @@ func (r MoveStateResource) Schema(_ context.Context, _ resource.SchemaRequest, r
 		Attributes: map[string]schema.Attribute{
 			"moved_random_string": schema.StringAttribute{
 				Computed: true,
+			},
+		},
+	}
+}
+
+func (r MoveStateResource) IdentitySchema(ctx context.Context, req resource.IdentitySchemaRequest, resp *resource.IdentitySchemaResponse) {
+	resp.IdentitySchema = identityschema.Schema{
+		Attributes: map[string]identityschema.Attribute{
+			"id": identityschema.StringAttribute{
+				RequiredForImport: true,
 			},
 		},
 	}
@@ -87,10 +99,71 @@ func (r MoveStateResource) MoveState(ctx context.Context) []resource.StateMover 
 				},
 			},
 			StateMover: func(ctx context.Context, req resource.MoveStateRequest, resp *resource.MoveStateResponse) {
-				if !strings.HasSuffix(req.SourceProviderAddress, "hashicorp/random") || req.SourceTypeName != "random_string" {
+				switch req.SourceProviderAddress {
+				case "registry.terraform.io/hashicorp/random": // Random provider (testing state moves)
+					if req.SourceTypeName != "random_string" {
+						resp.Diagnostics.AddError(
+							"Invalid Move State Request",
+							fmt.Sprintf("The \"framework_move_state\" resource can only be sourced from the \"random_string\" or \"framework_identity\" managed resources:\n\n"+
+								"req.SourceProviderAddress: %q\n"+
+								"req.SourceTypeName: %q\n",
+								req.SourceProviderAddress,
+								req.SourceTypeName,
+							),
+						)
+						return
+					}
+
+					var oldState RandomStringResourceModel
+					resp.Diagnostics.Append(req.SourceState.Get(ctx, &oldState)...)
+					if resp.Diagnostics.HasError() {
+						return
+					}
+
+					resp.Diagnostics.Append(resp.TargetState.SetAttribute(ctx, path.Root("moved_random_string"), oldState.Result)...)
+				case "registry.terraform.io/hashicorp/framework": // Corner provider (testing identity moves)
+					if req.SourceTypeName != "framework_identity" {
+						resp.Diagnostics.AddError(
+							"Invalid Move State Request",
+							fmt.Sprintf("The \"framework_move_state\" resource can only be sourced from the \"random_string\" or \"framework_identity\" managed resources:\n\n"+
+								"req.SourceProviderAddress: %q\n"+
+								"req.SourceTypeName: %q\n",
+								req.SourceProviderAddress,
+								req.SourceTypeName,
+							),
+						)
+						return
+					}
+
+					oldIdentityVal, err := req.SourceIdentity.Unmarshal(
+						tftypes.Object{
+							AttributeTypes: map[string]tftypes.Type{
+								"id":   tftypes.String,
+								"name": tftypes.String,
+							},
+						},
+					)
+					if err != nil {
+						resp.Diagnostics.AddError(
+							"Unexpected Move State Error",
+							fmt.Sprintf("Error decoding source identity: %s", err.Error()),
+						)
+						return
+					}
+
+					var sourceIdentityObj map[string]tftypes.Value
+					var sourceID, sourceName string
+
+					oldIdentityVal.As(&sourceIdentityObj)     //nolint:errcheck // This is just a quick test of grabbing raw identity data
+					sourceIdentityObj["id"].As(&sourceID)     //nolint:errcheck // This is just a quick test of grabbing raw identity data
+					sourceIdentityObj["name"].As(&sourceName) //nolint:errcheck // This is just a quick test of grabbing raw identity data
+
+					resp.Diagnostics.Append(resp.TargetState.SetAttribute(ctx, path.Root("moved_random_string"), sourceName)...)
+					resp.Diagnostics.Append(resp.TargetIdentity.SetAttribute(ctx, path.Root("id"), sourceID)...)
+				default:
 					resp.Diagnostics.AddError(
 						"Invalid Move State Request",
-						fmt.Sprintf("This test can only migrate resource state from the \"random_string\" managed resource from the \"hashicorp/random\" provider:\n\n"+
+						fmt.Sprintf("This test can only migrate resource state from hardcoded provider/resource types:\n\n"+
 							"req.SourceProviderAddress: %q\n"+
 							"req.SourceTypeName: %q\n",
 							req.SourceProviderAddress,
@@ -98,14 +171,6 @@ func (r MoveStateResource) MoveState(ctx context.Context) []resource.StateMover 
 						),
 					)
 				}
-
-				var oldState RandomStringResourceModel
-				resp.Diagnostics.Append(req.SourceState.Get(ctx, &oldState)...)
-				if resp.Diagnostics.HasError() {
-					return
-				}
-
-				resp.Diagnostics.Append(resp.TargetState.SetAttribute(ctx, path.Root("moved_random_string"), oldState.Result)...)
 			},
 		},
 	}
