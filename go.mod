@@ -14,8 +14,8 @@ require (
 	github.com/hashicorp/terraform-plugin-framework-validators v0.18.0
 	github.com/hashicorp/terraform-plugin-go v0.27.0
 	github.com/hashicorp/terraform-plugin-mux v0.19.0
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0-beta.1.0.20250506133545-a8969de4a3fb
-	github.com/hashicorp/terraform-plugin-testing v1.13.0-beta.1
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0
+	github.com/hashicorp/terraform-plugin-testing v1.13.0
 	github.com/zclconf/go-cty v1.16.2
 )
 
