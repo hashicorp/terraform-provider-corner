@@ -73,3 +73,15 @@ func (r resourceRouter) MoveResourceState(ctx context.Context, req *tfprotov6.Mo
 
 	return res.MoveResourceState(ctx, req)
 }
+
+func (r resourceRouter) UpgradeResourceIdentity(context.Context, *tfprotov6.UpgradeResourceIdentityRequest) (*tfprotov6.UpgradeResourceIdentityResponse, error) {
+	return &tfprotov6.UpgradeResourceIdentityResponse{
+		Diagnostics: []*tfprotov6.Diagnostic{
+			{
+				Severity: tfprotov6.DiagnosticSeverityError,
+				Summary:  "Unsupported Upgrade Resource Identity Operation",
+				Detail:   "Resource identity is not supported by this provider.",
+			},
+		},
+	}, nil
+}
