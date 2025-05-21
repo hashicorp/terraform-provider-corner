@@ -67,6 +67,10 @@ func (s *server) GetProviderSchema(ctx context.Context, req *tfprotov5.GetProvid
 	}, nil
 }
 
+func (s *server) GetResourceIdentitySchemas(context.Context, *tfprotov5.GetResourceIdentitySchemasRequest) (*tfprotov5.GetResourceIdentitySchemasResponse, error) {
+	return &tfprotov5.GetResourceIdentitySchemasResponse{}, nil
+}
+
 func (s *server) PrepareProviderConfig(ctx context.Context, req *tfprotov5.PrepareProviderConfigRequest) (*tfprotov5.PrepareProviderConfigResponse, error) {
 	return &tfprotov5.PrepareProviderConfigResponse{
 		PreparedConfig: req.Config,

@@ -12,6 +12,8 @@ import (
 )
 
 type resourceWriteOnlyDataCheck struct {
+	resourceRouter
+
 	enableLegacyTypeSystem   bool
 	applyDataError           bool
 	planDataError            bool
