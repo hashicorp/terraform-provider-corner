@@ -110,6 +110,7 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 			return NewWriteOnlyUpgradeResource(p.upgradeVersion)
 		},
 		NewIdentityResource,
+		NewThingResource,
 	}
 }
 
