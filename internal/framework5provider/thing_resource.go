@@ -91,7 +91,7 @@ func (r ThingResource) Create(ctx context.Context, req resource.CreateRequest, r
 	resp.State = tfsdk.State{
 		Raw: tftypes.NewValue(
 			thingSDKv2Resource.GetProtoType(ctx), // The schema has the plugin-go type we want (new method introduced to SDKv2)
-			map[string]tftypes.Value{
+			map[string]tftypes.Value{ // TODO: Can we use (ResourceData) -> map[string]tftypes.Value
 				"id":   tftypes.NewValue(tftypes.String, "id-123"),
 				"name": tftypes.NewValue(tftypes.String, "Austin Valle"),
 			},
