@@ -5,10 +5,12 @@ package framework
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
 	"github.com/hashicorp/terraform-plugin-framework/function"
+	"github.com/hashicorp/terraform-plugin-framework/list"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -20,6 +22,7 @@ import (
 var (
 	_ provider.ProviderWithFunctions          = (*testProvider)(nil)
 	_ provider.ProviderWithEphemeralResources = (*testProvider)(nil)
+	_ provider.ProviderWithListResources      = (*testProvider)(nil)
 )
 
 func New() provider.Provider {
@@ -110,6 +113,7 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 			return NewWriteOnlyUpgradeResource(p.upgradeVersion)
 		},
 		NewIdentityResource,
+		NewListResource,
 	}
 }
 
@@ -141,6 +145,13 @@ func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemera
 	return []func() ephemeral.EphemeralResource{
 		NewSchemaEphemeralResource,
 		NewEphemeralLifecycleResource,
+	}
+}
+
+func (p *testProvider) ListResources(_ context.Context) []func() list.ListResource {
+	fmt.Println("ListResources called")
+	return []func() list.ListResource{
+		NewListResourceAsListResource,
 	}
 }
 
