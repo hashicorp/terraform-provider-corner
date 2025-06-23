@@ -34,6 +34,37 @@ func NewListResourceAsListResource() list.ListResource {
 
 type ListResource struct{}
 
+type ComputeInstanceResource struct {
+	ComputeInstanceIdentity
+	Name types.String `tfsdk:"name"`
+}
+
+type ComputeInstanceIdentity struct {
+	ID types.String `tfsdk:"id"`
+}
+
+type ComputeInstanceListResource struct {
+	Filter types.String `tfsdk:"filter"`
+}
+
+var identities = map[string]ComputeInstanceIdentity{
+	"plateau":   {ID: types.StringValue("id-001")},
+	"platinum":  {ID: types.StringValue("id-002")},
+	"platypus":  {ID: types.StringValue("id-003")},
+	"bookworm":  {ID: types.StringValue("id-004")},
+	"bookshelf": {ID: types.StringValue("id-005")},
+	"bookmark":  {ID: types.StringValue("id-006")},
+}
+
+var items = map[string]ComputeInstanceResource{
+	"plateau":   {ComputeInstanceIdentity: identities["plateau"], Name: types.StringValue("plateau")},
+	"platinum":  {ComputeInstanceIdentity: identities["platinum"], Name: types.StringValue("platinum")},
+	"platypus":  {ComputeInstanceIdentity: identities["platypus"], Name: types.StringValue("platypus")},
+	"bookworm":  {ComputeInstanceIdentity: identities["bookworm"], Name: types.StringValue("bookworm")},
+	"bookshelf": {ComputeInstanceIdentity: identities["bookshelf"], Name: types.StringValue("bookshelf")},
+	"bookmark":  {ComputeInstanceIdentity: identities["bookmark"], Name: types.StringValue("bookmark")},
+}
+
 func (r ListResource) IdentitySchema(ctx context.Context, req resource.IdentitySchemaRequest, resp *resource.IdentitySchemaResponse) {
 	resp.IdentitySchema = identityschema.Schema{
 		Attributes: map[string]identityschema.Attribute{
@@ -144,24 +175,6 @@ func (r ListResource) List(ctx context.Context, req list.ListRequest, stream *li
 		return
 	}
 
-	identities := map[string]ComputeInstanceIdentity{
-		"plateau":   {ID: types.StringValue("id-001")},
-		"platinum":  {ID: types.StringValue("id-002")},
-		"platypus":  {ID: types.StringValue("id-003")},
-		"bookworm":  {ID: types.StringValue("id-004")},
-		"bookshelf": {ID: types.StringValue("id-005")},
-		"bookmark":  {ID: types.StringValue("id-006")},
-	}
-
-	items := map[string]ComputeInstanceResource{
-		"plateau":   {ComputeInstanceIdentity: identities["plateau"], Name: types.StringValue("plateau")},
-		"platinum":  {ComputeInstanceIdentity: identities["platinum"], Name: types.StringValue("platinum")},
-		"platypus":  {ComputeInstanceIdentity: identities["platypus"], Name: types.StringValue("platypus")},
-		"bookworm":  {ComputeInstanceIdentity: identities["bookworm"], Name: types.StringValue("bookworm")},
-		"bookshelf": {ComputeInstanceIdentity: identities["bookshelf"], Name: types.StringValue("bookshelf")},
-		"bookmark":  {ComputeInstanceIdentity: identities["bookmark"], Name: types.StringValue("bookmark")},
-	}
-
 	stream.Results = func(push func(list.ListResult) bool) {
 		for name, item := range items {
 			if !strings.HasPrefix(name, data.Filter.ValueString()) {
@@ -188,17 +201,4 @@ func (r ListResource) List(ctx context.Context, req list.ListRequest, stream *li
 			}
 		}
 	}
-}
-
-type ComputeInstanceResource struct {
-	ComputeInstanceIdentity
-	Name types.String `tfsdk:"name"`
-}
-
-type ComputeInstanceIdentity struct {
-	ID types.String `tfsdk:"id"`
-}
-
-type ComputeInstanceListResource struct {
-	Filter types.String `tfsdk:"filter"`
 }
