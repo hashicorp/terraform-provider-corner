@@ -29,6 +29,7 @@ func New() *schema.Provider {
 			"corner_user":                              resourceUser(),
 			"corner_user_identity":                     resourceUserIdentity(),
 			"corner_user_identity_upgrade":             resourceUserIdentityUpgrade(0),
+			"corner_user_list":                         resourceUserList(),
 			"corner_writeonly":                         resourceWriteOnly(),
 			"corner_writeonly_import":                  resourceWriteOnlyImport(),
 			"corner_writeonly_upgrade":                 resourceWriteOnlyUpgrade(0),
