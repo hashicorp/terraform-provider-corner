@@ -157,6 +157,10 @@ func (r ListResource) Delete(ctx context.Context, req resource.DeleteRequest, re
 }
 
 func (r ListResource) ListResourceConfigSchema(_ context.Context, _ list.ListResourceSchemaRequest, resp *list.ListResourceSchemaResponse) {
+
+	// TF-235: "a list resource schema defined in Framework" for a `list
+	// "framework_list_resource"` block.
+
 	resp.Schema = listschema.Schema{
 		Attributes: map[string]listschema.Attribute{
 			"filter": schema.StringAttribute{
@@ -164,11 +168,14 @@ func (r ListResource) ListResourceConfigSchema(_ context.Context, _ list.ListRes
 			},
 		},
 	}
+
 }
 
 func (r ListResource) List(ctx context.Context, req list.ListRequest, stream *list.ListResultsStream) {
 	var data ComputeInstanceListResource
 
+	// TF-235: 1. Decodes the list resource config, using a list resource
+	// schema defined in Framework.
 	diags := req.Config.Get(ctx, &data)
 	if diags.HasError() {
 		stream.Results = list.ListResultsStreamDiagnostics(diags)
@@ -176,11 +183,23 @@ func (r ListResource) List(ctx context.Context, req list.ListRequest, stream *li
 	}
 
 	stream.Results = func(push func(list.ListResult) bool) {
+
+		// TF-235: 3. Performs one or more remote API requests to retrieve
+		// resources, using the configured API client. In this case, there is
+		// no remote API -- the items slice is the API.
 		for name, item := range items {
+
+			// TF-235: 4. Optionally, performs client-side filtering of results
 			if !strings.HasPrefix(name, data.Filter.ValueString()) {
 				continue
 			}
 
+			// TF-235: 5. Decodes each API resource into a Framework
+			// [list.ListResult] value, using the resource schema and resource
+			// identity schema defined in Framework
+
+			// [list.ListRequest.NewListResult] encapsulates the resource
+			// schema business.
 			result := req.NewListResult()
 			result.DisplayName = item.Name.ValueString()
 
