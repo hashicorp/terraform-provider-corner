@@ -48,6 +48,11 @@ func init() {
 						Unique:  false,
 						Indexer: &memdb.IntFieldIndex{Field: "Age"},
 					},
+					"name": {
+						Name:    "name",
+						Unique:  false,
+						Indexer: &memdb.StringFieldIndex{Field: "Name"},
+					},
 				},
 			},
 			"regions": {
@@ -194,6 +199,28 @@ func (c *Client) DeleteUser(user *User) error {
 	txn.Commit()
 
 	return nil
+}
+
+func (c *Client) ListUsersByNamePrefix(prefix string) ([]User, error) {
+	users := []User{}
+
+	txn := c.db.Txn(false)
+	defer txn.Abort()
+
+	raw, err := txn.Get("users", "name_prefix", prefix)
+	if err != nil {
+		return users, fmt.Errorf("Error listing users: %s", err)
+	}
+
+	for obj := raw.Next(); obj != nil; obj = raw.Next() {
+		p, ok := obj.(*User)
+		if !ok {
+			return users, fmt.Errorf("unexpected type %T while listing users", obj)
+		}
+		users = append(users, *p)
+	}
+
+	return users, nil
 }
 
 func (c *Client) ReadRegions() ([]*Region, error) {
