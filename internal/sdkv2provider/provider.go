@@ -20,11 +20,17 @@ func New() *schema.Provider {
 				Optional: true,
 			},
 		},
+
 		DataSourcesMap: map[string]*schema.Resource{
 			"corner_regions":     dataSourceRegions(),
 			"corner_bigint":      dataSourceBigint(),
 			"corner_regions_cty": dataSourceRegionsCty(),
 		},
+
+		ListResourcesMap: map[string]*schema.Resource{
+			"corner_user_list": resourceUserList(),
+		},
+
 		ResourcesMap: map[string]*schema.Resource{
 			"corner_user":                              resourceUser(),
 			"corner_user_identity":                     resourceUserIdentity(),

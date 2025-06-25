@@ -6,6 +6,7 @@ package sdkv2
 
 import (
 	"context"
+	"iter"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
@@ -18,6 +19,20 @@ func resourceUserList() *schema.Resource {
 		ReadContext:   resourceUserListRead,
 		UpdateContext: resourceUserListUpdate,
 		DeleteContext: resourceUserListDelete,
+		ListContext:   resourceUserListList,
+
+		ListSchemaFunc: func() map[string]*schema.Schema {
+
+			// TF-235: this is "a hypothetical list resource schema defined in
+			// SDKv2" for a `list "user"` block.
+			return map[string]*schema.Schema{
+				"namePrefix": {
+					Type:     schema.TypeString,
+					Required: true,
+				},
+			}
+
+		},
 
 		Schema: map[string]*schema.Schema{
 			"email": {
@@ -142,4 +157,54 @@ func resourceUserListDelete(ctx context.Context, d *schema.ResourceData, meta in
 	}
 
 	return nil
+}
+
+func resourceUserListList(ctx context.Context, d *schema.ResourceData, meta interface{}) iter.Seq2[*schema.ResourceData, diag.Diagnostics] {
+	client := meta.(*backend.Client)
+
+	// TF-235: Step 1. Decodes the list resource config, using a hypothetical list
+	// resource schema defined in SDKv2.
+	namePrefix := d.Get("namePrefix").(string)
+
+	return func(push func(*schema.ResourceData, diag.Diagnostics) bool) {
+
+		// TF-235: Step 3. Performs one or more remote API requests to retrieve
+		// resources, using the configured API client.
+		users, err := client.ListUsersByNamePrefix(namePrefix)
+		if err != nil {
+			push(nil, diag.FromErr(err))
+			return
+		}
+
+		var diags diag.Diagnostics
+		for _, user := range users {
+
+			// TF-235: Step 5. Decodes each API resource into
+			// ResourceData.State() and ResourceData.Identity() values,
+			// using the resource schema and resource identity schema
+			// defined in SDKv2.
+
+			d.SetId(user.Email)
+			if err := d.Set("email", user.Email); err != nil {
+				diags = append(diags, diag.FromErr(err)...)
+			}
+
+			if err := d.Set("name", user.Name); err != nil {
+				diags = append(diags, diag.FromErr(err)...)
+			}
+
+			if err := d.Set("age", user.Age); err != nil {
+				diags = append(diags, diag.FromErr(err)...)
+			}
+
+			// Where to set DisplayName? Let's not worry about that right now.
+			d.SetListDisplayName(user.Name + " (" + user.Email + ")")
+
+			// Respect the return value of push by stopping iteration on false
+			if !push(d, diags) {
+				break
+			}
+
+		}
+	}
 }
