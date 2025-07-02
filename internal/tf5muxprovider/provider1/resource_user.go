@@ -6,11 +6,88 @@ package provider1
 
 import (
 	"context"
+	"github.com/hashicorp/terraform-plugin-framework/list"
+	listschema "github.com/hashicorp/terraform-plugin-framework/list/schema"
+	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/types"
+	"strings"
 
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
 )
+
+type UserListResource struct{}
+
+func (u UserListResource) Metadata(ctx context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
+	response.TypeName = "tf5muxprovider_user1"
+}
+
+func (u UserListResource) ListResourceConfigSchema(ctx context.Context, request list.ListResourceSchemaRequest, response *list.ListResourceSchemaResponse) {
+	response.Schema = listschema.Schema{
+		Attributes: map[string]listschema.Attribute{
+			"filter": listschema.StringAttribute{
+				Required: true,
+			},
+		},
+	}
+}
+
+type UserListResourceModel struct {
+	Filter types.String `tfsdk:"filter"`
+}
+
+// TODO: Make this happy
+
+var items = map[string]ComputeInstanceResource{
+	"plateau":   {ComputeInstanceIdentity: identities["plateau"], Name: types.StringValue("plateau")},
+	"platinum":  {ComputeInstanceIdentity: identities["platinum"], Name: types.StringValue("platinum")},
+	"platypus":  {ComputeInstanceIdentity: identities["platypus"], Name: types.StringValue("platypus")},
+	"bookworm":  {ComputeInstanceIdentity: identities["bookworm"], Name: types.StringValue("bookworm")},
+	"bookshelf": {ComputeInstanceIdentity: identities["bookshelf"], Name: types.StringValue("bookshelf")},
+	"bookmark":  {ComputeInstanceIdentity: identities["bookmark"], Name: types.StringValue("bookmark")},
+}
+
+// TODO: Add resource identities
+
+func (u UserListResource) List(ctx context.Context, req list.ListRequest, stream *list.ListResultsStream) {
+	var data UserListResourceModel
+
+	diags := req.Config.Get(ctx, &data)
+	if diags.HasError() {
+		stream.Results = list.ListResultsStreamDiagnostics(diags)
+		return
+	}
+
+	stream.Results = func(push func(list.ListResult) bool) {
+		for name, item := range items {
+			if !strings.HasPrefix(name, data.Filter.ValueString()) {
+				continue
+			}
+
+			result := req.NewListResult()
+			result.DisplayName = item.Name.ValueString()
+
+			if diags := result.Resource.Set(ctx, item); diags.HasError() {
+				result.Diagnostics.Append(diags...)
+			}
+
+			if diags := result.Identity.Set(ctx, identities[name]); diags.HasError() {
+				result.Diagnostics.Append(diags...)
+			}
+
+			if result.Diagnostics.HasError() {
+				result = list.ListResult{Diagnostics: result.Diagnostics}
+			}
+
+			if !push(result) {
+				return
+			}
+		}
+	}
+}
+
+var _ list.ListResource = UserListResource{}
 
 func resourceUser() *schema.Resource {
 	return &schema.Resource{
@@ -34,6 +111,8 @@ func resourceUser() *schema.Resource {
 				Required: true,
 			},
 		},
+
+		// TODO add a resource identity for this
 	}
 }
 

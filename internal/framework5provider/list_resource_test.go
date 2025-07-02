@@ -15,6 +15,8 @@ import (
 	framework "github.com/hashicorp/terraform-provider-corner/internal/framework5provider"
 )
 
+// TODO: Model off this test ~
+
 func TestListResource(t *testing.T) {
 	t.Parallel()
 	ctx := t.Context()
@@ -61,7 +63,7 @@ func TestListResource(t *testing.T) {
 		Config:   &config,
 	}
 
-	stream, err := s.ListResource(ctx, listRequest)
+	stream, err := s.ListResource(ctx, listRequest) // TODO: try to invoke this
 	if err != nil {
 		t.Fatalf("Failed to list resources: %v", err)
 	}
