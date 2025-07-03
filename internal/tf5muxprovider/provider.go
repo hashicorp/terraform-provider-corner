@@ -5,7 +5,6 @@ package tf5muxprovider
 
 import (
 	"context"
-
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-mux/tf5muxserver"
 	"github.com/hashicorp/terraform-provider-corner/internal/tf5muxprovider/provider1"

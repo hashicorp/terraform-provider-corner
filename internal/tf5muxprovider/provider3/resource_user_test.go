@@ -1,21 +1,25 @@
 // Copyright (c) HashiCorp, Inc.
 // SPDX-License-Identifier: MPL-2.0
 
-package framework_test
+package provider3
 
 import (
-	"testing"
-
 	"github.com/google/go-cmp/cmp"
 	"github.com/google/go-cmp/cmp/cmpopts"
 	frameworktypes "github.com/hashicorp/terraform-plugin-framework/provider"
-	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	framework "github.com/hashicorp/terraform-provider-corner/internal/framework5provider"
+	"testing"
+
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-func TestListResource(t *testing.T) {
+// TODO: Model off this test ~
+
+func TestUserListResource(t *testing.T) {
 	t.Parallel()
 	ctx := t.Context()
 
@@ -61,7 +65,7 @@ func TestListResource(t *testing.T) {
 		Config:   &config,
 	}
 
-	stream, err := s.ListResource(ctx, listRequest)
+	stream, err := s.ListResource(ctx, listRequest) // TODO: try to invoke this
 	if err != nil {
 		t.Fatalf("Failed to list resources: %v", err)
 	}
@@ -83,3 +87,32 @@ func TestListResource(t *testing.T) {
 		t.Errorf("ListResource results mismatch (-got +wanted):\n%s", diff)
 	}
 }
+
+func TestAccResourceUser3(t *testing.T) {
+	resource.UnitTest(t, resource.TestCase{
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"tf6muxprovider": providerserver.NewProtocol6WithError(New()),
+		},
+		Steps: []resource.TestStep{
+			{
+				Config: configResourceUserBasic,
+				Check: resource.ComposeTestCheckFunc(
+					resource.TestCheckResourceAttr("tf6muxprovider_user3.example", "age", "133"),
+					resource.TestCheckResourceAttr("tf6muxprovider_user3.example", "email", "example@example.com"),
+					resource.TestCheckResourceAttr("tf6muxprovider_user3.example", "language", "en"),
+					resource.TestCheckResourceAttr("tf6muxprovider_user3.example", "name", "Example Name"),
+				),
+			},
+		},
+	})
+}
+
+const configResourceUserBasic = `
+resource "tf6muxprovider_user3" "example" {
+  age   = 133
+  email = "example@example.com"
+  name  = "Example Name"
+}
+
+
+`

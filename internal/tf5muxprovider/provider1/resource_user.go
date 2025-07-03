@@ -9,15 +9,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/list"
 	listschema "github.com/hashicorp/terraform-plugin-framework/list/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/resource/identityschema"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"strings"
-
 	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
+	"strings"
 )
 
-type UserListResource struct{}
+func (r UserResource) IdentitySchema(ctx context.Context, req resource.IdentitySchemaRequest, resp *resource.IdentitySchemaResponse) {
+	resp.IdentitySchema = identityschema.Schema{
+		Attributes: map[string]identityschema.Attribute{
+			"id": identityschema.StringAttribute{
+				RequiredForImport: true,
+			},
+			"name": identityschema.StringAttribute{
+				OptionalForImport: true,
+			},
+		},
+	}
+}
 
 func (u UserListResource) Metadata(ctx context.Context, request resource.MetadataRequest, response *resource.MetadataResponse) {
 	response.TypeName = "tf5muxprovider_user1"
@@ -37,18 +48,36 @@ type UserListResourceModel struct {
 	Filter types.String `tfsdk:"filter"`
 }
 
-// TODO: Make this happy
-
-var items = map[string]ComputeInstanceResource{
-	"plateau":   {ComputeInstanceIdentity: identities["plateau"], Name: types.StringValue("plateau")},
-	"platinum":  {ComputeInstanceIdentity: identities["platinum"], Name: types.StringValue("platinum")},
-	"platypus":  {ComputeInstanceIdentity: identities["platypus"], Name: types.StringValue("platypus")},
-	"bookworm":  {ComputeInstanceIdentity: identities["bookworm"], Name: types.StringValue("bookworm")},
-	"bookshelf": {ComputeInstanceIdentity: identities["bookshelf"], Name: types.StringValue("bookshelf")},
-	"bookmark":  {ComputeInstanceIdentity: identities["bookmark"], Name: types.StringValue("bookmark")},
+type UserResource struct {
+	UserListResourceIdentity
+	Name types.String `tfsdk:"name"`
 }
 
-// TODO: Add resource identities
+type UserListResourceIdentity struct {
+	ID types.String `tfsdk:"id"`
+}
+
+type UserListResource struct {
+	Filter types.String `tfsdk:"filter"`
+}
+
+var identities = map[string]UserListResourceIdentity{
+	"plateau":   {ID: types.StringValue("id-001")},
+	"platinum":  {ID: types.StringValue("id-002")},
+	"platypus":  {ID: types.StringValue("id-003")},
+	"bookworm":  {ID: types.StringValue("id-004")},
+	"bookshelf": {ID: types.StringValue("id-005")},
+	"bookmark":  {ID: types.StringValue("id-006")},
+}
+
+var items = map[string]UserResource{
+	"plateau":   {UserListResourceIdentity: identities["plateau"], Name: types.StringValue("plateau")},
+	"platinum":  {UserListResourceIdentity: identities["platinum"], Name: types.StringValue("platinum")},
+	"platypus":  {UserListResourceIdentity: identities["platypus"], Name: types.StringValue("platypus")},
+	"bookworm":  {UserListResourceIdentity: identities["bookworm"], Name: types.StringValue("bookworm")},
+	"bookshelf": {UserListResourceIdentity: identities["bookshelf"], Name: types.StringValue("bookshelf")},
+	"bookmark":  {UserListResourceIdentity: identities["bookmark"], Name: types.StringValue("bookmark")},
+}
 
 func (u UserListResource) List(ctx context.Context, req list.ListRequest, stream *list.ListResultsStream) {
 	var data UserListResourceModel
