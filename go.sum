@@ -87,8 +87,8 @@ github.com/hashicorp/terraform-exec v0.23.0 h1:MUiBM1s0CNlRFsCLJuM5wXZrzA3MnPYEs
 github.com/hashicorp/terraform-exec v0.23.0/go.mod h1:mA+qnx1R8eePycfwKkCRk3Wy65mwInvlpAeOwmA7vlY=
 github.com/hashicorp/terraform-json v0.25.0 h1:rmNqc/CIfcWawGiwXmRuiXJKEiJu1ntGoxseG1hLhoQ=
 github.com/hashicorp/terraform-json v0.25.0/go.mod h1:sMKS8fiRDX4rVlR6EJUMudg1WcanxCMoWwTLkgZP/vc=
-github.com/hashicorp/terraform-plugin-framework v1.15.1-0.20250623191831-9c0fecc9e9ba h1:QZ61jA090rq6LwpndEjctl2O3Aq6cJo1ugZUsz9b4DQ=
-github.com/hashicorp/terraform-plugin-framework v1.15.1-0.20250623191831-9c0fecc9e9ba/go.mod h1:k9itoOx5BgwpinKyLFKdGM7DMKNR1HD/hNAs3KNE8UQ=
+github.com/hashicorp/terraform-plugin-framework v1.16.0-alpha.1 h1:0x3dZ4y8+0RKGnPALuIte3MyjLBfOv3G4FO8/iYjITo=
+github.com/hashicorp/terraform-plugin-framework v1.16.0-alpha.1/go.mod h1:1aeefX7ICeY56E8o1t9V0RSPa1DKkiwpPTihj8RfVRs=
 github.com/hashicorp/terraform-plugin-framework-jsontypes v0.2.0 h1:SJXL5FfJJm17554Kpt9jFXngdM6fXbnUnZ6iT2IeiYA=
 github.com/hashicorp/terraform-plugin-framework-jsontypes v0.2.0/go.mod h1:p0phD0IYhsu9bR4+6OetVvvH59I6LwjXGnTVEr8ox6E=
 github.com/hashicorp/terraform-plugin-framework-nettypes v0.3.0 h1:cEiRvdFAhFnivRm9JI/8l2g8oruzkioUAwItkEM7bmU=
@@ -99,8 +99,8 @@ github.com/hashicorp/terraform-plugin-framework-timetypes v0.5.0 h1:v3DapR8gsp3E
 github.com/hashicorp/terraform-plugin-framework-timetypes v0.5.0/go.mod h1:c3PnGE9pHBDfdEVG9t1S1C9ia5LW+gkFR0CygXlM8ak=
 github.com/hashicorp/terraform-plugin-framework-validators v0.18.0 h1:OQnlOt98ua//rCw+QhBbSqfW3QbwtVrcdWeQN5gI3Hw=
 github.com/hashicorp/terraform-plugin-framework-validators v0.18.0/go.mod h1:lZvZvagw5hsJwuY7mAY6KUz45/U6fiDR0CzQAwWD0CA=
-github.com/hashicorp/terraform-plugin-go v0.29.0-alpha.1 h1:ZId6oWG8VTKhz207quE/Xh8a3HuoLtM/QkcSSypekIQ=
-github.com/hashicorp/terraform-plugin-go v0.29.0-alpha.1/go.mod h1:hL//wLEfYo0YVt0TC/VLzia/ADQQto3HEm4/jX2gkdY=
+github.com/hashicorp/terraform-plugin-go v0.29.0-alpha.1.0.20250709165734-a8477a15f806 h1:i3kA1sT/Fk8Ex+VVKdjf9sFOPwS7w3Q73pfbnxKwdjg=
+github.com/hashicorp/terraform-plugin-go v0.29.0-alpha.1.0.20250709165734-a8477a15f806/go.mod h1:hL//wLEfYo0YVt0TC/VLzia/ADQQto3HEm4/jX2gkdY=
 github.com/hashicorp/terraform-plugin-log v0.9.0 h1:i7hOA+vdAItN1/7UrfBqBwvYPQ9TFvymaRGZED3FCV0=
 github.com/hashicorp/terraform-plugin-log v0.9.0/go.mod h1:rKL8egZQ/eXSyDqzLUuwUYLVdlYeamldAHSxjUFADow=
 github.com/hashicorp/terraform-plugin-mux v0.20.0 h1:3QpBnI9uCuL0Yy2Rq/kR9cOdmOFNhw88A2GoZtk5aXM=
