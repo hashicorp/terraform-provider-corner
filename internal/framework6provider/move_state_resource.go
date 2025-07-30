@@ -121,6 +121,7 @@ func (r MoveStateResource) MoveState(ctx context.Context) []resource.StateMover 
 					}
 
 					resp.Diagnostics.Append(resp.TargetState.SetAttribute(ctx, path.Root("moved_random_string"), oldState.Result)...)
+					resp.Diagnostics.Append(resp.TargetIdentity.SetAttribute(ctx, path.Root("id"), oldState.Result)...)
 				case "registry.terraform.io/hashicorp/framework": // Corner provider (testing identity moves)
 					if req.SourceTypeName != "framework_identity" {
 						resp.Diagnostics.AddError(

@@ -5,7 +5,6 @@ package framework
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
@@ -149,7 +148,6 @@ func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemera
 }
 
 func (p *testProvider) ListResources(_ context.Context) []func() list.ListResource {
-	fmt.Println("ListResources called")
 	return []func() list.ListResource{
 		NewListResourceAsListResource,
 	}
