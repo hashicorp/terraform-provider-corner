@@ -100,6 +100,7 @@ func (p *testProvider) Resources(_ context.Context) []func() resource.Resource {
 		NewFloat64PrecisionResource,
 		NewTFSDKReflectionResource,
 		NewMoveStateResource,
+		NewMoveStateResourceWithIdentity,
 		NewSetNestedBlockWithDefaultsResource,
 		NewSetSemanticEqualityResource,
 		NewCustomTypeResource,
