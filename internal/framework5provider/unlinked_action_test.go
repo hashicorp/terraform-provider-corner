@@ -13,7 +13,7 @@ import (
 
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
 	"github.com/hashicorp/terraform-plugin-testing/plancheck"
@@ -36,8 +36,8 @@ func TestUnlinkedAction(t *testing.T) {
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.14.0"))),
 		},
-		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": providerserver.NewProtocol6WithError(New()),
+		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
+			"framework": providerserver.NewProtocol5WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
