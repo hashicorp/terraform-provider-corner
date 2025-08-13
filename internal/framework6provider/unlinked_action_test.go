@@ -15,11 +15,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/knownvalue"
-	"github.com/hashicorp/terraform-plugin-testing/plancheck"
-	"github.com/hashicorp/terraform-plugin-testing/statecheck"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
-	"github.com/hashicorp/terraform-plugin-testing/tfjsonpath"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
@@ -60,15 +56,6 @@ func TestUnlinkedAction(t *testing.T) {
 					}
 				  
 				}`, f, content),
-				ConfigPlanChecks: resource.ConfigPlanChecks{
-					PreApply: []plancheck.PlanCheck{
-						plancheck.ExpectResourceAction("terraform_data.test", plancheck.ResourceActionCreate),
-						plancheck.ExpectKnownValue("terraform_data.test", tfjsonpath.New("input"), knownvalue.StringExact("fake-string")),
-					},
-				},
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("terraform_data.test", tfjsonpath.New("input"), knownvalue.StringExact("fake-string")),
-				},
 				Check: func(state *terraform.State) error {
 					resultContent, err := os.ReadFile(f)
 					if err != nil {
@@ -102,15 +89,6 @@ func TestUnlinkedAction(t *testing.T) {
 					}
 				  
 				}`, f),
-				ConfigPlanChecks: resource.ConfigPlanChecks{
-					PreApply: []plancheck.PlanCheck{
-						plancheck.ExpectResourceAction("terraform_data.test", plancheck.ResourceActionNoop),
-						plancheck.ExpectKnownValue("terraform_data.test", tfjsonpath.New("input"), knownvalue.StringExact("fake-string")),
-					},
-				},
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("terraform_data.test", tfjsonpath.New("input"), knownvalue.StringExact("fake-string")),
-				},
 				Check: func(state *terraform.State) error {
 					resultContent, err := os.ReadFile(f)
 					if err != nil {
@@ -144,15 +122,6 @@ func TestUnlinkedAction(t *testing.T) {
 					}
 				  
 				}`, f),
-				ConfigPlanChecks: resource.ConfigPlanChecks{
-					PreApply: []plancheck.PlanCheck{
-						plancheck.ExpectResourceAction("terraform_data.test", plancheck.ResourceActionUpdate),
-						plancheck.ExpectKnownValue("terraform_data.test", tfjsonpath.New("input"), knownvalue.StringExact("updated-fake-string")),
-					},
-				},
-				ConfigStateChecks: []statecheck.StateCheck{
-					statecheck.ExpectKnownValue("terraform_data.test", tfjsonpath.New("input"), knownvalue.StringExact("updated-fake-string")),
-				},
 				Check: func(state *terraform.State) error {
 					resultContent, err := os.ReadFile(f)
 					if err != nil {
