@@ -6,6 +6,7 @@ package framework
 import (
 	"context"
 
+	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/ephemeral"
 	"github.com/hashicorp/terraform-plugin-framework/function"
@@ -150,6 +151,12 @@ func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemera
 func (p *testProvider) ListResources(_ context.Context) []func() list.ListResource {
 	return []func() list.ListResource{
 		NewListResourceAsListResource,
+	}
+}
+
+func (p *testProvider) Actions(ctx context.Context) []func() action.Action {
+	return []func() action.Action{
+		NewUnlinkedAction,
 	}
 }
 
