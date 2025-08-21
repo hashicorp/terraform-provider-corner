@@ -181,7 +181,7 @@ func (r ListResource) List(ctx context.Context, req list.ListRequest, stream *li
 				continue
 			}
 
-			result := req.NewListResult()
+			result := req.NewListResult(ctx)
 			result.DisplayName = item.Name.ValueString()
 
 			if diags := result.Resource.Set(ctx, item); diags.HasError() {
