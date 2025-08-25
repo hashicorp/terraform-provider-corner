@@ -18,7 +18,7 @@ require (
 	github.com/hashicorp/terraform-plugin-mux v0.20.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.37.0
 	github.com/hashicorp/terraform-plugin-testing v1.13.3
-	github.com/zclconf/go-cty v1.16.3
+	github.com/zclconf/go-cty v1.16.4
 )
 
 require (
