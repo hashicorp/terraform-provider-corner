@@ -156,7 +156,7 @@ func (p *testProvider) ListResources(_ context.Context) []func() list.ListResour
 
 func (p *testProvider) Actions(ctx context.Context) []func() action.Action {
 	return []func() action.Action{
-		NewUnlinkedAction,
+		NewModifyAction,
 	}
 }
 

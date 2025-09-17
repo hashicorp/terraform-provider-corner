@@ -13,13 +13,13 @@ import (
 
 	"github.com/hashicorp/go-version"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
-	"github.com/hashicorp/terraform-plugin-go/tfprotov5"
+	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
 	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
-func TestUnlinkedAction(t *testing.T) {
+func TestModifyFileAction(t *testing.T) {
 	f := filepath.Join(t.TempDir(), "local_file")
 	f = strings.ReplaceAll(f, `\`, `\\`)
 
@@ -32,8 +32,8 @@ func TestUnlinkedAction(t *testing.T) {
 		TerraformVersionChecks: []tfversion.TerraformVersionCheck{
 			tfversion.SkipBelow(version.Must(version.NewVersion("1.14.0"))),
 		},
-		ProtoV5ProviderFactories: map[string]func() (tfprotov5.ProviderServer, error){
-			"framework": providerserver.NewProtocol5WithError(New()),
+		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
+			"framework": providerserver.NewProtocol6WithError(New()),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -44,12 +44,12 @@ func TestUnlinkedAction(t *testing.T) {
 					lifecycle {
 						action_trigger {
 						  events  = [before_create]
-						  actions = [action.framework_unlinked_action.file]
+						  actions = [action.framework_modify_file_action.file]
 						}
 					}
 				}
 
-				action "framework_unlinked_action" "file" {
+				action "framework_modify_file_action" "file" {
 					config {
 						filename = %[1]q
 						content  = %[2]q
@@ -77,12 +77,12 @@ func TestUnlinkedAction(t *testing.T) {
 					lifecycle {
 						action_trigger {
 						  events  = [before_create]
-						  actions = [action.framework_unlinked_action.file]
+						  actions = [action.framework_modify_file_action.file]
 						}
 					}
 				}
 
-				action "framework_unlinked_action" "file" {
+				action "framework_modify_file_action" "file" {
 					config {
 						filename = %[1]q
 						content  = "updated test data"
@@ -110,12 +110,12 @@ func TestUnlinkedAction(t *testing.T) {
 					lifecycle {
 						action_trigger {
 						  events  = [after_update] # action triggers after update
-						  actions = [action.framework_unlinked_action.file]
+						  actions = [action.framework_modify_file_action.file]
 						}
 					}
 				}
 
-				action "framework_unlinked_action" "file" {
+				action "framework_modify_file_action" "file" {
 					config {
 						filename = %[1]q
 						content  = "updated test data"
@@ -143,12 +143,12 @@ func TestUnlinkedAction(t *testing.T) {
 					lifecycle {
 						action_trigger {
 						  events  = [after_update]
-						  actions = [action.framework_unlinked_action.file]
+						  actions = [action.framework_modify_file_action.file]
 						}
 					}
 				}
 			
-				action "framework_unlinked_action" "file" {
+				action "framework_modify_file_action" "file" {
 					config {
 						filename = %[1]q
 						content  = %[2]q

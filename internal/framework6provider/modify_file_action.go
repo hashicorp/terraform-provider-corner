@@ -13,17 +13,17 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/path"
 )
 
-var _ action.Action = &UnlinkedAction{}
-var _ action.ActionWithModifyPlan = &UnlinkedAction{}
+var _ action.Action = &ModifyFileAction{}
+var _ action.ActionWithModifyPlan = &ModifyFileAction{}
 
-func NewUnlinkedAction() action.Action {
-	return &UnlinkedAction{}
+func NewModifyFileAction() action.Action {
+	return &ModifyFileAction{}
 }
 
-type UnlinkedAction struct{}
+type ModifyFileAction struct{}
 
-func (u *UnlinkedAction) Schema(ctx context.Context, req action.SchemaRequest, resp *action.SchemaResponse) {
-	resp.Schema = schema.UnlinkedSchema{
+func (u *ModifyFileAction) Schema(ctx context.Context, req action.SchemaRequest, resp *action.SchemaResponse) {
+	resp.Schema = schema.Schema{
 		Attributes: map[string]schema.Attribute{
 			"filename": schema.StringAttribute{
 				Required: true,
@@ -38,11 +38,11 @@ func (u *UnlinkedAction) Schema(ctx context.Context, req action.SchemaRequest, r
 	}
 }
 
-func (u *UnlinkedAction) Metadata(ctx context.Context, req action.MetadataRequest, resp *action.MetadataResponse) {
-	resp.TypeName = req.ProviderTypeName + "_unlinked_action"
+func (u *ModifyFileAction) Metadata(ctx context.Context, req action.MetadataRequest, resp *action.MetadataResponse) {
+	resp.TypeName = req.ProviderTypeName + "_modify_file_action"
 }
 
-func (u *UnlinkedAction) ModifyPlan(ctx context.Context, req action.ModifyPlanRequest, resp *action.ModifyPlanResponse) {
+func (u *ModifyFileAction) ModifyPlan(ctx context.Context, req action.ModifyPlanRequest, resp *action.ModifyPlanResponse) {
 	if req.Config.Raw.IsNull() {
 		return
 	}
@@ -61,9 +61,9 @@ func (u *UnlinkedAction) ModifyPlan(ctx context.Context, req action.ModifyPlanRe
 	}
 }
 
-func (u *UnlinkedAction) Invoke(ctx context.Context, req action.InvokeRequest, resp *action.InvokeResponse) {
+func (u *ModifyFileAction) Invoke(ctx context.Context, req action.InvokeRequest, resp *action.InvokeResponse) {
 	resp.SendProgress = func(event action.InvokeProgressEvent) {
-		event.Message = "starting provider defined unlinked action"
+		event.Message = "starting provider defined action"
 	}
 
 	var filename string

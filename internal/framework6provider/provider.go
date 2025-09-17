@@ -148,7 +148,7 @@ func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemera
 
 func (p *testProvider) Actions(ctx context.Context) []func() action.Action {
 	return []func() action.Action{
-		NewUnlinkedAction,
+		NewModifyFileAction,
 	}
 }
 
