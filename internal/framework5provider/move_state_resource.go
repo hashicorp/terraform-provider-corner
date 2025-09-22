@@ -72,6 +72,13 @@ func (r MoveStateResource) Read(ctx context.Context, req resource.ReadRequest, r
 		return
 	}
 
+	// Unlike normal resources, this resource can't produce it's identity during read, but it's the same value
+	// as the state value, so we can just use that to prevent any pass-through errors for versions of Terraform
+	// that don't support identity.
+	if req.Identity.Raw.IsNull() {
+		resp.Diagnostics.Append(resp.Identity.SetAttribute(ctx, path.Root("id"), data.MovedRandomString)...)
+	}
+
 	resp.Diagnostics.Append(resp.State.Set(ctx, &data)...)
 }
 
