@@ -15,7 +15,6 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	"github.com/hashicorp/terraform-plugin-testing/helper/resource"
-	"github.com/hashicorp/terraform-plugin-testing/terraform"
 	"github.com/hashicorp/terraform-plugin-testing/tfversion"
 )
 
@@ -56,16 +55,15 @@ func TestModifyFileAction(t *testing.T) {
 					}
 				  
 				}`, f, content),
-				Check: func(state *terraform.State) error {
+				PostApplyFunc: func() {
 					resultContent, err := os.ReadFile(f)
 					if err != nil {
-						return fmt.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
+						t.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
 					}
 
 					if string(resultContent) != content {
-						return fmt.Errorf("Expected file content %s\n, got: %s\n", content, resultContent)
+						t.Errorf("Expected file content %s\n, got: %s\n", content, resultContent)
 					}
-					return nil
 				},
 			},
 			// Test that changing the action configuration by itself doesn't invoke the action
@@ -89,16 +87,16 @@ func TestModifyFileAction(t *testing.T) {
 					}
 				  
 				}`, f),
-				Check: func(state *terraform.State) error {
+				PostApplyFunc: func() {
 					resultContent, err := os.ReadFile(f)
 					if err != nil {
-						return fmt.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
+						t.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
 					}
 
 					if string(resultContent) != content {
-						return fmt.Errorf("Expected file content %s\n, got: %s\n", content, resultContent)
+						t.Errorf("Expected file content %s\n, got: %s\n", content, resultContent)
 					}
-					return nil
+
 				},
 			},
 			// test an 'after_update' event
@@ -122,16 +120,16 @@ func TestModifyFileAction(t *testing.T) {
 					}
 				  
 				}`, f),
-				Check: func(state *terraform.State) error {
+				PostApplyFunc: func() {
 					resultContent, err := os.ReadFile(f)
 					if err != nil {
-						return fmt.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
+						t.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
 					}
 
 					if string(resultContent) != updatedContent {
-						return fmt.Errorf("Expected file content %s\n, got: %s\n", updatedContent, resultContent)
+						t.Errorf("Expected file content %s\n, got: %s\n", updatedContent, resultContent)
 					}
-					return nil
+
 				},
 			},
 			// Test Plan Modification
@@ -158,16 +156,16 @@ func TestModifyFileAction(t *testing.T) {
 				}`, f, content),
 				ExpectError: regexp.MustCompile("ModifyPlan error"),
 				// Assert that the file remains unchanged
-				Check: func(state *terraform.State) error {
+				PostApplyFunc: func() {
 					resultContent, err := os.ReadFile(f)
 					if err != nil {
-						return fmt.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
+						t.Errorf("Error occurred while reading file at path: %s\n, error: %s\n", f, err)
 					}
 
 					if string(resultContent) != updatedContent {
-						return fmt.Errorf("Expected file content %s\n, got: %s\n", updatedContent, resultContent)
+						t.Errorf("Expected file content %s\n, got: %s\n", updatedContent, resultContent)
 					}
-					return nil
+
 				},
 			},
 		},
