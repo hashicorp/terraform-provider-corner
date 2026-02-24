@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"io"
 	"io/fs"
-	"path/filepath"
+	"path"
 	"strings"
 	"sync"
 	"testing/fstest"
@@ -80,7 +80,7 @@ func (s *InMemStateStore) GetStates(ctx context.Context, req statestore.GetState
 
 	workspaces := make([]string, 0, len(directories))
 	for _, dir := range directories {
-		workspaces = append(workspaces, filepath.Base(dir.Name()))
+		workspaces = append(workspaces, dir.Name())
 	}
 
 	resp.StateIDs = workspaces
@@ -107,7 +107,7 @@ func (s *InMemStateStore) Lock(ctx context.Context, req statestore.LockRequest, 
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	lockFilePath := filepath.Join(req.StateID, defaultLockFileName)
+	lockFilePath := path.Join(req.StateID, defaultLockFileName)
 
 	if lockFile, lockExists := s.memFS[lockFilePath]; lockExists {
 		var existingLock statestore.LockInfo
@@ -146,7 +146,7 @@ func (s *InMemStateStore) Unlock(ctx context.Context, req statestore.UnlockReque
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	lockFilePath := filepath.Join(req.StateID, defaultLockFileName)
+	lockFilePath := path.Join(req.StateID, defaultLockFileName)
 
 	lockFile, lockExists := s.memFS[lockFilePath]
 	if !lockExists {
@@ -185,7 +185,7 @@ func (s *InMemStateStore) Read(ctx context.Context, req statestore.ReadRequest, 
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 
-	stateFilePath := filepath.Join(req.StateID, defaultStateFileName)
+	stateFilePath := path.Join(req.StateID, defaultStateFileName)
 	stateFile, err := s.memFS.Open(stateFilePath)
 
 	if err != nil && errors.Is(err, fs.ErrNotExist) {
@@ -216,7 +216,7 @@ func (s *InMemStateStore) Write(ctx context.Context, req statestore.WriteRequest
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	stateFilePath := filepath.Join(req.StateID, defaultStateFileName)
+	stateFilePath := path.Join(req.StateID, defaultStateFileName)
 	s.memFS[stateFilePath] = &fstest.MapFile{
 		Data:    req.StateBytes,
 		Mode:    fs.ModePerm,
