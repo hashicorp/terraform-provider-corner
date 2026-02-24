@@ -16,6 +16,8 @@ import (
 	"testing/fstest"
 	"time"
 
+	"github.com/hashicorp/terraform-plugin-framework-validators/stringvalidator"
+	"github.com/hashicorp/terraform-plugin-framework/schema/validator"
 	"github.com/hashicorp/terraform-plugin-framework/statestore"
 	"github.com/hashicorp/terraform-plugin-framework/statestore/schema"
 )
@@ -48,6 +50,14 @@ func (s *InMemStateStore) Schema(ctx context.Context, req statestore.SchemaReque
 	resp.Schema = schema.Schema{
 		Description: "An in-memory state store for testing purposes. All state and lock files are stored in memory " +
 			"and will be lost when the provider process ends.",
+		Attributes: map[string]schema.Attribute{
+			"region": schema.StringAttribute{
+				Required: true,
+				Validators: []validator.String{
+					stringvalidator.OneOf("us-east-1", "us-west-2"),
+				},
+			},
+		},
 	}
 }
 
