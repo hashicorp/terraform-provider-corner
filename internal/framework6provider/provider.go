@@ -13,6 +13,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
+	"github.com/hashicorp/terraform-plugin-framework/statestore"
 	"github.com/hashicorp/terraform-plugin-framework/types"
 
 	"github.com/hashicorp/terraform-provider-corner/internal/backend"
@@ -22,6 +23,7 @@ var (
 	_ provider.ProviderWithFunctions          = (*testProvider)(nil)
 	_ provider.ProviderWithEphemeralResources = (*testProvider)(nil)
 	_ provider.ProviderWithActions            = (*testProvider)(nil)
+	_ provider.ProviderWithStateStores        = (*testProvider)(nil)
 )
 
 func New() provider.Provider {
@@ -149,6 +151,12 @@ func (p *testProvider) EphemeralResources(ctx context.Context) []func() ephemera
 func (p *testProvider) Actions(ctx context.Context) []func() action.Action {
 	return []func() action.Action{
 		NewModifyFileAction,
+	}
+}
+
+func (p *testProvider) StateStores(ctx context.Context) []func() statestore.StateStore {
+	return []func() statestore.StateStore{
+		NewInMemStateStore,
 	}
 }
 
