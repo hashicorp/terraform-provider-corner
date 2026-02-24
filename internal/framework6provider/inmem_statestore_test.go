@@ -5,6 +5,7 @@ package framework
 
 import (
 	"testing"
+	"testing/fstest"
 
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -22,7 +23,7 @@ func TestAccStateStore_InMem_Basic(t *testing.T) {
 			tfversion.SkipIfNotPrerelease(),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": providerserver.NewProtocol6WithError(New()),
+			"framework": providerserver.NewProtocol6WithError(NewWithStateStoreFS(fstest.MapFS{})),
 		},
 		Steps: []resource.TestStep{
 			{
@@ -54,7 +55,7 @@ func TestAccStateStore_InMem_VerifyLock(t *testing.T) {
 			tfversion.SkipIfNotPrerelease(),
 		},
 		ProtoV6ProviderFactories: map[string]func() (tfprotov6.ProviderServer, error){
-			"framework": providerserver.NewProtocol6WithError(New()),
+			"framework": providerserver.NewProtocol6WithError(NewWithStateStoreFS(fstest.MapFS{})),
 		},
 		Steps: []resource.TestStep{
 			{

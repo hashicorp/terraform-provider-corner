@@ -5,6 +5,7 @@ package framework
 
 import (
 	"context"
+	"testing/fstest"
 
 	"github.com/hashicorp/terraform-plugin-framework/action"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
@@ -45,9 +46,16 @@ func NewWithUpgradeVersion(version int64) provider.Provider {
 	}
 }
 
+func NewWithStateStoreFS(memFS fstest.MapFS) provider.Provider {
+	return &testProvider{
+		stateStoreMemFS: memFS,
+	}
+}
+
 type testProvider struct {
-	ephSpyClient   *EphemeralResourceSpyClient
-	upgradeVersion int64
+	ephSpyClient    *EphemeralResourceSpyClient
+	upgradeVersion  int64
+	stateStoreMemFS fstest.MapFS
 }
 
 func (p *testProvider) Metadata(_ context.Context, _ provider.MetadataRequest, resp *provider.MetadataResponse) {
@@ -156,7 +164,7 @@ func (p *testProvider) Actions(ctx context.Context) []func() action.Action {
 
 func (p *testProvider) StateStores(ctx context.Context) []func() statestore.StateStore {
 	return []func() statestore.StateStore{
-		NewInMemStateStore,
+		func() statestore.StateStore { return NewInMemStateStore(p.stateStoreMemFS) },
 	}
 }
 

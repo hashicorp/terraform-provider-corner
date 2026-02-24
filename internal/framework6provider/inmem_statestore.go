@@ -34,9 +34,9 @@ type InMemStateStore struct {
 	mu    sync.RWMutex
 }
 
-func NewInMemStateStore() statestore.StateStore {
+func NewInMemStateStore(memFS fstest.MapFS) statestore.StateStore {
 	return &InMemStateStore{
-		memFS: fstest.MapFS{},
+		memFS: memFS,
 	}
 }
 
@@ -76,7 +76,6 @@ func (s *InMemStateStore) GetStates(ctx context.Context, req statestore.GetState
 	resp.StateIDs = workspaces
 }
 
-// DeleteState deletes all files for a workspace.
 func (s *InMemStateStore) DeleteState(ctx context.Context, req statestore.DeleteStateRequest, resp *statestore.DeleteStateResponse) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -84,18 +83,22 @@ func (s *InMemStateStore) DeleteState(ctx context.Context, req statestore.Delete
 	for filePath := range s.memFS {
 		if strings.HasPrefix(filePath, req.StateID) {
 			delete(s.memFS, filePath)
+			return
 		}
 	}
+
+	resp.Diagnostics.AddError(
+		"Error Deleting State",
+		fmt.Sprintf("Provider was asked to delete state with ID %q, which doesn't exist", req.StateID),
+	)
 }
 
-// Lock acquires a lock on a workspace.
 func (s *InMemStateStore) Lock(ctx context.Context, req statestore.LockRequest, resp *statestore.LockResponse) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	lockFilePath := filepath.Join(req.StateID, defaultLockFileName)
 
-	// Check if lock already exists
 	if lockFile, lockExists := s.memFS[lockFilePath]; lockExists {
 		var existingLock statestore.LockInfo
 		if err := json.Unmarshal(lockFile.Data, &existingLock); err != nil {
@@ -110,7 +113,6 @@ func (s *InMemStateStore) Lock(ctx context.Context, req statestore.LockRequest, 
 		return
 	}
 
-	// Create new lock
 	lockInfo := statestore.NewLockInfo(req)
 	lockBytes, err := json.Marshal(lockInfo)
 	if err != nil {
@@ -130,14 +132,12 @@ func (s *InMemStateStore) Lock(ctx context.Context, req statestore.LockRequest, 
 	resp.LockID = lockInfo.ID
 }
 
-// Unlock releases a lock on a workspace.
 func (s *InMemStateStore) Unlock(ctx context.Context, req statestore.UnlockRequest, resp *statestore.UnlockResponse) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
 	lockFilePath := filepath.Join(req.StateID, defaultLockFileName)
 
-	// Check if lock exists
 	lockFile, lockExists := s.memFS[lockFilePath]
 	if !lockExists {
 		resp.Diagnostics.AddError(
@@ -147,7 +147,6 @@ func (s *InMemStateStore) Unlock(ctx context.Context, req statestore.UnlockReque
 		return
 	}
 
-	// Verify lock ID matches
 	var existingLock statestore.LockInfo
 	if err := json.Unmarshal(lockFile.Data, &existingLock); err != nil {
 		resp.Diagnostics.AddError(
@@ -172,7 +171,6 @@ func (s *InMemStateStore) Unlock(ctx context.Context, req statestore.UnlockReque
 	delete(s.memFS, lockFilePath)
 }
 
-// Read reads the state file bytes for a workspace.
 func (s *InMemStateStore) Read(ctx context.Context, req statestore.ReadRequest, resp *statestore.ReadResponse) {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -180,9 +178,7 @@ func (s *InMemStateStore) Read(ctx context.Context, req statestore.ReadRequest, 
 	stateFilePath := filepath.Join(req.StateID, defaultStateFileName)
 	stateFile, err := s.memFS.Open(stateFilePath)
 
-	// If there is no state file, return empty bytes - Terraform will create one
 	if err != nil && errors.Is(err, fs.ErrNotExist) {
-		resp.StateBytes = []byte{}
 		return
 	}
 
@@ -206,7 +202,6 @@ func (s *InMemStateStore) Read(ctx context.Context, req statestore.ReadRequest, 
 	resp.StateBytes = stateBytes
 }
 
-// Write writes state file bytes for a workspace.
 func (s *InMemStateStore) Write(ctx context.Context, req statestore.WriteRequest, resp *statestore.WriteResponse) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
