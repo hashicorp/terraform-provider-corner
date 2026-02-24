@@ -80,7 +80,7 @@ func (s *InMemStateStore) GetStates(ctx context.Context, req statestore.GetState
 
 	workspaces := make([]string, 0, len(directories))
 	for _, dir := range directories {
-		workspaces = append(workspaces, dir.Name())
+		workspaces = append(workspaces, filepath.Base(dir.Name()))
 	}
 
 	resp.StateIDs = workspaces
