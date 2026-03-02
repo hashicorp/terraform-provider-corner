@@ -1,6 +1,6 @@
 module github.com/hashicorp/terraform-provider-corner
 
-go 1.24.4
+go 1.25
 
 require (
 	github.com/google/go-cmp v0.7.0
@@ -18,7 +18,7 @@ require (
 	github.com/hashicorp/terraform-plugin-mux v0.22.0
 	github.com/hashicorp/terraform-plugin-sdk/v2 v2.39.0
 	github.com/hashicorp/terraform-plugin-testing v1.14.0
-	github.com/zclconf/go-cty v1.17.0
+	github.com/zclconf/go-cty v1.18.0
 )
 
 require (
