@@ -85,3 +85,11 @@ func (r resourceRouter) UpgradeResourceIdentity(context.Context, *tfprotov5.Upgr
 		},
 	}, nil
 }
+
+func (r resourceRouter) GenerateResourceConfig(ctx context.Context, req *tfprotov5.GenerateResourceConfigRequest) (*tfprotov5.GenerateResourceConfigResponse, error) {
+	res, ok := r[req.TypeName]
+	if !ok {
+		return nil, errUnsupportedResource(req.TypeName)
+	}
+	return res.GenerateResourceConfig(ctx, req)
+}
