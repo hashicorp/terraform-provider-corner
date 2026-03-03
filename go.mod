@@ -8,16 +8,16 @@ require (
 	github.com/hashicorp/go-memdb v1.3.5
 	github.com/hashicorp/go-version v1.8.0
 	github.com/hashicorp/terraform-json v0.27.2
-	github.com/hashicorp/terraform-plugin-framework v1.18.0
+	github.com/hashicorp/terraform-plugin-framework v1.18.1-0.20260302213354-c54ab839409a
 	github.com/hashicorp/terraform-plugin-framework-jsontypes v0.2.0
 	github.com/hashicorp/terraform-plugin-framework-nettypes v0.3.0
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.7.0
 	github.com/hashicorp/terraform-plugin-framework-timetypes v0.5.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.19.0
-	github.com/hashicorp/terraform-plugin-go v0.30.0
-	github.com/hashicorp/terraform-plugin-mux v0.22.0
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.39.0
-	github.com/hashicorp/terraform-plugin-testing v1.14.0
+	github.com/hashicorp/terraform-plugin-go v0.30.1-0.20260302212732-6ee79098f486
+	github.com/hashicorp/terraform-plugin-mux v0.22.1-0.20260302213135-d1f583baaa4e
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.39.1-0.20260302213337-c80548067dbf
+	github.com/hashicorp/terraform-plugin-testing v1.14.1-0.20260302220214-72bf73cbfef4
 	github.com/zclconf/go-cty v1.18.0
 )
 
