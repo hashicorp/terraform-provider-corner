@@ -1,6 +1,6 @@
 module github.com/hashicorp/terraform-provider-corner
 
-go 1.24.4
+go 1.25.0
 
 require (
 	github.com/google/go-cmp v0.7.0
@@ -8,24 +8,24 @@ require (
 	github.com/hashicorp/go-memdb v1.3.5
 	github.com/hashicorp/go-version v1.8.0
 	github.com/hashicorp/terraform-json v0.27.2
-	github.com/hashicorp/terraform-plugin-framework v1.17.1-0.20260224163145-60c74cfce0e4
+	github.com/hashicorp/terraform-plugin-framework v1.19.0
 	github.com/hashicorp/terraform-plugin-framework-jsontypes v0.2.0
 	github.com/hashicorp/terraform-plugin-framework-nettypes v0.3.0
 	github.com/hashicorp/terraform-plugin-framework-timeouts v0.7.0
 	github.com/hashicorp/terraform-plugin-framework-timetypes v0.5.0
 	github.com/hashicorp/terraform-plugin-framework-validators v0.19.0
-	github.com/hashicorp/terraform-plugin-go v0.30.0
-	github.com/hashicorp/terraform-plugin-mux v0.21.0
-	github.com/hashicorp/terraform-plugin-sdk/v2 v2.38.2
-	github.com/hashicorp/terraform-plugin-testing v1.14.1-0.20260224163343-00a2cce7fdd8
-	github.com/zclconf/go-cty v1.17.0
+	github.com/hashicorp/terraform-plugin-go v0.31.0
+	github.com/hashicorp/terraform-plugin-mux v0.23.0
+	github.com/hashicorp/terraform-plugin-sdk/v2 v2.40.0
+	github.com/hashicorp/terraform-plugin-testing v1.15.0
+	github.com/zclconf/go-cty v1.18.0
 )
 
 require (
 	github.com/ProtonMail/go-crypto v1.3.0 // indirect
 	github.com/agext/levenshtein v1.2.2 // indirect
 	github.com/apparentlymart/go-textseg/v15 v15.0.0 // indirect
-	github.com/cloudflare/circl v1.6.1 // indirect
+	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/fatih/color v1.18.0 // indirect
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/hashicorp/errwrap v1.0.0 // indirect
@@ -66,6 +66,6 @@ require (
 	golang.org/x/tools v0.41.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20251202230838-ff82c1b0f217 // indirect
-	google.golang.org/grpc v1.79.1 // indirect
+	google.golang.org/grpc v1.79.2 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )
