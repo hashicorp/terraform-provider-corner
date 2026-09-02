@@ -28,6 +28,13 @@ linters:
       - third_party$
       - builtin$
       - examples$
+    rules:
+      - linters:
+          - staticcheck
+        text: "SA1019: .*.Providers is deprecated" # (github.com/hashicorp/terraform-plugin-testing/helper/resource.TestCase).Providers
+      - linters:
+          - staticcheck
+        text: "SA1019: .*UnsafeToUseLegacyTypeSystem is deprecated" # (github.com/hashicorp/terraform-plugin-go/tfprotov5.ApplyResourceChangeResponse).UnsafeToUseLegacyTypeSystem
   settings:
     staticcheck:
       checks:
